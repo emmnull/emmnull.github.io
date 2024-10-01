@@ -1,8 +1,8 @@
 import js from '@eslint/js';
-import ts from 'typescript-eslint';
-import svelte from 'eslint-plugin-svelte';
 import prettier from 'eslint-config-prettier';
+import svelte from 'eslint-plugin-svelte';
 import globals from 'globals';
+import ts from 'typescript-eslint';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -17,6 +17,17 @@ export default [
 				...globals.browser,
 				...globals.node
 			}
+		},
+		ignores: ['build/', '.svelte-kit/', 'dist/'],
+		rules: {
+			'@typescript-eslint/consistent-type-imports': 'error',
+			'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
+			'import/no-duplicates': 'error',
+			curly: ['error', 'all'],
+			'@typescript-eslint/no-unused-vars': [
+				'error',
+				{ ignoreRestSiblings: true, destructuredArrayIgnorePattern: '^_' }
+			]
 		}
 	},
 	{
@@ -26,8 +37,5 @@ export default [
 				parser: ts.parser
 			}
 		}
-	},
-	{
-		ignores: ['build/', '.svelte-kit/', 'dist/']
 	}
 ];
