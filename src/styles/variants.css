@@ -1,0 +1,18 @@
+/* Deriving custom variants from PostCSS custom selectors (see ./selectors.css) */
+
+@variant icon (&:--icon);
+@variant hocus (&:--hocus);
+@variant danger (&:--danger);
+@variant checked (&:--checked);
+@variant active (&:--active);
+@variant open (&:--open);
+@variant closed (&:--closed);
+@variant modal (&:--modal);
+@variant supermodal (&:--supermodal);
+@variant closing (&:--closing);
+@variant current (&:--current);
+@variant disabled (&:--disabled);
+@variant error (&:--error);
+@variant busy (&:--busy);
+@variant vertical (&:--vertical);
+@variant ripple (&:--ripple);

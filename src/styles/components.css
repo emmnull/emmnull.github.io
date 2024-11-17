@@ -1,0 +1,300 @@
+/* Code */
+
+code {
+}
+
+/* Keyboard hotkey / combo */
+
+kbd,
+kbd.cta {
+	position: relative;
+	height: var(--spacing-io);
+	display: inline-flex;
+	flex-direction: row;
+	padding-inline: var(--spacing-io-padding);
+	align-items: center;
+	gap: var(--spacing-io-gap);
+	border-radius: var(--radius-io);
+	font-weight: var(--font-weight-semibold);
+	> :--icon {
+		width: 1em;
+		height: 1em;
+		stroke-width: var(--stroke-width-icon);
+	}
+}
+kbd {
+	color: var(--color-x-io);
+	background: var(--color-card);
+	border-color: color-mix(in oklch, var(--color-card), var(--color-x-pure) 5%);
+	border-width: var(--border-width-sm);
+	border-style: solid;
+}
+kbd.cta {
+	color: var(--color-x-primary);
+	background: var(--color-primary);
+}
+
+/* Chip */
+
+.chip {
+	position: relative;
+	height: var(--spacing-io);
+}
+
+/* Switch / tabs selector */
+
+.switch,
+.switch-bordered,
+.switch-ghost {
+	.switch-thumb {
+	}
+	.switch-item {
+	}
+}
+
+/* Toggle */
+
+.toggle,
+.toggle-ghost {
+	.toggle-thumb {
+	}
+}
+
+/* Button */
+
+.button,
+.button-bordered,
+.button-dashed,
+.button-ghost,
+.button-cta,
+.button-navbar {
+	position: relative;
+	display: inline-flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	text-overflow: ellipsis;
+	align-items: center;
+	gap: var(--spacing-io-gap);
+	height: var(--spacing-io);
+	vertical-align: top;
+	padding-inline: var(--spacing-io-padding);
+	border-radius: var(--radius-io);
+	transition-duration: var(--transition-duration-medium);
+	transition-property: all;
+	transition-timing-function: var(--ease-out);
+	&:hover:not(:active) {
+		transition-duration: 0s;
+	}
+	&:focus-visible {
+		outline-color: var(--color-primary);
+		outline-width: var(--outline-width-focus);
+	}
+	&:--active {
+		scale: var(--scale-press);
+	}
+	&:not(.aspect-square) {
+		& > :--icon {
+			opacity: var(--opacity-softer);
+		}
+		&:hover {
+			& > :--icon {
+				opacity: var(--opacity-soft);
+			}
+		}
+	}
+	&:--current {
+		& > :--icon {
+			opacity: var(--opacity-full);
+		}
+	}
+	&.aspect-square {
+		padding-inline: 0;
+		justify-content: center;
+	}
+	& > :--icon {
+		width: var(--spacing-icon);
+		height: var(--spacing-icon);
+		transition-duration: inherit;
+		stroke-width: var(--stroke-width-icon);
+	}
+	/* Default variant */
+	&.button {
+		background: var(--color-io);
+		color: var(--color-x-io);
+		&:hover:not(:--current) {
+			background: var(--color-io-accent);
+			color: var(--color-x-io-accent);
+		}
+	}
+}
+.button-bordered,
+.button-dashed {
+	/* @apply after:border; */
+}
+.button-dashed {
+	border-style: dashed;
+}
+.button-ghost {
+	/* @apply
+	current:text-primary
+	text-x-io
+	hover:text-x-io-accent
+	hover:bg-io-accent
+	current:hover:bg-io-primary-accent;
+	*/
+	&:hover {
+		color: var(--color-x-io-accent);
+		background: var(--color-io-accent);
+	}
+	&:--current {
+		color: var(--color-primary);
+		background: var(--color-io-primary-accent);
+	}
+}
+.button-cta {
+	/* @apply bg-primary text-x-primary hover:text-x-primary-accent hover:bg-primary-accent; */
+}
+.button-navbar {
+	color: var(--color-x-io);
+	&:hover:not(:--current) {
+		color: var(--color-primary-accent);
+		background: var(--color-io-primary-accent);
+	}
+	&:--current {
+		color: var(--color-primary);
+		> :--icon {
+			animation: var(--animate-pulse);
+		}
+	}
+}
+
+/* Standalone input */
+
+:not(.input-group, .input-group-bordered, .input-group-dashed, .input-group-ghost) {
+	.input,
+	.input-bordered,
+	.input-dashed,
+	.input-ghost {
+		/* @apply rounded-io h-io min-h-io px-io-padding flex flex-row items-center [&.rounded-full]:[--radius-io:var(--radius-full)]; */
+		/* Default variant */
+	}
+	.input {
+	}
+	/* Bordered and dashed variants */
+	.input-bordered,
+	.input-dashed {
+	}
+	.input-dashed {
+	}
+	/* Ghost variant */
+	.input-ghost {
+	}
+}
+
+/* Composed input (see: https://play.tailwindcss.com/P6pBbynBk5) */
+
+.input-group,
+.input-group-bordered,
+.input-group-dashed,
+.input-group-ghost {
+	position: relative;
+	border-radius: var(--radius-io);
+	display: inline-flex;
+	flex-direction: row;
+	align-items: center;
+	transition-property: all;
+	transition-duration: var(--transition-duration-medium);
+	transition-timing-function: var(--ease-out);
+	&.rounded-full {
+		--radius-io: var(--radius-full);
+	}
+	&:hover:not(:has(.input:focus)) {
+		transition-duration: 0s;
+	}
+	&:has(.input:focus),
+	&:focus-visible {
+		outline-color: var(--color-primary);
+		outline-width: var(--outline-width-focus);
+		> :--icon {
+			opacity: var(--opacity-full);
+			color: var(--color-primary);
+		}
+	}
+	> :--icon {
+		opacity: var(--opacity-soft);
+		width: var(--spacing-icon);
+		height: var(--spacing-icon);
+		&:first-child {
+			margin-left: var(--spacing-io-padding);
+		}
+		&:last-child {
+			margin-right: var(--spacing-io-padding);
+		}
+		+ .input-peer {
+			margin-left: 0;
+		}
+		+ .input {
+			padding-left: calc(var(--spacing-io-padding) - var(--spacing-io-nesting));
+		}
+	}
+	.input {
+		background: transparent;
+		align-self: stretch;
+		display: flex;
+		flex-direction: row;
+		gap: var(--spacing-io-gap);
+		align-items: center;
+		border-radius: inherit;
+		padding-inline: var(--spacing-io-padding);
+		+ .input-peer {
+			margin-left: 0;
+		}
+	}
+	.input-peer {
+		@apply nest-group;
+		margin: var(--spacing-io-nesting);
+		+ .input {
+			padding-left: calc(var(--spacing-io-padding) - var(--spacing-io-nesting));
+		}
+		+ :--icon {
+			margin-left: calc(var(--spacing-io-padding) - var(--spacing-io-nesting));
+		}
+	}
+	.input-affix {
+		padding-inline: calc(0.5 * var(--spacing-io-padding));
+		+ .input {
+			padding-left: 0;
+		}
+	}
+}
+.input-group {
+	background: var(--color-io);
+	color: var(--color-x-io);
+	&:hover {
+		background: var(--color-io-accent);
+		color: var(--color-x-io-accent);
+	}
+}
+.input-group-bordered,
+.input-group-dashed {
+	color: var(--color-x-io);
+	border-width: var(--border-width-io);
+	border-style: solid;
+	border-color: var(--color-io);
+	&:hover {
+		color: var(--color-x-io-accent);
+		background: var(--color-io);
+		border-color: transparent;
+	}
+}
+.input-bordered-dashed {
+	border-style: dashed;
+}
+.input-group-ghost {
+	background: transparent;
+	color: var(--color-x-io);
+	&:hover {
+		color: var(--color-x-io-accent);
+		background: var(--color-io);
+	}
+}

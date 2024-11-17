@@ -1,0 +1,7 @@
+@import './styles/theme.css';
+@import './styles/variants.css';
+@import 'tailwindcss/preflight' layer(base);
+@import './styles/base.css' layer(base);
+@import 'tailwindcss/utilities' layer(utilities);
+@import './styles/utilities.css';
+@import './styles/components.css' layer(components);

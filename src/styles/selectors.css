@@ -1,0 +1,18 @@
+/* PostCSS custom selectors to enable reusing tailwind variants' selectors in style blocks */
+
+@custom-selector :--icon .lucide-icon;
+@custom-selector :--hocus :focus, :hover;
+@custom-selector :--danger [data-danger='true'];
+@custom-selector :--checked :checked, [aria-checked='true'], [data-state='checked'];
+@custom-selector :--active :active, [data-state='active'];
+@custom-selector :--open [aria-expanded='true'], [data-state='open'], [open], :popover-open;
+@custom-selector :--closed [aria-expanded='false'], [data-state='closed'];
+@custom-selector :--modal [aria-modal='true'], :modal;
+@custom-selector :--supermodal [aria-modal='true'][modal-mode='super'], :modal[modal-mode='super'];
+@custom-selector :--closing [data-closing='true'];
+@custom-selector :--current [aria-current='page'], [aria-current='step'], [aria-current='location'], [aria-current='date'], [aria-current='time'], [aria-current='true'];
+@custom-selector :--disabled :disabled, [aria-disabled='true'], [data-disabled='true'], :is(a):not(:any-link);
+@custom-selector :--error [aria-invalid='true'], [data-error='true'];
+@custom-selector :--busy [aria-busy='true'];
+@custom-selector :--vertical [data-orientation='vertical'];
+@custom-selector :--ripple [data-ripple];
