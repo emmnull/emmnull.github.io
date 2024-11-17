@@ -1,0 +1,10 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"hello": "monde",
+	"posts": "Articles",
+	"back_to_top": "Retourner en haut",
+	"tools": "Outils",
+	"not_defined": "Non défini",
+	"blog": "Blogue",
+	"search": "Rechercher"
+}
