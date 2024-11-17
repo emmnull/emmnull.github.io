@@ -16,6 +16,12 @@
 			"options": {
 				"parser": "svelte"
 			}
+		},
+		{
+			"files": "*.css",
+			"options": {
+				"printWidth": 200
+			}
 		}
 	],
 	"proseWrap": "always",
@@ -29,6 +35,5 @@
 	"jsdocCommentLineStrategy": "multiline",
 	"tsdoc": true,
 	"quoteProps": "as-needed",
-	"embeddedLanguageFormatting": "auto",
-	"htmlWhitespaceSensitivity": "ignore"
+	"embeddedLanguageFormatting": "auto"
 }

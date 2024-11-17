@@ -12,18 +12,12 @@
 		"MD033": false
 	},
 	"files.associations": {
-		"*.svx": "markdown",
-		"*.mdx": "markdown",
+		"*.{mdx,svx}": "markdown",
 		"*.json": "jsonc",
 		"*.css": "tailwindcss"
 	},
 	"[svelte]": {
 		"editor.defaultFormatter": "svelte.svelte-vscode"
-	},
-	"[sql]": {
-		"editor.formatOnSave": false,
-		"editor.formatOnPaste": false,
-		"editor.formatOnType": false
 	},
 	"editor.quickSuggestions": {
 		"strings": "on"
@@ -32,8 +26,8 @@
 	"typescript.preferences.quoteStyle": "single",
 	"svelte.enable-ts-plugin": true,
 	"svelte.plugin.css.globals": "src/**/*.css",
-	"tailwindCSS.rootFontSize": 16,
+	"tailwindCSS.rootFontSize": 15,
 	"tailwindCSS.emmetCompletions": true,
-	"tailwindCSS.experimental.configFile": "src/app.css",
-	"tailwindCSS.lint.invalidConfigPath": "warning"
+	"tailwindCSS.lint.invalidConfigPath": "warning",
+	"tailwindCSS.experimental.configFile": "src/app.css"
 }
