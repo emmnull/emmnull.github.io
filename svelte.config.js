@@ -1,18 +1,33 @@
-import adapter from '@sveltejs/adapter-auto';
-import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import adapter from '@sveltejs/adapter-static';
 
-/** @type {import('@sveltejs/kit').Config} */
+/**
+ * @type {import('@sveltejs/kit').Config}
+ */
 const config = {
-	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
-	// for more information about preprocessors
-	preprocess: vitePreprocess(),
-
+	extensions: ['.svelte', '.mdx'],
+	preprocess: [cssLayer()],
 	kit: {
-		// adapter-auto only supports some environments, see https://kit.svelte.dev/docs/adapter-auto for a list.
-		// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
-		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
-		adapter: adapter()
+		adapter: adapter(),
+		alias: {
+			$messages: 'src/lib/i18n/generated/messages.js'
+		}
 	}
 };
 
 export default config;
+
+/**
+ * Scoping component styles to a predefined layer to control cascade ordering.
+ *
+ * @see https://github.com/sveltejs/svelte/issues/11345
+ */
+function cssLayer() {
+	return {
+		name: 'svelte-css-layer',
+		style: ({ content }) => {
+			return {
+				code: `@layer components { ${content} }`
+			};
+		}
+	};
+}
