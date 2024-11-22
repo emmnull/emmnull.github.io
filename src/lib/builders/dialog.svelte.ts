@@ -66,14 +66,22 @@ export class Dialog {
 		 */
 		onClose?: (e?: Event) => void;
 	} = {}) {
-		if (id != null) this.id = id;
-		if (modal != null) this.modal = modal;
-		if (lightDismiss != null) this.lightDismiss = lightDismiss;
+		if (id != null) {
+			this.id = id;
+		}
+		if (modal != null) {
+			this.modal = modal;
+		}
+		if (lightDismiss != null) {
+			this.lightDismiss = lightDismiss;
+		}
 		this.#beforeOpen = beforeOpen;
 		this.#onOpen = onOpen;
 		this.#beforeClose = beforeClose;
 		this.#onClose = onClose;
-		if (browser) this.#scrollLock = new ScrollLock(document.documentElement);
+		if (browser) {
+			this.#scrollLock = new ScrollLock(document.documentElement);
+		}
 
 		this.getDialogAttributes.bind(this);
 		this.getContentAttributes.bind(this);
@@ -82,20 +90,6 @@ export class Dialog {
 
 		// Ensuring we properly initialize open state.
 		if (open) this.#setOpen(true);
-	}
-
-	#getDialogRef() {
-		const dialog = document.querySelector(`[data-dialog-id=${this.id}]`);
-		if (dialog instanceof HTMLDialogElement) return dialog;
-		dev && console.warn(`No dialog element found with expected id "${this.id}".`);
-	}
-
-	#stateFromMode(
-		mode: NonNullable<NonNullable<Parameters<typeof this.getTriggerAttributes>[0]>['mode']>
-	) {
-		if (mode === 'open') return true;
-		if (mode === 'close') return false;
-		return !this.#open;
 	}
 
 	/**
@@ -120,19 +114,14 @@ export class Dialog {
 		this.#previousFocusVisible = this.#previousFocusRef?.matches(':focus-visible') ?? false;
 		this.#open = state;
 		if (this.#scrollLock) this.#scrollLock.active = state;
-		tick().then(() => {
-			if (this.#open) {
-				this.#getDialogRef()?.showModal();
-			} else {
-				this.#getDialogRef()?.close();
-				this.#previousFocusRef?.focus(
-					// @ts-ignore: Pending support (https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus)
-					{ focusVisible: this.#previousFocusVisible }
-				);
-				this.#previousFocusRef = undefined;
-				this.#previousFocusVisible = false;
-			}
-		});
+		if (!state) {
+			this.#previousFocusRef?.focus(
+				// @ts-ignore: Pending support (https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus)
+				{ focusVisible: this.#previousFocusVisible }
+			);
+			this.#previousFocusRef = undefined;
+			this.#previousFocusVisible = false;
+		}
 		(state ? this.#onOpen : this.#onClose)?.(e);
 		return true;
 	}
@@ -152,6 +141,15 @@ export class Dialog {
 	 */
 	getDialogAttributes() {
 		const _this = this;
+		tick().then(() => {
+			const ref = document.querySelector(`[data-dialog-id=${this.id}]`);
+			!ref && dev && console.warn(`No dialog element found with expected id "${this.id}".`);
+			if (this.modal) {
+				ref instanceof HTMLDialogElement && ref.showModal();
+			} else {
+				ref instanceof HTMLDialogElement && ref.show();
+			}
+		});
 		return {
 			get 'data-dialog-id'() {
 				return _this.id;
@@ -205,7 +203,8 @@ export class Dialog {
 				return _this.open;
 			},
 			onclick(e) {
-				_this.#setOpen(_this.#stateFromMode(mode), e);
+				const newState = mode === 'open' ? true : mode === 'close' ? false : !_this.open;
+				_this.#setOpen(newState, e);
 			}
 		} satisfies HTMLAttributes<HTMLElement>;
 	}

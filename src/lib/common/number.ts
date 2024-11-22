@@ -8,3 +8,7 @@ export function random(a: number, b?: number) {
 	}
 	return a + Math.random() * (b - a);
 }
+
+export function clamp(value: number, min: number, max: number) {
+	return Math.min(max, Math.max(min, value));
+}

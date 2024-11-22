@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { Dialog } from '$lib/builders/dialog.svelte';
 	import { cn } from '$lib/common/css';
+	import { X } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
+	import { cubicIn, expoOut } from 'svelte/easing';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { fade } from 'svelte/transition';
+	import { fade, fly, scale } from 'svelte/transition';
 
 	let {
 		dialog,
@@ -51,22 +53,23 @@
 	<dialog
 		{...dialog.getDialogAttributes()}
 		{...dialogProps}
-		class="top-0 left-0 flex h-full w-full flex-col items-center justify-center bg-transparent"
+		class="top-0 left-0 h-full w-full flex-col items-center justify-center bg-transparent open:flex"
 	>
 		{#if backdrop}
 			{@render backdrop(dialog)}
 		{:else}
 			<div
-				class="absolute top-0 left-0 -z-[1] h-full w-full bg-[blue]/25"
-				transition:fade|global
+				class="bg-backdrop cursor- absolute top-0 left-0 -z-[1] h-full w-full backdrop-blur-xs"
+				transition:fade|global={{ duration: 200, easing: expoOut }}
 			></div>
 		{/if}
 		<article
 			class={cn('p-card rounded-card flex max-w-md flex-col bg-[red]/25', className)}
-			transition:fade
+			in:scale|global={{ start: 0.96, duration: 350, easing: expoOut }}
+			out:fly|global={{ y: '1em', duration: 200, easing: cubicIn }}
 			{...dialog.getContentAttributes()}
 		>
-			<!-- {#if title || description}
+			{#if title || description}
 				<header class="relative flex flex-col gap-[1em]">
 					<hgroup class="text-lg font-semibold">
 						{#if closeButton}
@@ -97,16 +100,16 @@
 					{/if}
 				</header>
 				<hr class="mb-section-padding" />
-			{/if} -->
+			{/if}
 			{@render children?.(dialog)}
-			<!-- {#if menu}
+			{#if menu}
 				<hr class="mt-section-padding" />
 				<menu
 					class="justify-content-start gap-io-group-gap sticky bottom-0 flex flex-row-reverse bg-inherit"
 				>
 					{@render menu(dialog)}
 				</menu>
-			{/if} -->
+			{/if}
 		</article>
 	</dialog>
 {/if}

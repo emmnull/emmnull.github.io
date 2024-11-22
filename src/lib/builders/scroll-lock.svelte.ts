@@ -1,12 +1,14 @@
-const locks = new Map<HTMLElement | string, Set<ScrollLock>>();
+const locks = new Map<ScrollLock['element'], { overflow: string; active: Set<ScrollLock> }>();
 
 export class ScrollLock {
-	#element = $state<HTMLElement | string>(document.documentElement);
+	#element;
 	#active = $state(false);
 
-	constructor(element: HTMLElement | string, active?: boolean) {
+	constructor(element: HTMLElement, active?: boolean) {
 		this.#element = element;
-		if (active) this.active = true;
+		if (active) {
+			this.active = true;
+		}
 
 		$effect.root(() => {
 			return () => {
@@ -16,13 +18,7 @@ export class ScrollLock {
 	}
 
 	get element() {
-		if (this.#element instanceof HTMLElement) {
-			return this.#element;
-		}
-		const ref = document.querySelector(this.#element);
-		if (ref instanceof HTMLElement) {
-			return ref;
-		}
+		return this.#element;
 	}
 
 	get active() {
@@ -30,23 +26,29 @@ export class ScrollLock {
 	}
 
 	set active(value) {
-		if (value === this.#active) return;
+		if (value === this.#active) {
+			return;
+		}
 		this.#active = value;
 		const existing = locks.get(this.#element);
 		if (value) {
 			if (existing) {
-				existing.add(this);
+				existing.active.add(this);
 			} else {
-				locks.set(this.#element, new Set([this]));
-				this.element?.setAttribute('data-scroll-lock', 'true');
+				const overflow = this.#element.style.overflow;
+				const active = new Set([this]);
+				locks.set(this.#element, { overflow, active });
+				this.#element.setAttribute('data-scroll-lock', 'true');
+				this.#element.style.overflow = 'hidden';
 			}
 		} else {
 			if (existing) {
-				if (existing.has(this)) {
-					existing.delete(this);
+				if (existing.active.has(this)) {
+					existing.active.delete(this);
 				}
-				if (!existing.size) {
-					this.element?.removeAttribute('data-scroll-lock');
+				if (!existing.active.size) {
+					this.#element?.removeAttribute('data-scroll-lock');
+					this.#element.style.overflow = existing.overflow;
 					locks.delete(this.#element);
 				}
 			}

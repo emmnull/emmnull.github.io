@@ -5,14 +5,19 @@
 	import { i18n } from '$lib/i18n/adapter';
 	import { LANGUAGES } from '$lib/i18n/constants';
 	import { availableLanguageTags, languageTag } from '$lib/i18n/generated/runtime';
-	import type { Snippet } from 'svelte';
-
-	let { trigger }: { trigger: Snippet<[Dialog]> } = $props();
+	import { Languages } from 'lucide-svelte';
+	import NavbarButton from './navbar-button.svelte';
 
 	const dialog = new Dialog();
 </script>
 
-{@render trigger(dialog)}
+<NavbarButton class="aspect-square" {...dialog.getTriggerAttributes()}>
+	{#snippet tooltip(instance)}
+		Test
+	{/snippet}
+	<Languages />
+</NavbarButton>
+
 <DialogContainer {dialog}>
 	{#each availableLanguageTags as lang}
 		<a
