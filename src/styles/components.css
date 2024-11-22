@@ -5,8 +5,7 @@ code {
 
 /* Keyboard hotkey / combo */
 
-kbd,
-kbd.cta {
+:is(kbd, .key) {
 	position: relative;
 	height: var(--spacing-io);
 	display: inline-flex;
@@ -16,20 +15,25 @@ kbd.cta {
 	gap: var(--spacing-io-gap);
 	border-radius: var(--radius-io);
 	font-weight: var(--font-weight-semibold);
-	> :--icon {
+	> :variant(icon) {
 		width: 1em;
 		height: 1em;
 		stroke-width: var(--stroke-width-icon);
 	}
 }
-kbd {
+:is(kbd, .key):not(.ghost, .cta) {
 	color: var(--color-x-io);
 	background: var(--color-card);
-	border-color: color-mix(in oklch, var(--color-card), var(--color-x-pure) 5%);
-	border-width: var(--border-width-sm);
-	border-style: solid;
+	border-top-style: ridge;
+	border-bottom-style: solid;
+	border-top-width: var(--border-width-md);
+	border-bottom-width: var(--border-width-md);
+	border-top-color: color-mix(in oklch, currentColor 10%, transparent);
+	border-bottom-color: color-mix(in oklch, var(--color-pure) 25%, transparent);
 }
-kbd.cta {
+:is(kbd, .key).ghost {
+}
+:is(kbd, .key).cta {
 	color: var(--color-x-primary);
 	background: var(--color-primary);
 }
@@ -89,21 +93,33 @@ kbd.cta {
 		outline-color: var(--color-primary);
 		outline-width: var(--outline-width-focus);
 	}
-	&:--active {
+	&:active {
 		scale: var(--scale-press);
 	}
 	&:not(.aspect-square) {
-		& > :--icon {
+		& > :variant(icon) {
 			opacity: var(--opacity-softer);
 		}
 		&:hover {
-			& > :--icon {
+			& > :variant(icon) {
 				opacity: var(--opacity-soft);
 			}
 		}
 	}
-	&:--current {
-		& > :--icon {
+	&::after,
+	&::before {
+		pointer-events: none;
+		z-index: -1;
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		transition-property: all;
+		transition-duration: inherit;
+		transition-timing-function: inherit;
+	}
+	&:variant(current) {
+		> :variant(icon) {
 			opacity: var(--opacity-full);
 		}
 	}
@@ -111,58 +127,94 @@ kbd.cta {
 		padding-inline: 0;
 		justify-content: center;
 	}
-	& > :--icon {
+	> :variant(icon) {
 		width: var(--spacing-icon);
 		height: var(--spacing-icon);
 		transition-duration: inherit;
 		stroke-width: var(--stroke-width-icon);
 	}
-	/* Default variant */
-	&.button {
+}
+.button {
+	color: var(--color-x-io);
+	&::after {
 		background: var(--color-io);
-		color: var(--color-x-io);
-		&:hover:not(:--current) {
+	}
+	&:hover:not(:variant(current)) {
+		color: var(--color-x-io-accent);
+		&::after {
 			background: var(--color-io-accent);
-			color: var(--color-x-io-accent);
 		}
 	}
 }
 .button-bordered,
 .button-dashed {
-	/* @apply after:border; */
+	color: var(--color-x-io);
+	&::before {
+		border-width: var(--border-width-io);
+		border-style: solid;
+		border-color: var(--color-io);
+	}
+	&::after {
+		inset: var(--spacing-io-fx-inset);
+		background: var(--color-io);
+	}
+	&:hover:not(:variant(current)) {
+		color: var(--color-x-io-accent);
+		&::before {
+			border-color: transparent;
+		}
+		&::after {
+			inset: 0;
+			background: var(--color-io-accent);
+		}
+	}
 }
 .button-dashed {
-	border-style: dashed;
+	&::before {
+		border-style: dashed;
+	}
 }
 .button-ghost {
-	/* @apply
-	current:text-primary
-	text-x-io
-	hover:text-x-io-accent
-	hover:bg-io-accent
-	current:hover:bg-io-primary-accent;
-	*/
+	&::after {
+		inset: var(--spacing-io-fx-inset);
+	}
 	&:hover {
 		color: var(--color-x-io-accent);
-		background: var(--color-io-accent);
+		&::after {
+			inset: 0;
+			background: var(--color-io-accent);
+		}
 	}
-	&:--current {
+	&:variant(current) {
 		color: var(--color-primary);
-		background: var(--color-io-primary-accent);
+		&::after {
+			inset: 0;
+			background: var(--color-io-primary-accent);
+		}
 	}
 }
 .button-cta {
 	/* @apply bg-primary text-x-primary hover:text-x-primary-accent hover:bg-primary-accent; */
 }
 .button-navbar {
+	font-weight: var(--font-weight-semibold);
 	color: var(--color-x-io);
-	&:hover:not(:--current) {
-		color: var(--color-primary-accent);
-		background: var(--color-io-primary-accent);
+	&::after {
+		inset: var(--spacing-io-fx-inset);
 	}
-	&:--current {
+	&:hover:not(variant(current)) {
+		color: var(--color-primary-accent);
+		&::after {
+			inset: 0;
+			background: var(--color-io-primary-accent);
+		}
+	}
+	&:variant(current) {
 		color: var(--color-primary);
-		> :--icon {
+		&::after {
+			inset: 0;
+		}
+		> :variant(icon) {
 			animation: var(--animate-pulse);
 		}
 	}
@@ -176,11 +228,9 @@ kbd.cta {
 	.input-dashed,
 	.input-ghost {
 		/* @apply rounded-io h-io min-h-io px-io-padding flex flex-row items-center [&.rounded-full]:[--radius-io:var(--radius-full)]; */
-		/* Default variant */
 	}
 	.input {
 	}
-	/* Bordered and dashed variants */
 	.input-bordered,
 	.input-dashed {
 	}
@@ -192,7 +242,6 @@ kbd.cta {
 }
 
 /* Composed input (see: https://play.tailwindcss.com/P6pBbynBk5) */
-
 .input-group,
 .input-group-bordered,
 .input-group-dashed,
@@ -211,16 +260,33 @@ kbd.cta {
 	&:hover:not(:has(.input:focus)) {
 		transition-duration: 0s;
 	}
-	&:has(.input:focus),
-	&:focus-visible {
+	&:has(.input:focus) {
 		outline-color: var(--color-primary);
 		outline-width: var(--outline-width-focus);
-		> :--icon {
+		> :variant(icon) {
 			opacity: var(--opacity-full);
-			color: var(--color-primary);
 		}
 	}
-	> :--icon {
+	&:has(.input:active) {
+		scale: var(--scale-press);
+	}
+	&:is(label) {
+		cursor: text;
+	}
+	&::after,
+	&::before {
+		pointer-events: none;
+		z-index: -1;
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		transition-property: all;
+		transition-duration: inherit;
+		transition-timing-function: inherit;
+	}
+	> :variant(icon) {
+		pointer-events: none;
 		opacity: var(--opacity-soft);
 		width: var(--spacing-icon);
 		height: var(--spacing-icon);
@@ -250,13 +316,24 @@ kbd.cta {
 			margin-left: 0;
 		}
 	}
+	.input-fill {
+		cursor: text;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		border-radius: inherit;
+	}
 	.input-peer {
 		@apply nest-group;
+		z-index: 1;
+		position: relative;
 		margin: var(--spacing-io-nesting);
 		+ .input {
-			padding-left: calc(var(--spacing-io-padding) - var(--spacing-io-nesting));
+			margin-left: calc(var(--spacing-io-padding) - var(--spacing-io-nesting));
 		}
-		+ :--icon {
+		+ :variant(icon) {
 			margin-left: calc(var(--spacing-io-padding) - var(--spacing-io-nesting));
 		}
 	}
@@ -268,33 +345,93 @@ kbd.cta {
 	}
 }
 .input-group {
-	background: var(--color-io);
 	color: var(--color-x-io);
-	&:hover {
-		background: var(--color-io-accent);
-		color: var(--color-x-io-accent);
+	&::after {
+		background: var(--color-io);
+	}
+	&:has(.input:hover) {
+		&::after {
+			background: var(--color-io-accent);
+		}
+		.input {
+			color: var(--color-x-io-accent);
+		}
+	}
+	&:has(.input:focus) {
+		background: var(--color-base);
+		.input {
+			color: var(--color-x-base);
+		}
+		> :variant(icon) {
+			color: var(--color-primary-accent);
+		}
 	}
 }
 .input-group-bordered,
 .input-group-dashed {
 	color: var(--color-x-io);
-	border-width: var(--border-width-io);
-	border-style: solid;
-	border-color: var(--color-io);
+	&::after {
+		inset: var(--spacing-io-fx-inset);
+	}
+	&::before {
+		border-width: var(--border-width-io);
+		border-style: solid;
+		border-color: var(--color-io);
+	}
 	&:hover {
-		color: var(--color-x-io-accent);
-		background: var(--color-io);
-		border-color: transparent;
+		&::after {
+			inset: 0;
+			background: var(--color-io);
+		}
+		&::before {
+			border-color: transparent;
+		}
+		.input,
+		> :variant(icon) {
+			color: var(--color-x-io-accent);
+		}
+	}
+	&:has(.input:focus) {
+		&::after {
+			inset: 0;
+			background: var(--color-base);
+		}
+		.input {
+			color: var(--color-x-base);
+		}
+		> :variant(icon) {
+			color: var(--color-primary-accent);
+		}
 	}
 }
-.input-bordered-dashed {
-	border-style: dashed;
+.input-group-dashed {
+	&::before {
+		border-style: dashed;
+	}
 }
 .input-group-ghost {
-	background: transparent;
 	color: var(--color-x-io);
+	&::after {
+		inset: var(--spacing-io-fx-inset);
+		background: transparent;
+	}
 	&:hover {
 		color: var(--color-x-io-accent);
-		background: var(--color-io);
+		&::after {
+			inset: 0;
+			background: var(--color-io);
+		}
+	}
+	&:has(.input:focus) {
+		&::after {
+			inset: 0;
+			background: var(--color-base);
+		}
+		.input {
+			color: var(--color-x-base);
+		}
+		> :variant(icon) {
+			color: var(--color-primary-accent);
+		}
 	}
 }

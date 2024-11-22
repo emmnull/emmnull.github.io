@@ -1,18 +1,18 @@
 /* Deriving custom variants from PostCSS custom selectors (see ./selectors.css) */
 
-@variant icon (&:--icon);
-@variant hocus (&:--hocus);
-@variant danger (&:--danger);
-@variant checked (&:--checked);
-@variant active (&:--active);
-@variant open (&:--open);
-@variant closed (&:--closed);
-@variant modal (&:--modal);
-@variant supermodal (&:--supermodal);
-@variant closing (&:--closing);
-@variant current (&:--current);
-@variant disabled (&:--disabled);
-@variant error (&:--error);
-@variant busy (&:--busy);
-@variant vertical (&:--vertical);
-@variant ripple (&:--ripple);
+@variant icon (&.lucide-icon);
+@variant hocus (&:focus, &:hover);
+@variant danger (&[data-danger='true']);
+@variant checked (&:checked, &[aria-checked='true'], &[data-state='checked']);
+@variant selected (&[aria-selected='true']);
+@variant open (&[aria-expanded='true'], &[data-state='open'], &[open], &:popover-open);
+@variant closed (&[aria-expanded='false'], &[data-state='closed']);
+@variant modal (&[aria-modal='true'], &:modal);
+@variant supermodal (&[aria-modal='true'][modal-mode='super'], &:modal[modal-mode='super']);
+@variant closing (&[data-closing='true']);
+@variant current (&[aria-current='page'], &[aria-current='step'], &[aria-current='location'], &[aria-current='date'], &[aria-current='time'], &[aria-current='true']);
+@variant disabled (&:disabled, &[aria-disabled='true'], &[data-disabled='true'], &:is(a):not(:any-link));
+@variant error (&[aria-invalid='true'], &[data-error='true']);
+@variant busy (&[aria-busy='true']);
+@variant vertical (&[data-orientation='vertical']);
+@variant ripple (&[data-ripple]);

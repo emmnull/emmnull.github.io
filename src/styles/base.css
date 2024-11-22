@@ -3,7 +3,6 @@
 	--scroll-x: 0;
 	--scroll-y-px: calc(var(--scroll-y) * 1px);
 	--scroll-x-px: calc(var(--scroll-x) * 1px);
-	font-size: 93.75%;
 }
 
 a,

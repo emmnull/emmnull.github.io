@@ -1,14 +1,16 @@
-import postcssGlobalCss from '@csstools/postcss-global-data';
 import { paraglide } from '@inlang/paraglide-sveltekit/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
-import postcssCustomSelectors from 'postcss-custom-selectors';
 import { defineConfig } from 'vitest/config';
+import variantSelectors from './src/styles/variant-selectors.js';
 
 export default defineConfig({
 	css: {
 		postcss: {
-			plugins: [postcssGlobalCss({ files: ['src/styles/selectors.css'] }), postcssCustomSelectors()]
+			plugins: [
+				// postcssGlobalData({ files: ['./src/styles/components.css'] }),
+				variantSelectors({ files: ['./src/styles/variants.css'] })
+			]
 		}
 	},
 	plugins: [

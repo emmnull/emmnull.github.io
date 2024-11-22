@@ -5,8 +5,8 @@
 	--color-base-accent: light-dark(oklch(0.94 0.015 248), oklch(0.18 0.01 76));
 	--color-primary: light-dark(#1e1e1e, oklch(0.58 0.2 275));
 	--color-primary-accent: light-dark(#1e1e1e, oklch(0.6 0.25 279));
-	--color-io: light-dark(#1e1e1e, oklch(0.8 0.01 50 / var(--opacity-io)));
-	--color-io-accent: light-dark(#1e1e1e, oklch(0.8 0.01 50 / var(--opacity-io-accent)));
+	--color-io: light-dark(#1e1e1e, oklch(0.5 0.01 50 / var(--opacity-io)));
+	--color-io-accent: light-dark(#1e1e1e, oklch(0.55 0.02 45 / var(--opacity-io-accent)));
 	--color-io-primary: light-dark(#1e1e1e, color-mix(in oklch, var(--color-primary) var(--opacity-io), transparent));
 	--color-io-primary-accent: light-dark(#1e1e1e, color-mix(in oklch, var(--color-primary-accent) var(--opacity-io-accent), transparent));
 	--color-info: light-dark(#1e1e1e, #1e1e1e);
@@ -23,7 +23,7 @@
 	--color-card: light-dark(#1e1e1e, #1e1e1e);
 	--color-popover: light-dark(white, black);
 	--color-tooltip: light-dark(white, black);
-	--color-backdrop: light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.25));
+	--color-backdrop: light-dark(rgba(0, 0, 0, 0.1), color-mix(in oklch, var(--color-base) var(--opacity-soft), transparent));
 	--color-x-pure: light-dark(oklch(0 0 0), oklch(1 0 0));
 	--color-x-base: light-dark(oklch(0.21 0.0059 64.02), oklch(0.77 0.01 83.27));
 	--color-x-base-accent: light-dark(oklch(0.21 0.0059 64.02), oklch(0.82 0.01 83.27));
@@ -43,10 +43,10 @@
 	--color-x-error-accent: light-dark(#1e1e1e, #1e1e1e);
 	--color-x-selection: light-dark(black, white);
 	/* Radii */
-	--radius-2xs: 0.25rem;
-	--radius-xs: 0.35rem;
-	--radius-sm: 0.5rem;
-	--radius-md: 0.75rem;
+	--radius-2xs: 0.125rem;
+	--radius-xs: 0.25rem;
+	--radius-sm: 0.425rem;
+	--radius-md: 0.625rem;
 	--radius-lg: 1.25rem;
 	--radius-xl: 2rem;
 	--radius-full: calc(infinity * 1px);
@@ -69,15 +69,16 @@
 	--spacing-io-gap: 0.5em;
 	--spacing-io-icon: 1.25em;
 	--spacing-io-nesting: 0.35em;
+	--spacing-io-fx-inset: 0.25em;
 	--spacing-menu-padding: 0.25em;
 	--spacing-menu-gap: var(--outline-width-focus);
 	--spacing-icon: 1.25em;
-	--spacing-navbar-height: calc(var(--spacing-base-padding) + var(--spacing-base-gap) + var(--spacing-io));
+	--spacing-navbar-height: calc(0.825 * (var(--spacing-base-padding) + var(--spacing-base-gap) + var(--spacing-io)));
 	--spacing-main-height: calc(100svh - var(--spacing-navbar-height));
 	--spacing-prose: 46rem;
 	--spacing-main-width: 76rem;
 	/* Breakpoints */
-	--breakpoint-lg: var(--width-lg);
+	--breakpoint-lg: 64rem;
 	/* Fonts */
 	--font-family-main: 'Figtree', sans-serif;
 	--font-family-misc: 'Fraunces', serif;
@@ -85,30 +86,30 @@
 	--default-font-family: var(--font-mono);
 	--default-mono-font-family: var(--font-mono);
 	/* Font-sizes */
-	--font-size-xs: 0.75rem;
-	--font-size-sm: 0.825rem;
-	--font-size-md: 1rem;
-	--font-size-lg: 1.2rem; /* h6 */
-	--font-size-xl: 1.44rem; /* h5 */
-	--font-size-2xl: 1.728rem; /* h4 */
-	--font-size-3xl: 2.074rem; /* h3 */
-	--font-size-4xl: 2.488rem; /* h2 */
-	--font-size-5xl: 2.986rem; /* h1 */
-	--font-size-big: 4.299rem;
-	--font-size-biggest: 5.159rem;
+	--text-xs: 0.75rem;
+	--text-sm: 0.825rem;
+	--text-md: 1rem;
+	--text-lg: 1.2rem; /* h6 */
+	--text-xl: 1.44rem; /* h5 */
+	--text-2xl: 1.728rem; /* h4 */
+	--text-3xl: 2.074rem; /* h3 */
+	--text-4xl: 2.488rem; /* h2 */
+	--text-5xl: 2.986rem; /* h1 */
+	--text-big: 4.299rem;
+	--text-biggest: 5.159rem;
 	/* Leadings based on font sizes */
-	--font-size-xs--line-height: 1.675;
-	--font-size-xs--line-height: 1.65;
-	--font-size-sm--line-height: 1.625;
-	--font-size-md--line-height: 1.6;
-	--font-size-lg--line-height: 1.525;
-	--font-size-xl--line-height: 1.45;
-	--font-size-2xl--line-height: 1.375;
-	--font-size-3xl--line-height: 1.3;
-	--font-size-4xl--line-height: 1.225;
-	--font-size-5xl--line-height: 1.15;
-	--font-size-big--line-height: 1.15;
-	--font-size-biggest--line-height: 1.15;
+	--text-xs--line-height: 1.675;
+	--text-xs--line-height: 1.65;
+	--text-sm--line-height: 1.625;
+	--text-md--line-height: 1.6;
+	--text-lg--line-height: 1.525;
+	--text-xl--line-height: 1.45;
+	--text-2xl--line-height: 1.375;
+	--text-3xl--line-height: 1.3;
+	--text-4xl--line-height: 1.225;
+	--text-5xl--line-height: 1.15;
+	--text-big--line-height: 1.15;
+	--text-biggest--line-height: 1.15;
 	/* Trackings */
 	--letter-spacing-tighter: -0.05em;
 	--letter-spacing-tight: -0.025em;
@@ -130,11 +131,12 @@
 	--font-weight-bold: 625;
 	--font-weight-black: 750;
 	/* Blur effects */
-	--blur-xs: 3px;
+	--blur-xs: 2px;
 	--blur-sm: 6px;
 	--blur-md: 12px;
 	--blur-lg: 24px;
 	--blur-xl: 48px;
+	--blur-io: var(--blur-sm);
 	/* Z-indices */
 	--z-index-front: 99;
 	--z-index-frontmost: calc(infinity);
@@ -151,6 +153,7 @@
 	--border-width-sm: 0.5px;
 	--border-width-md: 1.5px;
 	--border-width-lg: 3px;
+	--border-width-io: var(--border-width-md);
 	--border-width-icon: 2.25px;
 	--border-width-focus: var(--border-width-lg);
 	--default-border-width: var(--border-width-md);
