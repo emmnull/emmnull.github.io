@@ -6,10 +6,11 @@
 	import NavbarButton from './navbar-button.svelte';
 	import NavbarMenuLang from './navbar-menu-lang.svelte';
 	import NavbarSearch from './navbar-search.svelte';
+	import NavbarThemeSwitch from './navbar-theme-switch.svelte';
 </script>
 
 <header
-	class="px-base-padding pt-base-gap pb-base-padding sticky top-0 flex flex-row justify-between text-sm print:hidden"
+	class="px-base-padding pt-base-gap pb-base-padding z-front sticky top-0 flex flex-row justify-between overflow-clip text-sm print:hidden"
 >
 	<nav class="gap-menu-gap flex flex-row">
 		<NavbarButton href="/"><Logo height="2em" /></NavbarButton>
@@ -23,6 +24,7 @@
 		</NavbarButton>
 	</nav>
 	<menu class="gap-menu-gap flex flex-row">
+		<NavbarThemeSwitch />
 		<NavbarSearch />
 		<NavbarMenuLang />
 	</menu>

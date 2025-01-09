@@ -59,12 +59,12 @@
 			{@render backdrop(dialog)}
 		{:else}
 			<div
-				class="bg-backdrop cursor- absolute top-0 left-0 -z-[1] h-full w-full backdrop-blur-xs"
+				class="bg-backdrop backdrop-glass absolute top-0 left-0 -z-[1] h-full w-full"
 				transition:fade|global={{ duration: 200, easing: expoOut }}
 			></div>
 		{/if}
 		<article
-			class={cn('p-card rounded-card flex max-w-md flex-col bg-[red]/25', className)}
+			class={cn('p-lg rounded-card bg-card flex max-w-prose flex-col', className)}
 			in:scale|global={{ start: 0.96, duration: 350, easing: expoOut }}
 			out:fly|global={{ y: '1em', duration: 200, easing: cubicIn }}
 			{...dialog.getContentAttributes()}

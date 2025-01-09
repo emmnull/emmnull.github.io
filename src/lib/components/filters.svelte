@@ -1,0 +1,46 @@
+<script>
+</script>
+
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	class="pointer-events-none fixed -z-0 hidden select-none"
+	aria-hidden="true"
+>
+	<filter
+		id="glass"
+		filterUnits="objectBoundingBox"
+		primitiveUnits="userSpaceOnUse"
+		x="-25%"
+		y="-25%"
+		width="150%"
+		height="150%"
+	>
+		<feFlood result="f1" flood-color="red" />
+		<feFlood result="f2" flood-color="blue" x="8" y="8" />
+		<feComposite result="comp1" in="f2" in2="f1" operator="over" />
+		<feFlood result="f3" flood-color="white" />
+		<feMorphology result="morph1" in="f3" radius="10" operator="erode" />
+		<feComposite result="comp2" in="morph1" in2="comp1" operator="over" />
+		<feGaussianBlur result="blur1" in="comp2" stdDeviation="12" edgeMode="duplicate" />
+		<feTurbulence result="noise1" type="fractalNoise" baseFrequency="0.01" numOctaves="2" />
+		<feComposite result="comp3" in="noise1" in2="blur1" operator="xor" />
+		<feGaussianBlur result="blur2" in="SourceGraphic" stdDeviation="4 12" edgeMode="wrap" />
+		<feDisplacementMap
+			result="disp1"
+			in="blur2"
+			in2="comp3"
+			scale="20"
+			xChannelSelector="R"
+			yChannelSelector="B"
+		/>
+		<feTurbulence result="noise2" type="fractalNoise" baseFrequency="0.7" numOctaves="2" />
+		<feDisplacementMap
+			in="disp1"
+			in2="noise2"
+			scale="5"
+			xChannelSelector="R"
+			yChannelSelector="B"
+			edgeMode="wrap"
+		/>
+	</filter>
+</svg>

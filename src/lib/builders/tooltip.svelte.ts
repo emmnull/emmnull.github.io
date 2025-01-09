@@ -1,4 +1,4 @@
-import { browser } from '$app/environment';
+import { browser, dev } from '$app/environment';
 import { KEYS } from '$lib/common/constants';
 import { randomId } from '$lib/common/string';
 import {
@@ -235,6 +235,11 @@ export class Tooltip {
 	 */
 	getContainerAttributes() {
 		const _this = this;
+		tick().then(() => {
+			const ref = document.querySelector(`[data-tooltip-id=${this.id}]`);
+			!ref && dev && console.warn(`No tooltip element found with expected id "${this.id}".`);
+			ref instanceof HTMLElement && ref.showPopover();
+		});
 		return {
 			get 'data-tooltip-id'() {
 				return _this.id;
@@ -242,6 +247,7 @@ export class Tooltip {
 			get 'data-tooltip-interactive'() {
 				return _this.interactive;
 			},
+			popover: 'manual',
 			onmouseenter(e) {
 				if (!_this.interactive) return;
 				_this.#setOpenDelayed(true);
@@ -270,6 +276,7 @@ export class Tooltip {
 	getArrowAttributes(...options: Parameters<FloatingWithArrow['getArrowAttributes']>) {
 		const _this = this;
 		return {
+			popover: 'manual',
 			get 'data-tooltip-arrow-id'() {
 				return _this.id;
 			},

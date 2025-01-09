@@ -81,7 +81,7 @@
 		style:--zoom={zoom}
 		style:--translate-y="{translate.y}px"
 		style:--translate-x="{translate.x}px"
-		class="border-pure translate-x-[var(--translate-x)] translate-y-[var(--translate-y)] overflow-visible border"
+		class="border-pure translate-x-(--translate-x) translate-y-(--translate-y) overflow-visible border"
 		viewBox="0 0 {width} {height}"
 		preserveAspectRatio="xMidYMid meet"
 	>

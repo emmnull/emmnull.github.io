@@ -1,11 +1,13 @@
 /* Code */
 
-code {
+.code {
 }
 
 /* Keyboard hotkey / combo */
 
-:is(kbd, .key) {
+.key,
+.key-ghost,
+.key-cta {
 	position: relative;
 	height: var(--spacing-io);
 	display: inline-flex;
@@ -21,7 +23,8 @@ code {
 		stroke-width: var(--stroke-width-icon);
 	}
 }
-:is(kbd, .key):not(.ghost, .cta) {
+/* Default variant */
+.key {
 	color: var(--color-x-io);
 	background: var(--color-card);
 	border-top-style: ridge;
@@ -31,9 +34,11 @@ code {
 	border-top-color: color-mix(in oklch, currentColor 10%, transparent);
 	border-bottom-color: color-mix(in oklch, var(--color-pure) 25%, transparent);
 }
-:is(kbd, .key).ghost {
+/* Ghost variant */
+.key-ghost {
 }
-:is(kbd, .key).cta {
+/* Call-to-action variant */
+.key-cta {
 	color: var(--color-x-primary);
 	background: var(--color-primary);
 }
@@ -49,11 +54,22 @@ code {
 
 .switch,
 .switch-bordered,
+.switch-dashed,
 .switch-ghost {
 	.switch-thumb {
 	}
 	.switch-item {
 	}
+}
+/* Default variants */
+.switch {
+}
+/* Bordered and dashed variants */
+.switch-bordered,
+.switch-dashed {
+}
+/* Ghost variant */
+.switch-ghost {
 }
 
 /* Toggle */
@@ -88,6 +104,10 @@ code {
 	transition-timing-function: var(--ease-out);
 	&:hover:not(:active) {
 		transition-duration: 0s;
+		&::after {
+			transition-property: inset;
+			transition-duration: var(--transition-duration-xfast);
+		}
 	}
 	&:focus-visible {
 		outline-color: var(--color-primary);
@@ -134,6 +154,7 @@ code {
 		stroke-width: var(--stroke-width-icon);
 	}
 }
+/* Default variant */
 .button {
 	color: var(--color-x-io);
 	&::after {
@@ -146,6 +167,7 @@ code {
 		}
 	}
 }
+/* Bordered and dashed variants */
 .button-bordered,
 .button-dashed {
 	color: var(--color-x-io);
@@ -174,6 +196,7 @@ code {
 		border-style: dashed;
 	}
 }
+/* Ghost variant */
 .button-ghost {
 	&::after {
 		inset: var(--spacing-io-fx-inset);
@@ -193,16 +216,21 @@ code {
 		}
 	}
 }
+/* Call-to-action variant */
 .button-cta {
 	/* @apply bg-primary text-x-primary hover:text-x-primary-accent hover:bg-primary-accent; */
 }
+/* Navbar variant */
 .button-navbar {
 	font-weight: var(--font-weight-semibold);
 	color: var(--color-x-io);
+	/* backdrop-filter: blur(var(--blur-md)) saturate(75%) contrast(50%); */
+	backdrop-filter: url(#glass);
 	&::after {
 		inset: var(--spacing-io-fx-inset);
+		/* backdrop-filter: saturate(0); */
 	}
-	&:hover:not(variant(current)) {
+	&:hover:not(:variant(current)) {
 		color: var(--color-primary-accent);
 		&::after {
 			inset: 0;
@@ -229,8 +257,10 @@ code {
 	.input-ghost {
 		/* @apply rounded-io h-io min-h-io px-io-padding flex flex-row items-center [&.rounded-full]:[--radius-io:var(--radius-full)]; */
 	}
+	/* Default variant */
 	.input {
 	}
+	/* Bordered and dashed variants */
 	.input-bordered,
 	.input-dashed {
 	}
@@ -259,6 +289,10 @@ code {
 	}
 	&:hover:not(:has(.input:focus)) {
 		transition-duration: 0s;
+		&::after {
+			transition-property: inset;
+			transition-duration: var(--transition-duration-xfast);
+		}
 	}
 	&:has(.input:focus) {
 		outline-color: var(--color-primary);
@@ -344,6 +378,7 @@ code {
 		}
 	}
 }
+/* Default variant */
 .input-group {
 	color: var(--color-x-io);
 	&::after {
@@ -367,6 +402,7 @@ code {
 		}
 	}
 }
+/* Bordered and dashed variants */
 .input-group-bordered,
 .input-group-dashed {
 	color: var(--color-x-io);
@@ -409,6 +445,7 @@ code {
 		border-style: dashed;
 	}
 }
+/* Ghost variant */
 .input-group-ghost {
 	color: var(--color-x-io);
 	&::after {

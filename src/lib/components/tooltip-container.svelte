@@ -12,7 +12,7 @@
 {#if tooltip.open}
 	<div
 		{...tooltip.getContainerAttributes()}
-		class="rounded-tooltip bg-tooltip px-sm py-2xs text-xs"
+		class="rounded-tooltip bg-tooltip px-sm py-2xs text-x-base overflow-visible text-xs"
 		transition:fly={{
 			...toAxes(tooltip.floating.computed?.placement || tooltip.floating.placement, {
 				main: '0.5em'

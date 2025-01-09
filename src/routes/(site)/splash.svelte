@@ -1,14 +1,11 @@
 <script lang="ts">
-	import SvgEditorPath from '$lib/components/svg-editor-path.svelte';
-	import SvgEditor from '$lib/components/svg-editor.svelte';
+	import { SVGEditor } from '$lib/builders/svg-editor/svg-editor.svelte';
 
-	let d = $state('M 200,200 L 350,325 200,100');
-
-	$inspect(d);
+	const editor = new SVGEditor();
 </script>
 
-<section class="h-main-height top-navbar-height sticky flex flex-col items-center justify-center">
-	<SvgEditor class="border-sm h-full w-full border-[pink]" viewBox="0 0 500 500">
-		<SvgEditorPath bind:d stroke="currentColor" stroke-width="24" fill="none" />
-	</SvgEditor>
+<section class="sticky top-0 flex h-screen flex-col items-center justify-center">
+	<svg class="h-full w-full" viewBox="0 0 500 500" {...editor.getContainerAttributes()}>
+		<!-- Some svg content -->
+	</svg>
 </section>

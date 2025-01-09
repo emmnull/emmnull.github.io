@@ -8,6 +8,10 @@
 	@apply from-current;
 }
 
+@utility backdrop-glass {
+	backdrop-filter: url(#glass);
+}
+
 @utility big {
 	--spacing-io: 5.5em;
 	--radius-io: var(--radius-lg);

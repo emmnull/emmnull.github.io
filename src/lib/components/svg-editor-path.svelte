@@ -1,12 +1,15 @@
 <script lang="ts" module>
-	class Data {
-		#parser;
+	class PathData {
+		static #parser = new SVGPathDataParser();
+		static parse(d: string) {
+			return PathData.#parser.parse(d + ' ');
+		}
+
 		#parsed = $state<SVGCommand[]>([]);
 		#options;
 
 		constructor(options: { value: string }) {
-			this.#parser = new SVGPathDataParser();
-			this.#parsed = this.#parser.parse(options.value);
+			this.#parsed = PathData.parse(options.value);
 			this.#options = options;
 			$effect.root(() => {
 				// this.#parsed =
@@ -47,7 +50,7 @@
 		children?: Snippet;
 	} & SVGAttributes<SVGPathElement> = $props();
 
-	const data = new Data({
+	const data = new PathData({
 		get value() {
 			return d;
 		},

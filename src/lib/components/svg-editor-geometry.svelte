@@ -9,7 +9,7 @@
 		selected = $bindable(),
 		snapshot
 	}: {
-		shape: Snippet<[typeof getShapeAttributes]>;
+		shape: Snippet<[typeof getGeometryAttributes]>;
 		selected: boolean | undefined;
 		controls?: Snippet;
 		snapshot: () => T;
@@ -17,20 +17,20 @@
 
 	const start = new PointerSnapshot<T>();
 
-	function getShapeAttributes() {
+	function getGeometryAttributes() {
 		return {
-			onpointerdown(e) {
-				start.save(e, snapshot());
-				e.stopPropagation();
-			},
-			onclick(e) {
-				selected = !selected;
-			},
-			onpointerup(e) {
-				if (!selected) {
-					start.clear(e);
-				}
-			},
+			// onpointerdown(e) {
+			// 	start.save(e, snapshot());
+			// 	e.stopPropagation();
+			// },
+			// onclick(e) {
+			// 	selected = !selected;
+			// },
+			// onpointerup(e) {
+			// 	if (!selected) {
+			// 		start.clear(e);
+			// 	}
+			// },
 			class:
 				'group-selected:cursor-grab group-selected:active:cursor-grabbing cursor-pointer' as const
 		} satisfies SVGAttributes<SVGElement>;
@@ -38,7 +38,7 @@
 </script>
 
 <g class="group" aria-selected={selected || undefined}>
-	{@render shape(getShapeAttributes)}
+	{@render shape(getGeometryAttributes)}
 	<g data-controls class="group-selected:[display:initial] hidden group-hover:[display:initial]">
 		{@render controls?.()}
 	</g>

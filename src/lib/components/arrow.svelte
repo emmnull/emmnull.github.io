@@ -20,7 +20,7 @@
 
 <svg
 	class={cn(
-		'fill-tooltip bg-transparent data-[floating-placement="top"]:top-full data-[floating-placement="bottom"]:bottom-full data-[floating-placement="bottom"]:rotate-180 data-[floating-placement="left"]:left-full data-[floating-placement="left"]:-rotate-90 data-[floating-placement="right"]:right-full data-[floating-placement="right"]:rotate-90',
+		'fill-tooltip bg-transparent data-[floating-placement="bottom"]:bottom-full data-[floating-placement="bottom"]:rotate-180 data-[floating-placement="left"]:left-full data-[floating-placement="left"]:-rotate-90 data-[floating-placement="right"]:right-full data-[floating-placement="right"]:rotate-90 data-[floating-placement="top"]:top-full',
 		className
 	)}
 	width={size}

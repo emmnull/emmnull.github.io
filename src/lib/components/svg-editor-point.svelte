@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	const SIZE = 5;
+	const SIZE = 4;
 	const SIZE_HALF = SIZE / 2;
 </script>
 
@@ -30,5 +30,5 @@
 	y={y - SIZE_HALF}
 	rx={handle ? 0.5 : SIZE_HALF}
 	style:--cursor={cursor}
-	class="fill-base selected:cursor-grab selected:active:cursor-grabbing hover:stroke-primary stroke-sm hover:stroke-md selected:stroke-primary-accent selected:fill-primary-accent cursor-pointer stroke-current"
+	class="fill-base selected:cursor-grab selected:active:cursor-grabbing hover:stroke-primary stroke-sm selected:stroke-primary-accent selected:fill-primary-accent cursor-pointer stroke-current"
 />

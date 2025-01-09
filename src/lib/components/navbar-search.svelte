@@ -11,7 +11,7 @@
 		{m.search()}
 	</div>
 	<div class="input-peer">
-		<kbd>
+		<kbd class="key">
 			{#if search.hotkey.meta}
 				<Command /> +
 			{/if}
