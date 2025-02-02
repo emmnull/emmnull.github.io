@@ -1,34 +1,34 @@
 {
-	"workbench.editor.labelFormat": "short",
-	"editor.formatOnPaste": false,
-	"editor.formatOnSave": true,
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"editor.codeActionsOnSave": {
-		"source.organizeImports": "explicit",
-		"source.fixAll": "explicit"
-	},
-	"markdownlint.config": {
-		"default": true,
-		"MD033": false
-	},
-	"files.associations": {
-		"*.{mdx,svx}": "markdown",
-		"*.json": "jsonc",
-		"*.css": "tailwindcss"
-	},
-	"[svelte]": {
-		"editor.defaultFormatter": "svelte.svelte-vscode"
-	},
-	"editor.quickSuggestions": {
-		"strings": "on"
-	},
-	"eslint.validate": ["javascript", "javascriptreact", "svelte"],
-	"typescript.tsdk": "node_modules/typescript/lib",
-	"typescript.preferences.quoteStyle": "single",
-	"svelte.enable-ts-plugin": true,
-	"svelte.plugin.css.globals": "src/**/*.css",
-	"tailwindCSS.rootFontSize": 15,
-	"tailwindCSS.emmetCompletions": true,
-	"tailwindCSS.lint.invalidConfigPath": "warning",
-	"tailwindCSS.experimental.configFile": "src/app.css"
+  "workbench.editor.labelFormat": "short",
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.fixAll": "explicit"
+  },
+  "markdownlint.config": {
+    "default": true,
+    "MD033": false
+  },
+  "files.associations": {
+    "*.{mdx,svx}": "markdown",
+    "*.json": "jsonc",
+    "*.css": "tailwindcss"
+  },
+  "[svelte]": {
+    "editor.defaultFormatter": "svelte.svelte-vscode"
+  },
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  "eslint.validate": ["javascript", "javascriptreact", "svelte"],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.preferences.quoteStyle": "single",
+  "svelte.enable-ts-plugin": true,
+  "svelte.plugin.css.globals": "src/**/*.css",
+  "tailwindCSS.rootFontSize": 15,
+  "tailwindCSS.emmetCompletions": true,
+  "tailwindCSS.lint.invalidConfigPath": "warning",
+  "tailwindCSS.experimental.configFile": "src/app.css"
 }

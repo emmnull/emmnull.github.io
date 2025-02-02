@@ -82,8 +82,8 @@ export class Tooltip {
 	} & ConstructorParameters<
 		typeof FloatingWithArrow<{
 			/**
-			 * @see https://floating-ui.com/docs/offset
-			 */
+       * If the consumer controls visibility.
+       */
 			offset?: OffsetOptions | false;
 			/**
 			 * @see https://floating-ui.com/docs/flip

@@ -1,43 +1,55 @@
 import js from '@eslint/js';
-import prettier from 'eslint-config-prettier';
-import svelte from 'eslint-plugin-svelte';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import eslintPluginImport from 'eslint-plugin-import';
+import eslintPluginSvelte from 'eslint-plugin-svelte';
 import globals from 'globals';
 import ts from 'typescript-eslint';
 
 /**
  * @type {import('eslint').Linter.Config[]}
  */
-export default [
-	js.configs.recommended,
-	...ts.configs.recommended,
-	...svelte.configs['flat/recommended'],
-	prettier,
-	...svelte.configs['flat/prettier'],
-	{
-		languageOptions: {
-			globals: {
-				...globals.browser,
-				...globals.node
-			}
-		},
-		ignores: ['build/', '.svelte-kit/', 'dist/'],
-		rules: {
-			'@typescript-eslint/consistent-type-imports': 'error',
-			'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
-			'import/no-duplicates': 'error',
-			curly: ['error', 'all'],
-			'@typescript-eslint/no-unused-vars': [
-				'error',
-				{ ignoreRestSiblings: true, destructuredArrayIgnorePattern: '^_' }
-			]
-		}
-	},
-	{
-		files: ['**/*.svelte'],
-		languageOptions: {
-			parserOptions: {
-				parser: ts.parser
-			}
-		}
-	}
-];
+export default ts.config([
+  js.configs.recommended,
+  ...ts.configs.strict,
+  ...ts.configs.stylistic,
+  ...eslintPluginSvelte.configs['flat/recommended'],
+  ...eslintPluginSvelte.configs['flat/prettier'],
+  eslintConfigPrettier,
+  {
+    ignores: ['dist/', 'build/', '.*/'], // Customize according to your project.
+  },
+  {
+    plugins: {
+      import: eslintPluginImport,
+    },
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.browser,
+      },
+    },
+    rules: {
+      curly: ['error', 'all'],
+      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { ignoreRestSiblings: true, destructuredArrayIgnorePattern: '^_' },
+      ],
+      '@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
+      '@typescript-eslint/no-import-type-side-effects': 'error',
+      'import/newline-after-import': [
+        'error',
+        { count: 1, exactCount: true, considerComments: true },
+      ],
+      'import/no-duplicates': ['error', { 'prefer-inline': true }],
+    },
+  },
+  {
+    files: ['**/*.svelte'],
+    languageOptions: {
+      parserOptions: {
+        parser: ts.parser,
+      },
+    },
+  },
+]);
