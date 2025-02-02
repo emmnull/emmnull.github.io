@@ -1,22 +1,22 @@
 <script lang="ts">
-	import type { KeyCombo } from '$lib/common/event';
-	import { ArrowBigUp, ChevronUpSquare, Command, Option } from 'lucide-svelte';
+  import type { KeyCombo } from '$lib/common/event';
+  import { ArrowBigUp, ChevronUpSquare, Command, Option } from 'lucide-svelte';
 
-	let { key, ctrl, meta, shift, alt }: KeyCombo = $props();
+  let { key, ctrl, meta, shift, alt }: KeyCombo = $props();
 </script>
 
 {#if meta}
-	<Command />
+  <Command />
 {/if}
 {#if alt}
-	<Option />
+  <Option />
 {/if}
 {#if shift}
-	<ArrowBigUp />
+  <ArrowBigUp />
 {/if}
 {#if ctrl}
-	<ChevronUpSquare />
+  <ChevronUpSquare />
 {/if}
 {#if key}
-	<span>{key}</span>
+  <span>{key}</span>
 {/if}

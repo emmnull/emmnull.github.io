@@ -1,286 +1,316 @@
-import { browser, dev } from '$app/environment';
 import { KEYS } from '$lib/common/constants';
 import { randomId } from '$lib/common/string';
 import {
-	flip,
-	offset,
-	shift,
-	type FlipOptions,
-	type OffsetOptions,
-	type ShiftOptions
+  autoUpdate,
+  computePosition,
+  flip,
+  offset,
+  shift,
+  type ArrowOptions,
+  type ComputePositionReturn,
+  type FlipOptions,
+  type OffsetOptions,
+  type Placement,
+  type ShiftOptions,
+  type Strategy,
 } from '@floating-ui/dom';
-import { tick } from 'svelte';
 import type { HTMLAttributes } from 'svelte/elements';
 import { on } from 'svelte/events';
-import { FloatingWithArrow } from './floating.svelte';
-
-const DEFAULT_GROUP = Symbol();
-
-const groups = new Map<unknown, Tooltip>();
+import { Bound } from './bound.svelte';
+import { arrow, transformOrigin } from './floating';
+import { asGetSet, attrSelector, isHTMLElement } from './utils';
 
 export class Tooltip {
-	id = $state(`tooltiop-${randomId(8)}`);
-	lightDismiss = $state(true);
-	interactive = $state(false);
-	openDelay = $state(750);
-	closeDelay = $state(350);
-	#group: unknown = DEFAULT_GROUP;
-	#timer: ReturnType<typeof setTimeout> | undefined;
-	#open = $state(false);
-	#floating;
+  static readonly attr = {
+    trigger: 'data-tooltip-trigger',
+    content: 'data-tooltip-content',
+    arrow: 'data-tooltip-arrow',
+    placement: 'data-floating-placement',
+  } as const;
+  static #defaultGroup = Symbol();
+  static #groups = new Map<unknown, Tooltip>();
 
-	constructor({
-		id,
-		group,
-		lightDismiss,
-		interactive,
-		openDelay,
-		closeDelay,
-		open,
-		placement = 'top',
-		strategy,
-		offset = {
-			mainAxis: 12
-		},
-		flip,
-		shift,
-		arrow
-	}: {
-		/**
-		 * Id used to select the tooltip element.
-		 */
-		id?: string;
-		/**
-		 * Optional group to which the tooltip's exclusivity and visibility behaviors should be related.
-		 * Useful to refine consideration of preceding or succeding active tooltips in logic such as
-		 * opening and closing delay.
-		 */
-		group?: unknown;
-		/**
-		 * Immediately close the tooltip whenever user clicks outside the tooltip content or presses
-		 * `Esc`. Also applies if the click occurs on trigger element.
-		 */
-		lightDismiss?: boolean;
-		/**
-		 * Defines if hovering the tooltip should refresh its open state or not.
-		 */
-		interactive?: boolean;
-		/**
-		 * Delay in `ms` before the tooltip should open once focused/hovered. Open delay is not applied
-		 * if tooltip from same group was previously triggered and is still opened.
-		 */
-		openDelay?: number;
-		/**
-		 * Delay in `ms` before the tooltip should close after focus/hover is done. Delay is aborted if
-		 * another tooltip in the same group is triggered.
-		 */
-		closeDelay?: number;
-		/**
-		 * Initial state of the tooltip.
-		 */
-		open?: boolean;
-	} & ConstructorParameters<
-		typeof FloatingWithArrow<{
-			/**
-       * If the consumer controls visibility.
-       */
-			offset?: OffsetOptions | false;
-			/**
-			 * @see https://floating-ui.com/docs/flip
-			 */
-			flip?: FlipOptions | false;
-			/**
-			 * @see https://floating-ui.com/docs/shift
-			 */
-			shift?: ShiftOptions | false;
-		}>
-	>[0] = {}) {
-		if (id != null) this.id = id;
-		if (group != null) this.#group = group;
-		if (lightDismiss != null) this.lightDismiss = lightDismiss;
-		if (interactive != null) this.interactive = interactive;
-		if (openDelay != null) this.openDelay = openDelay;
-		if (closeDelay != null) this.closeDelay = closeDelay;
-		this.#floating = new FloatingWithArrow({ placement, strategy, offset, flip, shift, arrow });
+  #options;
+  #computed: ComputePositionReturn | undefined;
+  #id = randomId(8);
+  #open: Bound<boolean>;
+  #timer: ReturnType<typeof setTimeout> | undefined; // Use explicit timer type?
 
-		if (open)
-			tick().then(() => {
-				this.open = true;
-			});
+  constructor(options: {
+    /**
+     * Optional group to which the tooltip's exclusivity and visibility behaviors should be related.
+     * Useful to refine consideration of preceding or succeding active tooltips in logic such as
+     * opening and closing delay.
+     */
+    group?: unknown;
+    /**
+     * Immediately close the tooltip whenever user clicks outside the tooltip content or presses
+     * `Esc`. Also applies if the click occurs on trigger element.
+     */
+    lightDismiss?: boolean;
+    /**
+     * Delay in `ms` before the tooltip should open once focused/hovered. Open delay is not applied
+     * if tooltip from same group was previously triggered and is still opened.
+     */
+    openDelay?: number;
+    /**
+     * Delay in `ms` before the tooltip should close after focus/hover is done. Delay is aborted if
+     * another tooltip in the same group is triggered.
+     */
+    closeDelay?: number;
+    /**
+     * Initial state of the tooltip.
+     */
+    open?: boolean;
+    /**
+     * If the consumer controls visibility.
+     */
+    forceVisible?: boolean;
+    /**
+     * Floating placement.
+     */
+    placement?: Placement;
+    /**
+     * Floating strategy.
+     */
+    strategy?: Strategy;
+    /**
+     * @see https://floating-ui.com/docs/offset
+     */
+    offset?: OffsetOptions | false;
+    /**
+     * @see https://floating-ui.com/docs/flip
+     */
+    flip?: FlipOptions | false;
+    /**
+     * @see https://floating-ui.com/docs/shift
+     */
+    shift?: ShiftOptions | false;
+    /**
+     * @see https://floating-ui.com/docs/arrow
+     */
+    arrow?: Omit<ArrowOptions, 'element'>;
+    /**
+     * Apply transform-origin middleware.
+     */
+    transformOrigin?: false;
+  }) {
+    this.#options = options;
+    this.#open = new Bound({
+      ...asGetSet(options, 'open'),
+      fallback: false,
+    });
 
-		this.getContainerAttributes.bind(this);
-		this.getTriggerAttributes.bind(this);
-		this.getArrowAttributes.bind(this);
+    $effect.root(() => {
+      if (options.open) {
+        this.open = true;
+      }
+      const unkeydown = on(window, 'keydown', (e) => {
+        if (e.key === KEYS.ESCAPE && this.open && this.lightDismiss) {
+          this.open = false;
+        }
+      });
+      return () => {
+        unkeydown();
+        this.open = false;
+      };
+    });
+  }
 
-		$effect.root(() => {
-			const removeKeydown = on(window, 'keydown', (e) => {
-				if (e.key === KEYS.ESCAPE && this.open && this.lightDismiss) {
-					this.open = false;
-				}
-			});
-			return () => {
-				removeKeydown();
-				this.open = false;
-			};
-		});
-	}
+  get open() {
+    return this.#open.value;
+  }
 
-	get open() {
-		return this.#open;
-	}
+  set open(value) {
+    clearTimeout(this.#timer);
+    this.#timer = undefined;
+    if (value === this.open) {
+      return;
+    }
+    this.#open.value = value;
+    if (value) {
+      const activeInGroup = Tooltip.#groups.get(this.group);
+      if (activeInGroup && activeInGroup !== this) {
+        activeInGroup.open = false;
+      }
+      Tooltip.#groups.set(this.group, this);
+    } else {
+      if (Tooltip.#groups.get(this.group) === this) {
+        Tooltip.#groups.delete(this.group);
+      }
+    }
+  }
 
-	set open(value) {
-		if (!browser) return;
-		clearTimeout(this.#timer);
-		this.#timer = undefined;
-		if (value === this.#open) return;
-		this.#open = value;
-		if (value) {
-			const activeInGroup = groups.get(this.#group);
-			if (activeInGroup && activeInGroup !== this) {
-				activeInGroup.open = false;
-			}
-			groups.set(this.#group, this);
-			tick().then(() => {
-				const triggerRef = document.querySelector(`[data-tooltip-trigger-id='${this.id}']`);
-				if (!(triggerRef instanceof HTMLElement)) {
-					console.warn('No tooltip trigger element found.');
-					return;
-				}
-				const tooltipRef = document.querySelector(`[data-tooltip-id='${this.id}']`);
-				if (!(tooltipRef instanceof HTMLElement)) {
-					console.warn('No tooltip element found.');
-					return;
-				}
-				const arrowRef = tooltipRef.querySelector(`[data-tooltip-arrow-id='${this.id}']`);
-				this.#floating.start(triggerRef, tooltipRef, arrowRef, [
-					this.#floating.options.offset !== false && offset(this.#floating.options.offset),
-					this.#floating.options.flip !== false && flip(this.#floating.options.flip),
-					this.#floating.options.shift !== false && shift(this.#floating.options.shift)
-				]);
-			});
-		} else {
-			this.#floating.stop();
-			if (groups.get(this.#group) === this) {
-				groups.delete(this.#group);
-			}
-		}
-	}
+  get lightDismiss() {
+    return this.#options.lightDismiss ?? true;
+  }
 
-	get group() {
-		return this.#group;
-	}
+  get openDelay() {
+    return this.#options.openDelay ?? 750;
+  }
 
-	get floating() {
-		return this.#floating;
-	}
+  get closeDelay() {
+    return this.#options.closeDelay ?? 350;
+  }
 
-	#setOpenDelayed(value: boolean) {
-		clearTimeout(this.#timer);
-		this.#timer = undefined;
-		const activeInGroup = groups.get(this.#group);
-		if (value) {
-			if (activeInGroup && activeInGroup !== this) {
-				this.open = true;
-			} else {
-				this.#timer = setTimeout(() => {
-					this.open = true;
-				}, this.openDelay);
-			}
-		} else {
-			if (activeInGroup && activeInGroup !== this) {
-				this.open = false;
-			} else {
-				this.#timer = setTimeout(() => {
-					this.open = false;
-				}, this.closeDelay);
-			}
-		}
-	}
+  get group() {
+    return this.#options.group ?? Tooltip.#defaultGroup;
+  }
 
-	/**
-	 * @returns Attributes for the triggering anchor element.
-	 */
-	getTriggerAttributes() {
-		const _this = this;
-		return {
-			get 'data-tooltip-trigger-id'() {
-				return _this.id;
-			},
-			onmouseenter(e) {
-				_this.#setOpenDelayed(true);
-			},
-			onmouseleave(e) {
-				_this.#setOpenDelayed(false);
-			},
-			onpointerdown(e) {
-				if (_this.lightDismiss) {
-					_this.open = false;
-				}
-			},
-			onfocus(e) {
-				if (!_this.lightDismiss || e.currentTarget.matches(':focus-visible')) {
-					_this.open = true;
-				}
-			},
-			onblur(e) {
-				_this.open = false;
-			},
-			..._this.#floating.getAnchorAttributes()
-		} satisfies HTMLAttributes<HTMLElement>;
-	}
+  get forceVisible() {
+    return this.#options.forceVisible ?? true;
+  }
 
-	/**
-	 * @returns Attributes for the floating tooltip element.
-	 */
-	getContainerAttributes() {
-		const _this = this;
-		tick().then(() => {
-			const ref = document.querySelector(`[data-tooltip-id=${this.id}]`);
-			!ref && dev && console.warn(`No tooltip element found with expected id "${this.id}".`);
-			ref instanceof HTMLElement && ref.showPopover();
-		});
-		return {
-			get 'data-tooltip-id'() {
-				return _this.id;
-			},
-			get 'data-tooltip-interactive'() {
-				return _this.interactive;
-			},
-			popover: 'manual',
-			onmouseenter(e) {
-				if (!_this.interactive) return;
-				_this.#setOpenDelayed(true);
-			},
-			onmouseleave(e) {
-				_this.#setOpenDelayed(false);
-			},
-			onfocusin(e) {
-				if (!_this.interactive) return;
-				if (e.target instanceof HTMLElement && !e.target.matches(':focus-visible')) return;
-				_this.open = true;
-			},
-			onfocusout(e) {
-				if (!(e.relatedTarget instanceof Element) || !e.currentTarget.contains(e.relatedTarget)) {
-					_this.open = false;
-				}
-			},
-			..._this.#floating.getFloatingAttributes()
-		} satisfies HTMLAttributes<HTMLElement>;
-	}
+  get placement() {
+    return this.#options.placement ?? 'top';
+  }
 
-	/**
-	 * @returns Attributes for the arrow element.
-	 * @see https://floating-ui.com/docs/arrow
-	 */
-	getArrowAttributes(...options: Parameters<FloatingWithArrow['getArrowAttributes']>) {
-		const _this = this;
-		return {
-			popover: 'manual',
-			get 'data-tooltip-arrow-id'() {
-				return _this.id;
-			},
-			..._this.#floating.getArrowAttributes(...options)
-		} satisfies HTMLAttributes<HTMLElement>;
-	}
+  get strategy() {
+    return this.#options.strategy ?? 'absolute';
+  }
+
+  get computed() {
+    return this.#computed;
+  }
+
+  get #baseAttr() {
+    return {
+      'data-state': this.open ? 'open' : 'closed',
+    };
+  }
+
+  #setOpenDelayed(value: boolean) {
+    clearTimeout(this.#timer);
+    this.#timer = undefined;
+    const activeInGroup = Tooltip.#groups.get(this.group);
+    if (value) {
+      if (activeInGroup && activeInGroup !== this) {
+        this.open = true;
+      } else {
+        this.#timer = setTimeout(() => {
+          this.open = true;
+        }, this.openDelay);
+      }
+    } else {
+      if (activeInGroup && activeInGroup !== this) {
+        this.open = false;
+      } else {
+        this.#timer = setTimeout(() => {
+          this.open = false;
+        }, this.closeDelay);
+      }
+    }
+  }
+
+  /**
+   * @returns Attributes for the triggering anchor element.
+   */
+  getTriggerAttributes() {
+    return {
+      ...this.#baseAttr,
+      [Tooltip.attr.trigger]: this.#id,
+      onmouseenter: () => {
+        this.#setOpenDelayed(true);
+      },
+      onmouseleave: () => {
+        this.#setOpenDelayed(false);
+      },
+      onpointerdown: () => {
+        if (this.lightDismiss) {
+          this.open = false;
+        }
+      },
+      onfocus: (e) => {
+        if (!this.lightDismiss || e.currentTarget.matches(':focus-visible')) {
+          this.open = true;
+        }
+      },
+      onblur: () => {
+        this.open = false;
+      },
+    } satisfies HTMLAttributes<HTMLElement>;
+  }
+
+  /**
+   * @returns Attributes for the floating tooltip element.
+   */
+  getContentAttributes() {
+    let cleanup: ReturnType<typeof autoUpdate> | undefined;
+    $effect(() => {
+      const contentEl = document.querySelector(attrSelector(Tooltip.attr.content, this.#id));
+      if (!isHTMLElement(contentEl)) {
+        return;
+      }
+      const arrowEl = document.querySelector(attrSelector(Tooltip.attr.arrow, this.#id));
+      if (this.open || this.forceVisible) {
+        contentEl.showPopover();
+        const triggerEl = document.querySelector(attrSelector(Tooltip.attr.trigger, this.#id));
+        if (!isHTMLElement(triggerEl)) {
+          return;
+        }
+        cleanup = autoUpdate(triggerEl, contentEl, () => {
+          computePosition(triggerEl, contentEl, {
+            placement: this.placement,
+            strategy: this.strategy,
+            middleware: [
+              this.#options.offset !== false && offset(this.#options.offset ?? { mainAxis: 12 }),
+              this.#options.flip !== false && flip(this.#options.flip),
+              this.#options.shift !== false && shift(this.#options.shift),
+              arrowEl && arrow({ ...this.#options.arrow, element: arrowEl }),
+              this.#options.transformOrigin !== false && transformOrigin(),
+            ],
+          }).then((computed) => {
+            this.#computed = computed;
+            Object.assign(contentEl.style, {
+              position: computed.strategy,
+              left: `${computed.x}px`,
+              top: `${computed.y}px`,
+            });
+            contentEl.setAttribute(Tooltip.attr.placement, computed.placement);
+            arrowEl?.setAttribute(Tooltip.attr.placement, computed.placement);
+          });
+        });
+      } else {
+        contentEl.hidePopover();
+        cleanup?.();
+      }
+      return () => {
+        cleanup?.();
+      };
+    });
+    return {
+      ...this.#baseAttr,
+      [Tooltip.attr.content]: this.#id,
+      popover: 'manual',
+      onmouseenter: () => {
+        this.#setOpenDelayed(true);
+      },
+      onmouseleave: () => {
+        this.#setOpenDelayed(false);
+      },
+      onfocusin: (e) => {
+        if (isHTMLElement(e.target) && !e.target.matches(':focus-visible')) {
+          return;
+        }
+        this.open = true;
+      },
+      onfocusout: (e) => {
+        if (!isHTMLElement(e.relatedTarget) || !e.currentTarget.contains(e.relatedTarget)) {
+          this.open = false;
+        }
+      },
+    } satisfies HTMLAttributes<HTMLElement>;
+  }
+
+  /**
+   * @returns Attributes for the arrow element.
+   *
+   * @see https://floating-ui.com/docs/arrow
+   */
+  getArrowAttributes() {
+    return {
+      [Tooltip.attr.arrow]: this.#id,
+      // popover: 'manual',
+    } satisfies HTMLAttributes<HTMLElement>;
+  }
 }

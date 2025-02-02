@@ -2,9 +2,9 @@
 </script>
 
 <code>
-	<pre>
+  <pre>
 		row
 		row
 	</pre>
-	<input type="text" />
+  <input type="text" />
 </code>

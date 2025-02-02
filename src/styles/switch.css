@@ -1,0 +1,22 @@
+.switch,
+.switch-bordered,
+.switch-dashed,
+.switch-ghost {
+  /* --nested */
+  display: flex;
+  flex-direction: row;
+  border-radius: var(--radius-io);
+  background: red;
+
+  @variant vertical {
+    flex-direction: column;
+  }
+
+  .switch-thumb {
+  }
+  .switch-item {
+  }
+}
+
+.switch {
+}

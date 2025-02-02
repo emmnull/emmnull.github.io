@@ -1,15 +1,19 @@
 <script lang="ts">
-	import ScrollProvider from '$lib/components/scroll-provider.svelte';
-	import SearchCommand from '$lib/components/search-command.svelte';
-	import { i18n } from '$lib/i18n/adapter';
-	import { ParaglideJS as I18nProvider } from '@inlang/paraglide-sveltekit';
-	import '../app.css';
+  import Footer from '$lib/components/footer.svelte';
+  import Navbar from '$lib/components/navbar.svelte';
+  import Searchbar from '$lib/components/searchbar.svelte';
+  import { i18n } from '$lib/i18n/adapter';
+  import { ParaglideJS as I18nProvider } from '@inlang/paraglide-sveltekit';
+  import '../app.css';
 
-	let { children, data } = $props();
+  let { children } = $props();
 </script>
 
-<ScrollProvider />
 <I18nProvider {i18n}>
-	<SearchCommand />
-	{@render children()}
+  <Searchbar />
+  <Navbar />
+  <main class="flex grow-1 flex-col">
+    {@render children()}
+  </main>
+  <Footer />
 </I18nProvider>

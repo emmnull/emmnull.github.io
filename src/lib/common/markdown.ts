@@ -14,31 +14,31 @@ import { parse } from 'marked';
  * ```
  */
 export function contents(
-	files: Record<string, unknown>,
-	/**
-	 * Simplify output keys by splicing off a base.
-	 *
-	 * @see https://github.com/vitejs/vite/issues/17453
-	 */
-	base?: string
+  files: Record<string, unknown>,
+  /**
+   * Simplify output keys by splicing off a base.
+   *
+   * @see https://github.com/vitejs/vite/issues/17453
+   */
+  base?: string,
 ) {
-	const acc: Record<string, { content: string; metadata: Record<string, string> }> = {};
-	for (const path in files) {
-		const slash = path.lastIndexOf('/');
-		const key = path.slice(base && path.indexOf(base) === 0 ? base.length : 0, slash);
-		const filename = path.slice(slash + 1, path.lastIndexOf('.'));
-		const isIndex = filename === 'index';
-		if (!isIndex && filename !== languageTag()) {
-			continue;
-		}
-		const fm = matter((files[path] as any).default);
-		const md = parse(fm.content) as string;
-		const pre = acc[key] || { metadata: {} };
-		acc[key] = isIndex
-			? { metadata: { ...fm.data, ...pre.metadata }, content: pre.content || md }
-			: { metadata: { ...pre.metadata, ...fm.data }, content: md || pre.content };
-	}
-	return acc;
+  const acc: Record<string, { content: string; metadata: Record<string, string> }> = {};
+  for (const path in files) {
+    const slash = path.lastIndexOf('/');
+    const key = path.slice(base && path.indexOf(base) === 0 ? base.length : 0, slash);
+    const filename = path.slice(slash + 1, path.lastIndexOf('.'));
+    const isIndex = filename === 'index';
+    if (!isIndex && filename !== languageTag()) {
+      continue;
+    }
+    const fm = matter((files[path] as any).default);
+    const md = parse(fm.content) as string;
+    const pre = acc[key] || { metadata: {} };
+    acc[key] = isIndex
+      ? { metadata: { ...fm.data, ...pre.metadata }, content: pre.content || md }
+      : { metadata: { ...pre.metadata, ...fm.data }, content: md || pre.content };
+  }
+  return acc;
 }
 
 /**

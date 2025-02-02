@@ -1,11 +1,11 @@
 <script lang="ts">
-	function backToTop() {
-		document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
-	}
+  function backToTop() {
+    document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 </script>
 
 <footer class="print:hidden">
-	<!-- <nav>
+  <!-- <nav>
 		<a href="https://github.com/emmbm" rel="external">GitHub</a>
 	</nav>
 	<button onclick={backToTop} class="button">

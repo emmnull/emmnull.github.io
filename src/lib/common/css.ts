@@ -1,6 +1,4 @@
 import { browser } from '$app/environment';
-import { Floating } from '$lib/builders/floating.svelte';
-import type { Axis, Placement } from '@floating-ui/dom';
 import clsx, { type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import type { OmitIndexSignature } from 'type-fest';
@@ -12,18 +10,25 @@ import { isNumeric } from './number';
  * @see https://github.com/sveltejs/svelte/blob/4ec9986cba11d4635155e90c87c7ac5e6503a6c1/packages/svelte/src/transition/index.js#L22
  */
 export function splitUnit(value: string | number) {
-	const split = typeof value === 'string' && value.match(/^\s*(-?[\d.]+)([^\s\+\-\*\/]*)\s*$/);
-	return split ? ([parseFloat(split[1]), split[2] || ''] as const) : ([value, ''] as const);
+  const split = typeof value === 'string' && value.match(/^\s*(-?[\d.]+)([^\s+\-*/]*)\s*$/);
+  return split ? ([parseFloat(split[1]), split[2] || ''] as const) : ([value, ''] as const);
 }
 
 /**
  * Fallback format a given size input as pixels **if numeric**.
  */
 export function px(size: string | number) {
-	if (!isNumeric(size)) {
-		return size;
-	}
-	return size + 'px';
+  if (!isNumeric(size)) {
+    return size;
+  }
+  return size + 'px';
+}
+
+export function deg(angle: string | number) {
+  if (!isNumeric(angle)) {
+    return angle;
+  }
+  return angle + 'deg';
 }
 
 /**
@@ -31,40 +36,40 @@ export function px(size: string | number) {
  * computed as css-valid `rem` value if in browser, else in `px`.
  */
 export function rem(size: string | number) {
-	if (!isNumeric(size)) {
-		return size;
-	}
-	if (!browser) {
-		return size + 'px';
-	}
-	return size / parseFloat(getComputedStyle(document.documentElement).fontSize) + 'rem';
+  if (!isNumeric(size)) {
+    return size;
+  }
+  if (!browser) {
+    return size + 'px';
+  }
+  return size / parseFloat(getComputedStyle(document.documentElement).fontSize) + 'rem';
 }
 
 /**
  * Fallback format a given size input as pixels **if numeric**.
  */
 export function em(size: string | number) {
-	if (!isNumeric(size)) {
-		return size;
-	}
-	return size + 'em';
+  if (!isNumeric(size)) {
+    return size;
+  }
+  return size + 'em';
 }
 
 /**
  * Fallback format a given duration input as miliseconds **if numeric**.
  */
 export function ms(duration: string | number) {
-	if (!isNumeric(duration)) {
-		return duration;
-	}
-	return duration + 'ms';
+  if (!isNumeric(duration)) {
+    return duration;
+  }
+  return duration + 'ms';
 }
 
 /**
  * Tailwind class name merging and de-duping helper based on shadcn's implementation.
  */
 export function cn(...inputs: ClassValue[]) {
-	return twMerge(clsx(inputs));
+  return twMerge(clsx(inputs));
 }
 
 /**
@@ -72,33 +77,33 @@ export function cn(...inputs: ClassValue[]) {
  * parentheses is needed within the outer function.
  */
 export function calc(value: string | number) {
-	const [v, u] = splitUnit(value);
-	if (isNumeric(v)) {
-		return value;
-	}
-	return `calc(${String(value).replaceAll('calc', '')})`;
+  const [v, _u] = splitUnit(value);
+  if (isNumeric(v)) {
+    return value;
+  }
+  return `calc(${String(value).replaceAll('calc', '')})`;
 }
 
 function createOperation(
-	evaluate: (left: number, right: number) => number,
-	operator: '+' | '-' | '*' | '/'
+  evaluate: (left: number, right: number) => number,
+  operator: '+' | '-' | '*' | '/',
 ) {
-	return function operation(...[init, ...values]: (string | number)[]) {
-		return values.reduce((acc, curr) => {
-			if (isNumeric(curr) && isNumeric(acc)) {
-				return evaluate(acc, curr);
-			}
-			const [av, au] = splitUnit(acc);
-			const [cv, cu] = splitUnit(curr);
-			const anum = isNumeric(av);
-			const cnum = isNumeric(cv);
-			if (anum && cnum && (au === cu || !au || !cu)) {
-				// Single unit
-				return `${evaluate(av, cv)}${au || cu}`;
-			}
-			return `${acc}${operator}${curr}`;
-		}, init);
-	};
+  return function operation(...[init, ...values]: (string | number)[]) {
+    return values.reduce((acc, curr) => {
+      if (isNumeric(curr) && isNumeric(acc)) {
+        return evaluate(acc, curr);
+      }
+      const [av, au] = splitUnit(acc);
+      const [cv, cu] = splitUnit(curr);
+      const anum = isNumeric(av);
+      const cnum = isNumeric(cv);
+      if (anum && cnum && (au === cu || !au || !cu)) {
+        // Single unit
+        return `${evaluate(av, cv)}${au || cu}`;
+      }
+      return `${acc} ${operator} ${curr}`;
+    }, init);
+  };
 }
 
 /**
@@ -125,53 +130,38 @@ export const divide = createOperation((left, right) => left / right, '/');
  * Helper to write a css var function.
  */
 export function cssvar<Name extends `--${string}`>(name: Name) {
-	return `var(${name})` as const;
+  return `var(${name})` as const;
 }
 
 export type CSSVar<T extends `--${string}`> = ReturnType<typeof cssvar<T>>;
 
 /**
- * Transpose logical axes distances to actual axes based on a given placement.
+ * Style string from object.
  */
-export function toAxes(
-	placement: Placement,
-	values: { cross?: string | number; main?: string | number }
+export function style(
+  style: Partial<
+    Record<
+      | `--${string}`
+      | Exclude<
+          OmitIndexSignature<keyof CSSStyleDeclaration>,
+          | number
+          | typeof Symbol.iterator
+          | 'parentRule'
+          | 'length'
+          | 'getPropertyPriority'
+          | 'getPropertyValue'
+          | 'item'
+          | 'removeProperty'
+          | 'setProperty'
+        >,
+      string | number
+    >
+  >,
 ) {
-	const unaligned = Floating.getUnalignedPlacement(placement);
-	const main = Floating.getMainAxis(unaligned);
-	const cross = Floating.getCrossAxis(unaligned);
-	return {
-		[main]: values.main && calc(multiply(Floating.getMainAxisModulation(unaligned), values.main)),
-		[cross]:
-			values.cross && calc(multiply(Floating.getCrossAxisModulation(unaligned), values.cross))
-	} as Record<Axis, string | undefined | number>;
-}
-
-/**
- * @see https://github.com/sveltejs/svelte/issues/7311
- */
-export function parseStyle(
-	style: Record<
-		| `--${string}`
-		| Exclude<
-				OmitIndexSignature<keyof CSSStyleDeclaration>,
-				| number
-				| typeof Symbol.iterator
-				| 'parentRule'
-				| 'length'
-				| 'getPropertyPriority'
-				| 'getPropertyValue'
-				| 'item'
-				| 'removeProperty'
-				| 'setProperty'
-		  >,
-		string | number
-	>
-) {
-	return (Object.keys(style) as (keyof typeof style)[])
-		.map(
-			(k) =>
-				`${k.startsWith('--') ? k : k.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`)}: ${style[k]}`
-		)
-		.join(';');
+  return (Object.keys(style) as (keyof typeof style)[])
+    .map(
+      (k) =>
+        `${k.startsWith('--') ? k : k.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`)}: ${style[k]}`,
+    )
+    .join(';');
 }

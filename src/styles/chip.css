@@ -1,0 +1,4 @@
+.chip {
+  position: relative;
+  height: var(--spacing-io);
+}

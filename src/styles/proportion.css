@@ -1,0 +1,13 @@
+@utility compact {
+  --spacing-io: 2.25em;
+  --radius-io: var(--radius-sm);
+  --spacing-io-padding: 0.75em;
+  --spacing-io-nesting: 0.125em;
+}
+
+@utility spacious {
+  --spacing-io: 5.5em;
+  --radius-io: var(--radius-lg);
+  --spacing-io-padding: 2em;
+  --spacing-io-nesting: 1em;
+}

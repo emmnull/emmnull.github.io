@@ -1,0 +1,34 @@
+@property --nesting {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: var(--default-nesting, 0);
+}
+
+@property --nesting-radius {
+  syntax: '<length> | <percentage>';
+  inherits: true;
+  initial-value: 0;
+}
+
+/* note: prettier forces an unwanted space between '-' and '*' */
+/* prettier-ignore */
+@utility nesting-* {
+	--nesting: --value(--spacing-*, [length]);
+  --nesting: calc(var(--spacing) * --value(length));
+}
+
+/* note: prettier forces an unwanted space between '-' and '*' */
+/* prettier-ignore */
+@utility rounded-* {
+	&[class*=nesting-] {
+		--nesting-radius: --value(--radius-*, [length], [percentage]);
+		--nested-radius: calc(var(--nesting-radius) - var(--nesting));
+	}
+}
+
+@utility nested-rounded-* {
+  &[class*='nesting-'] {
+    --nesting-radius: --value(--radius- *, [length], [percentage]);
+    --nested-radius: calc(var(--nesting-radius) - var(--nesting));
+  }
+}

@@ -1,0 +1,200 @@
+@layer components {
+  .button,
+  .button-bordered,
+  .button-dashed,
+  .button-ghost,
+  .button-cta,
+  .button-nav {
+    position: relative;
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    text-overflow: ellipsis;
+    align-items: center;
+    gap: var(--spacing-io-gap);
+    height: var(--spacing-io);
+    vertical-align: top;
+    padding-inline: var(--spacing-io-padding);
+    border-radius: var(--radius-io);
+    transition-duration: var(--default-transition-duration);
+    transition-property: all;
+    transition-timing-function: ease-out;
+    /* Hover */
+    &:hover:not(:active) {
+      transition-duration: 0s;
+      &::after {
+        transition-property: inset;
+        transition-duration: calc(0.1 * var(--default-transition-duration));
+      }
+    }
+    /* Focus */
+    &:focus-visible {
+      outline-color: var(--color-cta-accent);
+      outline-width: var(--outline-width-io-focus);
+    }
+    /* Active */
+    &:active {
+      scale: var(--scale-io-press);
+    }
+    /* Square */
+    &.aspect-square {
+      padding-inline: 0;
+      justify-content: center;
+    }
+    &:not(.aspect-square) {
+      & > * {
+        @variant icon {
+          opacity: 30%;
+        }
+      }
+      &:hover {
+        & > * {
+          @variant icon {
+            opacity: 60%;
+          }
+        }
+      }
+    }
+    /* Current */
+    @variant current {
+      & > * {
+        @variant icon {
+          opacity: 100%;
+        }
+      }
+    }
+    /* Face and border */
+    &::after,
+    &::before {
+      pointer-events: none;
+      z-index: -1;
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      transition-property: all;
+      transition-duration: inherit;
+      transition-timing-function: inherit;
+    }
+    /* Icon */
+    & > * {
+      @variant icon {
+        width: var(--spacing-io-icon);
+        height: var(--spacing-io-icon);
+        transition-duration: inherit;
+        stroke-width: var(--stroke-width-io-icon);
+      }
+    }
+  }
+
+  /* Default variant */
+  .button {
+    color: var(--color-on-io);
+    /* Face */
+    &::after {
+      content: '';
+      background: var(--color-io);
+    }
+    /* Hover */
+    @variant hover {
+      @variant not-current {
+        color: var(--color-on-io-accent);
+        &::after {
+          background: var(--color-io-accent);
+        }
+      }
+    }
+  }
+
+  /* Bordered and dashed variants */
+  .button-bordered,
+  .button-dashed {
+    color: var(--color-on-io);
+    &::before {
+      content: '';
+      border-width: var(--border-width-io);
+      border-style: solid;
+      border-color: var(--color-io);
+    }
+    &::after {
+      content: '';
+      inset: var(--spacing-io-face-inset);
+      background: var(--color-io);
+    }
+    @variant hover {
+      @variant not-current {
+        color: var(--color-x-io-accent);
+        &::before {
+          border-color: transparent;
+        }
+        &::after {
+          inset: 0;
+          background: var(--color-io-accent);
+        }
+      }
+    }
+  }
+  .button-dashed {
+    &::before {
+      border-style: dashed;
+    }
+  }
+
+  /* Ghost variant */
+  .button-ghost {
+    &::after {
+      content: '';
+      inset: var(--spacing-io-face-inset);
+    }
+    &:hover {
+      color: var(--color-on-io-accent);
+      &::after {
+        inset: 0;
+        background: var(--color-io-accent);
+      }
+    }
+    @variant current {
+      color: var(--color-cta-accent);
+      &::after {
+        inset: 0;
+        background: --alpha(var(--color-cta-accent) / var(--opacity-io-face));
+      }
+    }
+  }
+
+  /* Call-to-action variant */
+  .button-cta {
+    color: var(--color-on-cta);
+    background: var(--color-cta);
+    /* @apply bg-primary text-x-primary hover:text-x-primary-accent hover:bg-primary-accent; */
+  }
+
+  /* Nav variant */
+  .button-nav {
+    color: var(--color-on-io);
+    backdrop-filter: url(#glass);
+    &::after {
+      content: '';
+      inset: var(--spacing-io-face-inset);
+    }
+    @variant hover {
+      @variant not-current {
+        color: var(--color-cta-accent);
+        &::after {
+          inset: 0;
+          background: --alpha(var(--color-cta-accent) / var(--opacity-io-face));
+        }
+      }
+    }
+    @variant current {
+      color: var(--color-cta);
+      &::after {
+        inset: 0;
+      }
+      & > * {
+        @variant icon {
+          animation: var(--animate-pulse);
+        }
+      }
+    }
+  }
+}

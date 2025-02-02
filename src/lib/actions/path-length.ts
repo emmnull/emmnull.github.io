@@ -5,8 +5,8 @@ import type { ActionReturn } from 'svelte/action';
  * the value.
  */
 export function pathLength(node: SVGPathElement, set?: (lenght: number) => void) {
-	const lenght = node.getTotalLength();
-	node.setAttribute('data-length', String(lenght));
-	set?.(lenght);
-	return {} satisfies ActionReturn;
+  const lenght = node.getTotalLength();
+  node.setAttribute('data-length', String(lenght));
+  set?.(lenght);
+  return {} satisfies ActionReturn;
 }

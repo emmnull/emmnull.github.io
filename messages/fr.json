@@ -7,5 +7,10 @@
 	"not_defined": "Non défini",
 	"blog": "Blogue",
 	"search": "Rechercher",
-	"language": "Langue"
+	"language": "Langue",
+	"workshop": "Atelier",
+	"theme_system": "Système",
+	"theme_dark": "Sombre",
+	"theme_light": "Clair",
+	"theme": "Thème"
 }
