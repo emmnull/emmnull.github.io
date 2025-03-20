@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { page } from '$app/stores';
-  import { Dialog } from '$lib/builders/dialog.svelte';
+  import { page } from '$app/state';
+  import { Dialog } from '$lib//rigs/dialog.svelte';
   import DialogRoot from '$lib/components/dialog-root.svelte';
-  import { i18n } from '$lib/i18n/adapter';
   import { LOCALES } from '$lib/i18n/constants';
-  import { availableLanguageTags, languageTag } from '$lib/i18n/generated/runtime';
+  import { deLocalizeHref, getLocale, locales } from '$lib/i18n/generated/runtime';
   import * as m from '$messages';
   import { Languages } from 'lucide-svelte';
   import NavbarButton from './navbar-button.svelte';
@@ -20,12 +19,12 @@
 </NavbarButton>
 
 <DialogRoot {dialog}>
-  {#each availableLanguageTags as lang}
+  {#each locales as lang}
     <a
       class="button"
-      href={i18n.route($page.url.pathname)}
+      href={deLocalizeHref(page.url.pathname)}
       hreflang={lang}
-      aria-current={lang === languageTag() || undefined}
+      aria-current={lang === getLocale() || undefined}
     >
       {LOCALES[lang]}
     </a>

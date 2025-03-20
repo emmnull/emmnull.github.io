@@ -10,6 +10,7 @@
 
     set current(value) {
       this.#persisted.current = value;
+      // document.documentElement
     }
 
     get computed() {
@@ -25,7 +26,7 @@
 </script>
 
 <script lang="ts">
-  import { Dialog } from '$lib/builders/dialog.svelte';
+  import { Dialog } from '$lib//rigs/dialog.svelte';
   import { Persisted } from '$lib/common/state.svelte';
   import * as m from '$messages';
   import { Monitor, Moon, Sun, type Icon } from 'lucide-svelte';
@@ -47,7 +48,7 @@
       icon: Sun,
       name: m.theme_light(),
     },
-  } satisfies Record<typeof theme.current, { icon: typeof Icon; name: string }>;
+  } as const satisfies Record<typeof theme.current, { icon: typeof Icon; name: string }>;
 
   const dialog = new Dialog();
 </script>
@@ -79,7 +80,13 @@
   <menu class="switch" data-orientation="vertical">
     {#each Object.entries(themes) as [option, { icon: Icon, name }]}
       {@const current = theme === (option as unknown)}
-      <button class="switch-item" aria-pressed={current ?? undefined}>
+      <button
+        class="switch-item"
+        aria-pressed={current ?? undefined}
+        onclick={() => {
+          theme.current = option as keyof typeof themes;
+        }}
+      >
         <SwitchThumb key="navbar-theme-switch" {current} />
         {name}
         <Icon />

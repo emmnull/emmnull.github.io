@@ -1,12 +1,14 @@
 <script lang="ts">
-  import HorizontalPane from '$lib/components/horizontal-pane.svelte';
 </script>
 
-<section class="h-[500px] pattern-crosslines pattern-color-[blue] pattern-thickness-1 border-2">
-  <button class="button-navbar/test">Hello</button>
+<div class="flex flex-col gap-4 items-start p-10">
+  <button class="button">Default button</button>
+  <button class="button-cta button-face-[red] text-[blue]">Call-to-action!</button>
+</div>
+
+<!-- <section class="h-[500px] pattern-crosslines pattern-color-[blue] pattern-thickness-1 border-2">
   Hey there! I'm Emmanuel and I like to design and implement things for users!
 </section>
-<section class="pattern-test-2">Hello</section>
 <section>
   My tools of the trade are:
   <ul>
@@ -37,4 +39,4 @@
     <li>Some screenshots</li>
   </ul>
 </section>
-<section>[Photo feed]</section>
+<section>[Photo feed]</section> -->

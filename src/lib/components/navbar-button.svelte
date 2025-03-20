@@ -5,8 +5,7 @@
 </script>
 
 <script lang="ts">
-  import { Tooltip } from '$lib/builders/tooltip.svelte';
-  import { cn } from '$lib/common/css';
+  import { Tooltip } from '$lib//rigs/tooltip.svelte';
   import { onMount, type Snippet } from 'svelte';
   import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
   import { fly } from 'svelte/transition';
@@ -48,7 +47,7 @@
     draggable="false"
     {href}
     {...buttonProps}
-    class={cn('button-nav', className)}
+    class="button-nav {className}"
     {...tooltipContent ? tooltip.getTriggerAttributes() : {}}
     in:fly={{ y: 6, delay: i * 100 }}
   >

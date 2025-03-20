@@ -1,44 +1,9 @@
 import { browser } from '$app/environment';
 import { page } from '$app/state';
+import { deLocalizeUrl } from '$lib/i18n/generated/runtime';
 import type { HTMLAnchorAttributes } from 'svelte/elements';
-import { i18n } from './adapter';
 
-// export function getLocaleParam(
-//   /**
-//    * Pathname with or without locale.
-//    */
-//   pathname: string,
-// ) {
-//   const [_, maybeLocale] = pathname.split('/');
-//   if (isLocale(maybeLocale)) {
-//     return maybeLocale;
-//   }
-// }
-
-// export function delocalize(
-//   /**
-//    * Pathname with or without locale.
-//    */
-//   pathname: string,
-// ) {
-//   const locale = getLocaleParam(pathname);
-//   if (locale) {
-//     return pathname.replace(`/${locale}`, '');
-//   }
-//   return pathname;
-// }
-
-// export function localize(
-//   /**
-//    * Pathname **without** locale.
-//    */
-//   pathname: string,
-//   locale: Locale,
-// ) {
-//   return `/${locale}${pathname}`;
-// }
-
-const delocalized = $derived(browser ? i18n.route(page.url.pathname) : '');
+const delocalized = $derived(browser ? deLocalizeUrl(page.url.pathname) : undefined);
 
 export function linkAttributes<T extends string>(
   href: T,
@@ -55,7 +20,7 @@ export function linkAttributes<T extends string>(
       if (href.startsWith('#') && decodeURIComponent(page.url.hash) === decodeURIComponent(href)) {
         return 'step' as const;
       }
-      if (delocalized === (currentOmitHash ? href.split('#')[0] : href)) {
+      if (delocalized.href === (currentOmitHash ? href.split('#')[0] : href)) {
         return 'page' as const;
       }
       const pathWithHash = `${delocalized}${page.url.hash}`;

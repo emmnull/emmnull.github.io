@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { linkAttributes } from '$lib/attributes/link.svelte';
   import Logo from '$lib/components/logo.svelte';
-  import { linkAttributes } from '$lib/i18n/utils.svelte';
   import * as m from '$messages';
   import { PencilRuler } from 'lucide-svelte';
   import NavbarButton from './navbar-button.svelte';
@@ -10,7 +10,7 @@
 </script>
 
 <header
-  class="px-root-padding pt-root-gap pb-base-padding z-front sticky top-0 flex flex-row justify-between overflow-clip text-sm print:hidden"
+  class="px-root-padding pt-root-gap pb-base-padding z-[99] sticky top-0 flex flex-row justify-between text-sm print:hidden"
 >
   <nav class="relative gap-menu-gap flex flex-row">
     <NavbarButton href="/"><Logo height="2em" /></NavbarButton>

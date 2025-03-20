@@ -1,6 +1,5 @@
 <script lang="ts">
-  import type { Dialog } from '$lib/builders/dialog.svelte';
-  import { cn } from '$lib/common/css';
+  import type { Dialog } from '$lib//rigs/dialog.svelte';
   import { X } from 'lucide-svelte';
   import type { Snippet } from 'svelte';
   import { cubicIn, expoOut } from 'svelte/easing';

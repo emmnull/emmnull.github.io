@@ -1,199 +1,219 @@
-@layer components {
-  .button,
-  .button-bordered,
-  .button-dashed,
-  .button-ghost,
-  .button-cta,
-  .button-nav {
-    position: relative;
-    display: inline-flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    text-overflow: ellipsis;
-    align-items: center;
-    gap: var(--spacing-io-gap);
-    height: var(--spacing-io);
-    vertical-align: top;
-    padding-inline: var(--spacing-io-padding);
-    border-radius: var(--radius-io);
-    transition-duration: var(--default-transition-duration);
-    transition-property: all;
-    transition-timing-function: ease-out;
-    /* Hover */
-    &:hover:not(:active) {
-      transition-duration: 0s;
-      &::after {
-        transition-property: inset;
-        transition-duration: calc(0.1 * var(--default-transition-duration));
-      }
-    }
-    /* Focus */
-    &:focus-visible {
-      outline-color: var(--color-cta-accent);
-      outline-width: var(--outline-width-io-focus);
-    }
-    /* Active */
-    &:active {
-      scale: var(--scale-io-press);
-    }
-    /* Square */
-    &.aspect-square {
-      padding-inline: 0;
-      justify-content: center;
-    }
-    &:not(.aspect-square) {
-      & > * {
-        @variant icon {
-          opacity: 30%;
-        }
-      }
-      &:hover {
-        & > * {
-          @variant icon {
-            opacity: 60%;
-          }
-        }
-      }
-    }
-    /* Current */
-    @variant current {
-      & > * {
-        @variant icon {
-          opacity: 100%;
-        }
-      }
-    }
-    /* Face and border */
-    &::after,
+.button,
+.button-bordered,
+.button-dashed,
+.button-ghost,
+.button-cta,
+.button-nav {
+  --button-text: ;
+  --button-face: ;
+  --button-border: ;
+  --button-border-style: ;
+
+  contain: layout;
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  text-overflow: ellipsis;
+  align-items: center;
+  gap: var(--spacing-io-gap);
+  height: var(--spacing-io);
+  color: var(--button-text, currentcolor);
+  background: --alpha(var(--button-face) / var(--button-face-opacity));
+  border-color: --alpha(var(--button-border) / var(--button-border-opacity));
+  border-width: var(--border-width-io);
+  border-style: var(--button-border-style);
+  padding-inline: var(--spacing-io-padding);
+  border-radius: var(--radius-io);
+  transition-duration: var(--default-transition-duration);
+  transition-property: all;
+  transition-timing-function: ease-out;
+
+  &:not(input, select, textarea) {
+    background: var(--button-pseudo-face, var(--button-face));
+    border-style: var(--button-pseudo-border, var(--button-border-style));
+
+    /* pseudo-face */
     &::before {
+      content: var(--button-pseudo-face);
+      background: --alpha(var(--button-face) / var(--button-face-opacity));
+      inset: var(--spacing-io-face-inset);
       pointer-events: none;
       z-index: -1;
       position: absolute;
-      inset: 0;
       border-radius: inherit;
       transition-property: all;
       transition-duration: inherit;
       transition-timing-function: inherit;
     }
-    /* Icon */
-    & > * {
-      @variant icon {
-        width: var(--spacing-io-icon);
-        height: var(--spacing-io-icon);
-        transition-duration: inherit;
-        stroke-width: var(--stroke-width-io-icon);
-      }
-    }
-  }
 
-  /* Default variant */
-  .button {
-    color: var(--color-on-io);
-    /* Face */
+    /* pseudo-border */
     &::after {
-      content: '';
-      background: var(--color-io);
+      content: var(--button-pseudo-border);
+      border-style: var(--button-border-style);
+      pointer-events: none;
+      z-index: 1;
+      position: absolute;
+      border-radius: inherit;
+      border-width: inherit;
+      border-color: inherit;
+      inset: 0;
+      transition-property: all;
+      transition-duration: inherit;
+      transition-timing-function: inherit;
     }
-    /* Hover */
-    @variant hover {
-      @variant not-current {
-        color: var(--color-on-io-accent);
-        &::after {
-          background: var(--color-io-accent);
-        }
+  }
+
+  /* icon */
+  .button-icon,
+  @variant *:icon {
+    width: var(--spacing-io-icon);
+    height: var(--spacing-io-icon);
+    transition-duration: inherit;
+    stroke-width: var(--stroke-width-io-icon);
+  }
+
+  /* hover */
+  &:hover {
+    &:not(:active) {
+      transition-duration: 0s;
+      &::before {
+        transition-property: inset;
+        transition-duration: calc(0.25 * var(--default-transition-duration));
+      }
+    }
+    @variant not-current {
+      &::before {
+        inset: 0;
       }
     }
   }
 
-  /* Bordered and dashed variants */
-  .button-bordered,
-  .button-dashed {
-    color: var(--color-on-io);
+  /* focused */
+  &:focus-visible {
+    outline-color: var(--color-cta-accent);
+    outline-width: var(--outline-width-io-focus);
+  }
+
+  /* active */
+  &:active {
+    transition-duration: calc(0.5 * var(--default-transition-duration));
+    scale: var(--scale-io-press);
+  }
+
+  /* current */
+  @variant current {
     &::before {
-      content: '';
-      border-width: var(--border-width-io);
-      border-style: solid;
-      border-color: var(--color-io);
+      inset: 0;
     }
-    &::after {
-      content: '';
-      inset: var(--spacing-io-face-inset);
-      background: var(--color-io);
-    }
-    @variant hover {
-      @variant not-current {
-        color: var(--color-x-io-accent);
-        &::before {
-          border-color: transparent;
-        }
-        &::after {
-          inset: 0;
-          background: var(--color-io-accent);
-        }
-      }
-    }
-  }
-  .button-dashed {
-    &::before {
-      border-style: dashed;
+    .button-icon,
+    @variant *:icon {
+      opacity: 100%;
     }
   }
 
-  /* Ghost variant */
-  .button-ghost {
-    &::after {
-      content: '';
-      inset: var(--spacing-io-face-inset);
+  /* aspect */
+  &.aspect-square {
+    padding-inline: 0;
+    justify-content: center;
+  }
+  &:not(.aspect-square) {
+    .button-icon,
+    @variant *:icon {
+      opacity: 30%;
     }
     &:hover {
-      color: var(--color-on-io-accent);
-      &::after {
-        inset: 0;
-        background: var(--color-io-accent);
+      .button-icon {
+        opacity: 60%;
       }
     }
-    @variant current {
+  }
+}
+
+/* default */
+.button {
+  --button-pseudo-face: '';
+  --button-text: var(--color-on-io);
+  --button-face: var(--color-io);
+  --button-face-opacity: 0;
+  &:hover {
+    @variant not-current {
+      --button-text: color-mix(in oklch, currentcolor, light-dark(black, white) 50%);
+      --button-face-opacity: var(--opacity-io-face);
+    }
+  }
+}
+
+/* bordered */
+.button-bordered,
+.button-dashed {
+  --button-pseudo-face: '';
+  --button-pseudo-border: '';
+  --button-text: var(--color-on-io);
+  --button-face: var(--color-io);
+  --button-face-opacity: 0;
+  --button-border: currentcolor;
+  --button-border-opacity: calc(125% * var(--opacity-io-face));
+  --button-border-style: solid;
+  &:hover {
+    @variant not-current {
+      --button-text: color-mix(in oklch, currentcolor, light-dark(black, white) 50%);
+      --button-face-opacity: var(--opacity-io-face);
+      --button-border-opacity: 0%;
+    }
+  }
+}
+
+/* dashed */
+.button-dashed {
+  --button-border-style: dashed;
+}
+
+/* ghost/skeleton */
+.button-ghost {
+  --button-pseudo-face: '';
+  --button-text: var(--color-on-io);
+  --button-face: var(--color-io);
+  --button-face-opacity: 0;
+  &:hover {
+    @variant not-current {
+      --button-text: color-mix(in oklch, currentcolor, light-dark(black, white) 50%);
+      --button-face-opacity: var(--opacity-io-face);
+    }
+  }
+  /* @variant current {
+    --button-text: var(--color-cta-accent);
+    --button-face: --alpha(var(--color-cta-accent) / var(--opacity-io-face));
+  } */
+}
+
+/* call-to-action */
+.button-cta {
+  color: var(--color-on-cta);
+  --button-face: var(--color-cta);
+  &:hover {
+    color: var(--color-on-cta-accent);
+    --button-face: var(--color-cta-accent);
+  }
+}
+
+/* nav */
+.button-nav {
+  --pseudo-face: '';
+  color: var(--color-on-io);
+  /* backdrop-filter: url(#glass); */
+  &:hover {
+    @variant not-current {
+      --button-face: --alpha(var(--color-cta-accent) / var(--opacity-io-face));
       color: var(--color-cta-accent);
-      &::after {
-        inset: 0;
-        background: --alpha(var(--color-cta-accent) / var(--opacity-io-face));
-      }
     }
   }
-
-  /* Call-to-action variant */
-  .button-cta {
-    color: var(--color-on-cta);
-    background: var(--color-cta);
-    /* @apply bg-primary text-x-primary hover:text-x-primary-accent hover:bg-primary-accent; */
-  }
-
-  /* Nav variant */
-  .button-nav {
-    color: var(--color-on-io);
-    backdrop-filter: url(#glass);
-    &::after {
-      content: '';
-      inset: var(--spacing-io-face-inset);
-    }
-    @variant hover {
-      @variant not-current {
-        color: var(--color-cta-accent);
-        &::after {
-          inset: 0;
-          background: --alpha(var(--color-cta-accent) / var(--opacity-io-face));
-        }
-      }
-    }
-    @variant current {
-      color: var(--color-cta);
-      &::after {
-        inset: 0;
-      }
-      & > * {
-        @variant icon {
-          animation: var(--animate-pulse);
-        }
+  @variant current {
+    color: var(--color-cta);
+    & > * {
+      @variant icon {
+        opacity: 50%;
+        animation: var(--animate-pulse);
       }
     }
   }

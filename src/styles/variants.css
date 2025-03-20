@@ -1,0 +1,117 @@
+@custom-variant light {
+  &:where(.scheme-light, .scheme-light *) {
+    @slot;
+  }
+}
+
+@custom-variant dark {
+  &:where(.scheme-dark, .scheme-dark *) {
+    @slot;
+  }
+}
+
+@custom-variant icon {
+  &.lucide-icon {
+    @slot;
+  }
+}
+
+@custom-variant danger {
+  &[data-danger='true'] {
+    @slot;
+  }
+}
+
+@custom-variant checked {
+  &:checked,
+  &[aria-checked='true'],
+  &[data-state='checked'],
+  &[aria-selected='true'],
+  &[aria-pressed='true'] {
+    @slot;
+  }
+}
+
+@custom-variant open {
+  &[aria-expanded='true'],
+  &[data-state='open'],
+  &[open],
+  &:popover-open {
+    @slot;
+  }
+}
+
+@custom-variant closed {
+  &[aria-expanded='false'],
+  &[data-state='closed'] {
+    @slot;
+  }
+}
+
+@custom-variant modal {
+  &[aria-modal='true'],
+  &:modal {
+    @slot;
+  }
+}
+
+@custom-variant supermodal {
+  &[aria-modal='true'][data-super-modal],
+  &:modal[data-super-modal] {
+    @slot;
+  }
+}
+
+@custom-variant current {
+  &[aria-current='page'],
+  &[aria-current='step'],
+  &[aria-current='location'],
+  &[aria-current='date'],
+  &[aria-current='time'],
+  &[aria-current='true'] {
+    @slot;
+  }
+}
+
+@custom-variant disabled {
+  &:disabled,
+  &[aria-disabled='true'],
+  &[data-disabled='true'],
+  &:is(a):not(:any-link) {
+    @slot;
+  }
+}
+
+@custom-variant error {
+  &[aria-invalid='true'],
+  &[data-error='true'],
+  &:user-invalid {
+    @slot;
+  }
+}
+
+@custom-variant busy {
+  &[aria-busy='true'] {
+    @slot;
+  }
+}
+
+@custom-variant vertical {
+  &[data-orientation='vertical'],
+  &[aria-orientation='vertical'] {
+    @slot;
+  }
+}
+
+@custom-variant horizontal {
+  &[data-orientation='horizontal'],
+  &[aria-orientation='horizontal'] {
+    @slot;
+  }
+}
+
+@custom-variant ripple {
+  &[data-ripple-root] {
+    @slot;
+  }
+}

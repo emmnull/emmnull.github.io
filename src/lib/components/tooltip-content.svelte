@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { getAxialDistances } from '$lib/builders/floating';
-  import type { Tooltip } from '$lib/builders/tooltip.svelte';
+  import { getAxialDistances } from '$lib//rigs/floating';
+  import type { Tooltip } from '$lib//rigs/tooltip.svelte';
   import type { Snippet } from 'svelte';
   import { expoOut } from 'svelte/easing';
   import { fly } from 'svelte/transition';

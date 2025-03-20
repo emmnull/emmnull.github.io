@@ -1,6 +1,4 @@
 import { browser } from '$app/environment';
-import clsx, { type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 import type { OmitIndexSignature } from 'type-fest';
 import { isNumeric } from './number';
 
@@ -10,7 +8,7 @@ import { isNumeric } from './number';
  * @see https://github.com/sveltejs/svelte/blob/4ec9986cba11d4635155e90c87c7ac5e6503a6c1/packages/svelte/src/transition/index.js#L22
  */
 export function splitUnit(value: string | number) {
-  const split = typeof value === 'string' && value.match(/^\s*(-?[\d.]+)([^\s+\-*/]*)\s*$/);
+  const split = typeof value === 'string' && /^\s*(-?[\d.]+)([^\s+\-*/]*)\s*$/.exec(value);
   return split ? ([parseFloat(split[1]), split[2] || ''] as const) : ([value, ''] as const);
 }
 
@@ -66,13 +64,6 @@ export function ms(duration: string | number) {
 }
 
 /**
- * Tailwind class name merging and de-duping helper based on shadcn's implementation.
- */
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-/**
  * Format given value as css calc() function if necessary. Also removes nested calcs as only
  * parentheses is needed within the outer function.
  */
@@ -84,10 +75,7 @@ export function calc(value: string | number) {
   return `calc(${String(value).replaceAll('calc', '')})`;
 }
 
-function createOperation(
-  evaluate: (left: number, right: number) => number,
-  operator: '+' | '-' | '*' | '/',
-) {
+function op(evaluate: (left: number, right: number) => number, operator: '+' | '-' | '*' | '/') {
   return function operation(...[init, ...values]: (string | number)[]) {
     return values.reduce((acc, curr) => {
       if (isNumeric(curr) && isNumeric(acc)) {
@@ -109,31 +97,22 @@ function createOperation(
 /**
  * Format given values as a css addition. Resolve if possible.
  */
-export const add = createOperation((left, right) => left + right, '+');
+export const add = op((left, right) => left + right, '+');
 
 /**
  * Format given values as a css subtraction. Resolve if possible.
  */
-export const subtract = createOperation((left, right) => left - right, '-');
+export const subtract = op((left, right) => left - right, '-');
 
 /**
  * Format given values as a css multiplication. Resolve if possible.
  */
-export const multiply = createOperation((left, right) => left * right, '*');
+export const multiply = op((left, right) => left * right, '*');
 
 /**
  * Format given values as a css division. Resolve if possible.
  */
-export const divide = createOperation((left, right) => left / right, '/');
-
-/**
- * Helper to write a css var function.
- */
-export function cssvar<Name extends `--${string}`>(name: Name) {
-  return `var(${name})` as const;
-}
-
-export type CSSVar<T extends `--${string}`> = ReturnType<typeof cssvar<T>>;
+export const divide = op((left, right) => left / right, '/');
 
 /**
  * Style string from object.

@@ -5,7 +5,7 @@
 </script>
 
 <script lang="ts">
-  import { Dialog } from '$lib/builders/dialog.svelte';
+  import { Dialog } from '$lib//rigs/dialog.svelte';
   import { KEYS } from '$lib/common/constants';
   import { isKeyCombo, type KeyCombo } from '$lib/common/event';
   import { isMacOS } from '$lib/common/platform';

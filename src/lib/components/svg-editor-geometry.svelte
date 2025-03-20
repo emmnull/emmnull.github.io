@@ -1,5 +1,5 @@
 <script lang="ts" generics="T">
-  import { PointerSnapshot } from '$lib/builders/pointer-snapshot.svelte';
+  import { PointerSnapshot } from '$lib//rigs/pointer-snapshot.svelte';
   import type { Snippet } from 'svelte';
   import type { SVGAttributes } from 'svelte/elements';
 

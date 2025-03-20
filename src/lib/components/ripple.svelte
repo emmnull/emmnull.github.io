@@ -1,5 +1,5 @@
 <script module lang="ts">
-  import { attrSelector, isHTMLElement } from '$lib/builders/utils';
+  import { attrSelector, isHTMLElement } from '$lib//rigs/utils';
   import { randomId } from '$lib/common/string';
   import type { HTMLAttributes } from 'svelte/elements';
   import { on } from 'svelte/events';
@@ -104,7 +104,6 @@
           if (this.#animations >= 2) {
             this.#destroy();
           }
-          console.log(e);
         },
       } satisfies HTMLAttributes<HTMLElement>;
     }
@@ -229,49 +228,48 @@
 </div>
 
 <style>
-  @layer components {
-    [data-ripple-wave] {
-      --ripple-spread-easing: cubic-bezier(0, 0, 0, 1);
-      --ripple-outro-easing: cubic-bezier(0, 0, 0.5, 1);
-      /* background: radial-gradient(
+  /* to do: implement as tailwind component */
+  [data-ripple-wave] {
+    --ripple-spread-easing: cubic-bezier(0, 0, 0, 1);
+    --ripple-outro-easing: cubic-bezier(0, 0, 0.5, 1);
+    /* background: radial-gradient(
 			circle at center,
 			var(--ripple-color),
 			transparent calc(1.25 * var(--ripple-d))
 		); */
-      width: 0;
-      opacity: 25%;
-      background: radial-gradient(circle at center, transparent -25%, currentColor 100%);
-      filter: blur(6px);
-      transition: opacity calc(var(--ripple-outro-duration) * 0.25) var(--ripple-outro-easing);
-      animation:
-        var(--ripple-spread-duration) var(--ripple-spread-easing) 0s 1 forwards ripple-spread,
-        var(--ripple-outro-duration) var(--ripple-outro-easing) var(--ripple-spread-duration) 1
-          forwards ripple-outro;
-    }
+    width: 0;
+    opacity: 25%;
+    background: radial-gradient(circle at center, transparent -25%, currentColor 100%);
+    filter: blur(6px);
+    transition: opacity calc(var(--ripple-outro-duration) * 0.25) var(--ripple-outro-easing);
+    animation:
+      var(--ripple-spread-duration) var(--ripple-spread-easing) 0s 1 forwards ripple-spread,
+      var(--ripple-outro-duration) var(--ripple-outro-easing) var(--ripple-spread-duration) 1
+        forwards ripple-outro;
+  }
 
-    [data-ripple-abort] {
-      animation-delay: 0s;
-    }
+  [data-ripple-abort] {
+    animation-delay: 0s;
+  }
 
-    [data-ripple-hide] {
-      transition: opacity var(--ripple-outro-duration) var(--ripple-outro-easing);
+  [data-ripple-hide] {
+    transition: opacity var(--ripple-outro-duration) var(--ripple-outro-easing);
+    opacity: 0;
+  }
+
+  [data-ripple-hold] {
+    animation-play-state: running, paused;
+  }
+
+  @keyframes ripple-outro {
+    to {
       opacity: 0;
     }
+  }
 
-    [data-ripple-hold] {
-      animation-play-state: running, paused;
-    }
-
-    @keyframes ripple-outro {
-      to {
-        opacity: 0;
-      }
-    }
-
-    @keyframes ripple-spread {
-      to {
-        width: var(--ripple-d);
-      }
+  @keyframes ripple-spread {
+    to {
+      width: var(--ripple-d);
     }
   }
 </style>
