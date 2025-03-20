@@ -1,32 +1,32 @@
+import { includeIgnoreFile } from '@eslint/compat';
 import js from '@eslint/js';
-import eslintConfigPrettier from 'eslint-config-prettier';
-import eslintPluginImport from 'eslint-plugin-import';
-import eslintPluginSvelte from 'eslint-plugin-svelte';
+import prettier from 'eslint-config-prettier';
+import importPlugin from 'eslint-plugin-import';
+import svelte from 'eslint-plugin-svelte';
 import globals from 'globals';
+import { fileURLToPath } from 'node:url';
 import ts from 'typescript-eslint';
+import svelteConfig from './svelte.config.js';
 
-/**
- * @type {import('eslint').Linter.Config[]}
- */
-export default ts.config([
+const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
+
+export default ts.config(
+  includeIgnoreFile(gitignorePath),
   js.configs.recommended,
-  ...ts.configs.strict,
+  ...ts.configs.recommended,
   ...ts.configs.stylistic,
-  ...eslintPluginSvelte.configs['flat/recommended'],
-  ...eslintPluginSvelte.configs['flat/prettier'],
-  eslintConfigPrettier,
+  ...svelte.configs.recommended,
+  prettier,
+  ...svelte.configs.prettier,
   {
-    ignores: ['dist/', 'build/', '.*/'], // Customize according to your project.
-  },
-  {
-    plugins: {
-      import: eslintPluginImport,
-    },
     languageOptions: {
       globals: {
-        ...globals.node,
         ...globals.browser,
+        ...globals.node,
       },
+    },
+    plugins: {
+      import: importPlugin,
     },
     rules: {
       curly: ['error', 'all'],
@@ -45,11 +45,15 @@ export default ts.config([
     },
   },
   {
-    files: ['**/*.svelte'],
+    files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
+    ignores: ['eslint.config.js', 'svelte.config.js'],
     languageOptions: {
       parserOptions: {
+        projectService: true,
+        extraFileExtensions: ['.svelte'],
         parser: ts.parser,
+        svelteConfig,
       },
     },
   },
-]);
+);
