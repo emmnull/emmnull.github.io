@@ -1,11 +1,14 @@
 import adapter from '@sveltejs/adapter-static';
+import markdown from './preprocessors/markdown.js';
+
+export const markdown_ext = ['.md'];
 
 /**
  * @type {import('@sveltejs/kit').Config}
  */
 const config = {
-  extensions: ['.svelte', '.mdx'],
-  // preprocess: [cssLayer()],
+  extensions: ['.svelte', ...markdown_ext],
+  preprocess: [markdown({ extensions: markdown_ext })],
   kit: {
     adapter: adapter(),
     alias: {
@@ -15,19 +18,3 @@ const config = {
 };
 
 export default config;
-
-// /**
-//  * Scoping component styles to a predefined layer to control cascade ordering.
-//  *
-//  * @see https://github.com/sveltejs/svelte/issues/11345
-//  */
-// function cssLayer() {
-//   return {
-//     name: 'svelte-css-layer',
-//     style: ({ content }) => {
-//       return {
-//         code: `@layer components { ${content} }`,
-//       };
-//     },
-//   };
-// }
