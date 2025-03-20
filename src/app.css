@@ -1,35 +1,55 @@
-@import './styles/button';
+@layer theme, base, components, utilities;
+
+@import 'tailwindcss';
+@import './styles/variants';
+@import './styles/proportion';
 @import './styles/nesting';
 @import './styles/pattern';
-@import './styles/proportion';
-@import 'tailwindcss/preflight' layer(base);
-@import './styles/base' layer(base);
-@import 'tailwindcss/utilities' layer(utilities);
+@import './styles/coarse-target.css';
+@import './styles/button' layer(components);
 
 @theme {
-  --color-primary: light-dark(#1e1e1e, oklch(0.58 0.2 275));
-  --color-on-primary: light-dark(white, white);
-  --color-secondary: light-dark(brown, yello);
-  --color-on-secondary: light-dark(black, white);
-  --color-pure: light-dark(white, black);
-  --color-on-pure: light-dark(black, white);
   --color-base: light-dark(oklch(0.79 0.02 247.99), oklch(0.18 0 0));
+  --color-primary: light-dark(#1e1e1e, oklch(0.58 0.2 275));
+  --color-secondary: light-dark(brown, yello);
+  --color-io: light-dark(#1e1e1e, buttonface);
+  --color-overlay: ;
+  --color-popover: light-dark();
+  --color-cta: var(--color-primary);
+  --color-caution: light-dark();
+  --color-error: light-dark(red, red);
+  --color-success: light-dark(green, lightgreen);
+  --color-notice: light-dark(blue, blue);
   --color-on-base: light-dark(oklch(0.21 0.0059 64.02), oklch(0.77 0.01 83.27));
-  --color-selection: light-dark(pink, purple);
-  --color-on-selection: light-dark(black, white);
-  --color-card: light-dark(#1e1e1e, #1e1e1e);
-
+  --color-on-primary: light-dark(white, white);
+  --color-on-secondary: light-dark(black, white);
+  --color-on-io: light-dark(#1e1e1e, grey);
+  --color-on-overlay: color-mix(in oklch, var(--color-overlay), light-dark(black, white) 85%);
+  --color-on-popover: color-mix(in oklch, var(--color-popover), light-dark(black, white) 85%);
+  --color-on-cta: color-mix(in oklch, var(--color-cta), light-dark(white, black) 85%);
+  --color-on-caution: color-mix(in oklch, var(--color-caution), light-dark(black, white) 85%);
+  --color-on-error: color-mix(in oklch, var(--color-error), light-dark(black, white) 85%);
+  --color-on-success: color-mix(in oklch, var(--color-success), light-dark(black, white) 85%);
+  --color-on-notice: color-mix(in oklch, var(--color-notice), light-dark(black, white) 85%);
   --radius-xxs: 0.125rem;
   --radius-xs: 0.25rem;
   --radius-sm: 0.425rem;
   --radius-md: 0.625rem;
   --radius-lg: 1.25rem;
   --radius-xl: 2rem;
-  --radius-card: var(--radius-lg);
-  --radius-tooltip: var(--radius-sm);
-
-  /* --spacing: 0.25rem; */
-  /* --spacing: 3px; */
+  --radius-box: var(--radius-lg);
+  --radius-io: var(--radius-md);
+  --spacing: 0.25rem;
+  --spacing-io: 3em;
+  --spacing-io-icon: 1.25em;
+  --spacing-io-padding: calc(var(--spacing-io) / 3);
+  --spacing-io-gap: calc(var(--spacing-io-padding) / 2);
+  --spacing-io-nesting: calc(var(--spacing-io) / 8);
+  --spacing-io-face-inset: 0.25em;
+  --spacing-scroll-x: 0;
+  --spacing-scroll-y: 0;
+  --spacing-scroll-px-x: calc(var(--spacing-scroll-x) * 1px);
+  --spacing-scroll-px-y: calc(var(--spacing-scroll-y) * 1px);
   --spacing-root-padding: 2rem;
   --spacing-root-gap: 1rem;
   --spacing-menu-padding: 0.25em;
@@ -38,20 +58,10 @@
   --spacing-main-height: calc(100svh - var(--spacing-navbar-height));
   --spacing-main-width: 76rem;
   --spacing-prose: 46rem;
-
-  --spacing-scroll-y: 0;
-  --spacing-scroll-x: 0;
-  --spacing-scrollpx-y: calc(var(--spacing-scroll-y) * 1px);
-  --spacing-scrollpx-x: calc(var(--spacing-scroll-x) * 1px);
-
   --breakpoint-lg: 64rem;
-
   --font-family-main: 'Figtree', sans-serif;
   --font-family-misc: 'Fraunces', serif;
   --font-family-code: 'DM Mono', monospace;
-  --default-font-family: var(--font-main);
-  --default-mono-font-family: var(--font-mono);
-
   --text-xs: 0.75rem;
   --text-sm: 0.825rem;
   --text-md: 1rem;
@@ -61,8 +71,6 @@
   --text-3xl: 3.5rem;
   --text-4xl: 4.75rem;
   --text-5xl: 6.25rem;
-
-  --text-xs--line-height: 1.675;
   --text-xs--line-height: 1.65;
   --text-sm--line-height: 1.625;
   --text-md--line-height: 1.6;
@@ -72,74 +80,38 @@
   --text-3xl--line-height: 1.3;
   --text-4xl--line-height: 1.225;
   --text-5xl--line-height: 1.15;
-  --text-big--line-height: 1.15;
-  --text-biggest--line-height: 1.15;
-
-  --letter-spacing-tighter: -0.05em;
-  --letter-spacing-tight: -0.025em;
-  --letter-spacing-normal: 0em;
-  --letter-spacing-wide: 0.025em;
-  --letter-spacing-wider: 0.05em;
-  --letter-spacing-widest: 0.1em;
-
   --line-height-none: 1;
   --line-height-xs: 1.25;
   --line-height-sm: 1.375;
   --line-height-md: 1.5;
   --line-height-lg: 1.625;
   --line-height-lg: 2;
-
   --font-weight-thin: 250;
   --font-weight-normal: 375;
   --font-weight-semibold: 500;
   --font-weight-bold: 625;
   --font-weight-black: 750;
-
-  --blur-xs: 3px;
-  --blur-sm: 6px;
-  --blur-md: 12px;
-  --blur-lg: 24px;
-  --blur-xl: 48px;
-
-  --z-index-front: 99;
+  --blur-io-face: 6px;
+  --scale-io-press: 98%;
   --z-index-frontmost: calc(infinity);
-
-  --opacity-0: 0;
-  --opacity-softer: 30%;
+  --opacity-softest: 30%;
   --opacity-soft: 60%;
-  --opacity-full: 100%;
-  --opacity-backdrop: 85%;
-
-  --border-width-0: 0px;
+  --opacity-overlay: 85%;
+  --opacity-io-face: 15%;
+  --opacity-io-border: 20%;
   --border-width-sm: 0.5px;
   --border-width-md: 1.5px;
   --border-width-lg: 3px;
-  --default-border-width: var(--border-width-md);
+  --border-width-io: var(--border-width-md);
+  --stroke-width-io-icon: 2px;
+  --outline-width-focus: 3px;
 
-  --stroke-width-0: 0px;
-  --stroke-width-sm: var(--border-width-sm);
-  --stroke-width-md: var(--border-width-md);
-  --stroke-width-lg: var(--border-width-lg);
-  --default-stroke-width: var(--stroke-width-md);
-
-  --outline-width-0: 0px;
-  --outline-width-sm: var(--border-width-sm);
-  --outline-width-md: var(--border-width-md);
-  --outline-width-lg: var(--border-width-lg);
-  --default-outline-width: var(--outline-width-lg);
-
-  --ease-linear: linear;
-  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
-  --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
-  --ease-in-out: cubic-bezier(0.87, 0, 0.13, 1);
-  --default-transition-timing-function: var(--transition-timing-function-in-out);
-
-  --transition-duration-xfast: 50ms;
-  --transition-duration-fast: 125ms;
-  --transition-duration-medium: 300ms;
-  --transition-duration-slow: 600ms;
-  --transition-duration-xslow: 1200ms;
-  --default-transition-duration: var(--transition-duration-medium);
+  --default-font-family: var(--font-main);
+  --default-mono-font-family: var(--font-mono);
+  --default-border-width: var(--border-width-sm);
+  --default-outline-width: var(--outline-width-focus);
+  --default-transition-duration: 125ms;
+  --default-transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
 
   @keyframes pulse {
     50% {
@@ -147,175 +119,8 @@
     }
   }
 
+  @keyframes wiggle {
+  }
+
   --animate-pulse: pulse 2s ease-in-out infinite;
-
-  /* Theme values required for style components */
-
-  --color-io: light-dark(#1e1e1e, oklch(0.77 0.01 80));
-  --color-io-accent: light-dark(#1e1e1e, oklch(0.77 0.01 80));
-  --color-on-io: light-dark(#1e1e1e, white);
-  --color-on-io-accent: light-dark(#1e1e1e, white);
-  --color-cta: var(--color-primary);
-  --color-cta-accent: var(--color-primary);
-  --color-on-cta: var(--color-on-primary);
-  --color-on-cta-accent: var(--color-on-primary);
-  --color-success: light-dark(green, lightgreen);
-  --color-success-accent: light-dark(green, lightgreen);
-  --color-on-success: light-dark(white, white);
-  --color-on-success-accent: light-dark(white, white);
-  --color-error: light-dark(red, red);
-  --color-error-accent: light-dark(red, red);
-  --color-on-error: light-dark(white, white);
-  --color-on-error-accent: light-dark(white, white);
-  --color-caution: light-dark();
-  --color-caution-accent: light-dark();
-  --color-on-caution: light-dark();
-  --color-on-caution-accent: light-dark();
-  --color-overlay: light-dark();
-  --color-overlay-accent: light-dark();
-  --color-on-overlay: light-dark();
-  --color-on-overlay-accent: light-dark();
-  --color-popover: light-dark();
-  --color-popover-accent: light-dark();
-  --color-on-popover: light-dark();
-  --color-on-popover-accent: light-dark();
-
-  --radius-io: var(--radius-md);
-
-  --spacing-io: 3em;
-  --spacing-io-padding: 1em;
-  --spacing-io-gap: 0.5em;
-  --spacing-io-face-inset: 0.25em;
-  --spacing-io-icon: 1.25em;
-  --spacing-io-nesting: 0.35em;
-
-  --scale-io-press: 0.96;
-
-  --blur-io-face: 6px;
-
-  --opacity-io-face: 15%;
-
-  --border-width-io: 1px;
-
-  --stroke-width-io-icon: 2px;
-
-  --outline-width-io-focus: var(--border-width-focus);
-}
-
-@custom-variant light {
-  &:where(.scheme-light, .scheme-light *) {
-    @slot;
-  }
-}
-
-@custom-variant dark {
-  &:where(.scheme-dark, .scheme-dark *) {
-    @slot;
-  }
-}
-
-@custom-variant icon {
-  &.lucide-icon {
-    @slot;
-  }
-}
-
-@custom-variant danger {
-  &[data-danger='true'] {
-    @slot;
-  }
-}
-
-@custom-variant checked {
-  &:checked,
-  &[aria-checked='true'],
-  &[data-state='checked'],
-  &[aria-selected='true'],
-  &[aria-pressed='true'] {
-    @slot;
-  }
-}
-
-@custom-variant open {
-  &[aria-expanded='true'],
-  &[data-state='open'],
-  &[open],
-  &:popover-open {
-    @slot;
-  }
-}
-
-@custom-variant closed {
-  &[aria-expanded='false'],
-  &[data-state='closed'] {
-    @slot;
-  }
-}
-
-@custom-variant modal {
-  &[aria-modal='true'],
-  &:modal {
-    @slot;
-  }
-}
-
-@custom-variant supermodal {
-  &[aria-modal='true'][data-super-modal],
-  &:modal[data-super-modal] {
-    @slot;
-  }
-}
-
-@custom-variant current {
-  &[aria-current='page'],
-  &[aria-current='step'],
-  &[aria-current='location'],
-  &[aria-current='date'],
-  &[aria-current='time'],
-  &[aria-current='true'] {
-    @slot;
-  }
-}
-
-@custom-variant disabled {
-  &:disabled,
-  &[aria-disabled='true'],
-  &[data-disabled='true'],
-  &:is(a):not(:any-link) {
-    @slot;
-  }
-}
-
-@custom-variant error {
-  &[aria-invalid='true'],
-  &[data-error='true'],
-  &:user-invalid {
-    @slot;
-  }
-}
-
-@custom-variant busy {
-  &[aria-busy='true'] {
-    @slot;
-  }
-}
-
-@custom-variant vertical {
-  &[data-orientation='vertical'],
-  &[aria-orientation='vertical'] {
-    @slot;
-  }
-}
-
-@custom-variant horizontal {
-  &[data-orientation='horizontal'],
-  &[aria-orientation='horizontal'] {
-    @slot;
-  }
-}
-
-@custom-variant ripple {
-  &[data-ripple-root] {
-    @slot;
-  }
 }
