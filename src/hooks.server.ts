@@ -1,6 +1,3 @@
-import { i18n } from '$lib/i18n/adapter';
+import i18n from '$lib/i18n/handle.server';
 
-export const handle = i18n.handle({
-  langPlaceholder: '%lang%',
-  textDirectionPlaceholder: '%dir%',
-});
+export const handle = i18n;
