@@ -10,9 +10,12 @@ const config = {
   extensions: ['.svelte', ...markdown_ext],
   preprocess: [markdown({ extensions: markdown_ext })],
   kit: {
-    adapter: adapter(),
+    adapter: adapter({ fallback: '404.html' }),
     alias: {
       $messages: 'src/lib/i18n/generated/messages.js',
+    },
+    paths: {
+      base: process.argv.includes('dev') ? '' : process.env.BASE_PATH,
     },
   },
 };
