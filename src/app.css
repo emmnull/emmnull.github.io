@@ -1,29 +1,42 @@
 @layer theme, base, components, utilities;
 
-@import 'tailwindcss';
+@import 'tailwindcss/preflight.css' layer(base);
+@import 'tailwindcss/utilities.css';
 @import './styles/variants';
+@import './styles/prose';
 @import './styles/proportion';
-@import './styles/nesting';
 @import './styles/pattern';
-@import './styles/coarse-target.css';
-@import './styles/button' layer(components);
+@import './styles/badge.css' layer(components);
+@import './styles/button.css' layer(components);
+@import './styles/chip.css' layer(components);
 
 @theme {
-  --color-base: light-dark(oklch(0.79 0.02 247.99), oklch(0.18 0 0));
-  --color-primary: light-dark(#1e1e1e, oklch(0.58 0.2 275));
-  --color-secondary: light-dark(brown, yello);
+  --font-main: 'Figtree Variable', sans-serif;
+  --font-misc: 'EB Garamond Variable', serif;
+  --font-mono: 'Spline Sans Mono Variable', monospace;
+  --color-base: light-dark(oklch(0.79 0.02 247.99), oklch(0.18 0.002 70));
+  --color-base-alt: light-dark(oklch(0.79 0.02 247.99), oklch(0.21 0.002 50));
+  --color-primary: light-dark(#1e1e1e, oklch(0.58 0.21 var(--angle-primary-hue)));
+  --color-primary-alt: light-dark(#1e1e1e, oklch(0.74 0.24 calc(var(--angle-primary-hue) + 5deg)));
+  --color-secondary: light-dark(#1e1e1e, oklch(0.55 0.21 calc(var(--angle-primary-hue) + 100deg)));
+  --color-secondary-alt: light-dark(#1e1e1e, oklch(0.71 0.24 calc(var(--angle-primary-hue) + 105deg)));
   --color-io: light-dark(#1e1e1e, buttonface);
+  --color-io-alt: light-dark(#1e1e1e, buttonface);
   --color-overlay: ;
   --color-popover: light-dark();
-  --color-cta: var(--color-primary);
+  --color-cta: light-dark(#1e1e1e, oklch(0.6 0.25 calc(var(--angle-primary-hue) + 10deg)));
   --color-caution: light-dark();
   --color-error: light-dark(red, red);
   --color-success: light-dark(green, lightgreen);
   --color-notice: light-dark(blue, blue);
   --color-on-base: light-dark(oklch(0.21 0.0059 64.02), oklch(0.77 0.01 83.27));
+  --color-on-base-alt: light-dark();
   --color-on-primary: light-dark(white, white);
+  --color-on-primary-alt: light-dark(white, white);
   --color-on-secondary: light-dark(black, white);
-  --color-on-io: light-dark(#1e1e1e, grey);
+  --color-on-secondary-alt: light-dark(black, white);
+  --color-on-io: light-dark(#1e1e1e, oklch(0.75 0.01 90));
+  --color-on-io-alt: light-dark(#1e1e1e, oklch(0.75 0.01 90));
   --color-on-overlay: color-mix(in oklch, var(--color-overlay), light-dark(black, white) 85%);
   --color-on-popover: color-mix(in oklch, var(--color-popover), light-dark(black, white) 85%);
   --color-on-cta: color-mix(in oklch, var(--color-cta), light-dark(white, black) 85%);
@@ -54,8 +67,8 @@
   --spacing-root-gap: 1rem;
   --spacing-menu-padding: 0.25em;
   --spacing-menu-gap: var(--outline-width-focus);
-  --spacing-navbar-height: calc(0.825 * (var(--spacing-root-padding) + var(--spacing-root-gap) + var(--spacing-io)));
-  --spacing-main-height: calc(100svh - var(--spacing-navbar-height));
+  --spacing-navbar-height: calc(var(--spacing-root-gap) + var(--spacing-root-gap) + 0.825 * var(--spacing-io));
+  --spacing-main-height: calc(100dvh - var(--spacing-navbar-height));
   --spacing-main-width: 76rem;
   --spacing-prose: 46rem;
   --breakpoint-lg: 64rem;
@@ -92,19 +105,21 @@
   --font-weight-bold: 625;
   --font-weight-black: 750;
   --blur-io-face: 6px;
-  --scale-io-press: 98%;
+  --scale-press: 98%;
   --z-index-frontmost: calc(infinity);
-  --opacity-softest: 30%;
-  --opacity-soft: 60%;
-  --opacity-overlay: 85%;
-  --opacity-io-face: 15%;
-  --opacity-io-border: 20%;
+  --opacity-faint: 65%;
+  --opacity-fainter: 35%;
+  --opacity-faintest: 15%;
+  --opacity-overlay-bg: 85%;
+  --opacity-io-background: 12.5%;
+  --opacity-io-border: 25%;
   --border-width-sm: 0.5px;
   --border-width-md: 1.5px;
   --border-width-lg: 3px;
-  --border-width-io: var(--border-width-md);
-  --stroke-width-io-icon: 2px;
+  --border-width-io: 1px;
+  --stroke-width-io-icon: 1.75px;
   --outline-width-focus: 3px;
+  --transform-io-active: scale(var(--scale-press));
 
   --default-font-family: var(--font-main);
   --default-mono-font-family: var(--font-mono);
@@ -122,5 +137,55 @@
   @keyframes wiggle {
   }
 
-  --animate-pulse: pulse 2s ease-in-out infinite;
+  /* animation: rotate steps(60) 60s infinite; */
+  @keyframes spin {
+    from {
+      rotate: 0;
+    }
+    to {
+      rotate: 1turn;
+    }
+  }
+}
+
+@layer base {
+  @property --angle-primary-hue {
+    syntax: '<angle>';
+    inherits: true;
+    initial-value: 60deg;
+  }
+
+  @keyframes primary-hue-spin {
+    to {
+      --angle-primary-hue: 294deg;
+    }
+  }
+
+  ::-moz-selection {
+    color: var(--color-on-base-alt);
+    background: var(--color-primary);
+  }
+
+  ::selection {
+    color: var(--color-on-base-alt);
+    background: var(--color-primary);
+  }
+
+  :root {
+    background: var(--color-base);
+    position: relative;
+    color: var(--color-on-base);
+    scroll-padding-top: var(--spacing-navbar-height);
+    accent-color: var(--color-primary);
+    /* animation: 60s primary-hue-spin infinite alternate; */
+    /* transition: --angle-primary-hue 0s; */
+  }
+
+  body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+    background: var(--color-base);
+  }
 }

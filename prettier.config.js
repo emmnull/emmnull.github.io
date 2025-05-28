@@ -1,8 +1,6 @@
-/**
- * @type {import('prettier').Config}
- */
+/** @type {import('prettier').Config} */
 export default {
-  printWidth: 100,
+  printWidth: 80,
   tabWidth: 2,
   useTabs: false,
   semi: true,
@@ -37,9 +35,13 @@ export default {
   ],
   jsdocDescriptionWithDot: true,
   jsdocPreferCodeFences: true,
-  jsdocCommentLineStrategy: 'multiline',
+  // jsdocCommentLineStrategy: 'multiline',
   jsdocKeepUnParseAbleExampleIndent: true,
-  jsdocTagsOrder: '{"example":100}',
+  jsdocTagsOrder: '{"this": 0, "example":100}',
   jsdocSeparateTagGroups: true,
-  plugins: ['prettier-plugin-jsdoc', 'prettier-plugin-packagejson', 'prettier-plugin-svelte'],
+  plugins: [
+    'prettier-plugin-jsdoc',
+    'prettier-plugin-packagejson',
+    'prettier-plugin-svelte',
+  ],
 };

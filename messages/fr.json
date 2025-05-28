@@ -1,17 +1,57 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "hello": "monde",
-  "posts": "Articles",
+  "available": "Disponible",
   "back_to_top": "Retourner en haut",
-  "tools": "Outils",
-  "not_defined": "Non défini",
   "blog": "Blogue",
-  "search": "Rechercher",
-  "language": "Langue",
-  "workshop": "Atelier",
-  "theme_system": "Système",
+  "copy": "Copier",
+  "education": "Éducation",
+  "education_ba": "B.A.",
+  "education_bachelor": "Baccalauréat",
+  "education_desco": "Aménagement, design et complexity",
+  "education_graphic_design": "Design graphique",
+  "education_master": "Maitrise",
+  "education_msc": "M.Sc.",
+  "home": "Accueil",
+  "home_catchphrase": "Hi, I'm Emmanuel and I like to design interfaces",
+  "language": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "match": {
+        "countPlural=one": "Langue",
+        "countPlural=other": "Langues"
+      },
+      "selectors": ["countPlural"]
+    }
+  ],
+  "not_defined": "Non défini",
+  "post": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "match": {
+        "countPlural=one": "Publication",
+        "countPlural=other": "Publications"
+      },
+      "selectors": ["countPlural"]
+    }
+  ],
+  "resume": "CV",
+  "search": "Chercher",
+  "styles": "Styles",
+  "theme": "Thème",
   "theme_dark": "Sombre",
   "theme_light": "Clair",
-  "theme": "Thème",
-  "design_system": "Système de design"
+  "theme_system": "Système",
+  "tool": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "match": {
+        "countPlural=one": "Outil",
+        "countPlural=other": "Outils"
+      },
+      "selectors": ["countPlural"]
+    }
+  ],
+  "work": "Travail",
+  "workshop": "Atelier",
+  "workshop_catchphrase": "Mes bricolages exploratoires"
 }

@@ -1,12 +1,17 @@
 import { browser } from '$app/environment';
 import { randomId } from '$lib/common/string';
-import type { HTMLAttributes, HTMLButtonAttributes, HTMLDialogAttributes } from 'svelte/elements';
+import type {
+  HTMLAttributes,
+  HTMLButtonAttributes,
+  HTMLDialogAttributes,
+} from 'svelte/elements';
 import { Bound } from './bound.svelte';
 import { Lockscroll } from './lockscroll.svelte';
 import { asGetSet, attrSelector, isHTMLElement } from './utils';
 
 /**
- * Create a dialog using a hybrid of declarative HTML and reactive state control.
+ * Create a dialog using a hybrid of declarative HTML and reactive state
+ * control.
  */
 export class Dialog {
   static readonly attr = {
@@ -26,40 +31,30 @@ export class Dialog {
 
   constructor(
     options: {
-      /**
-       * Initial state of the dialog.
-       */
+      /** Initial state of the dialog. */
       open?: boolean;
       /**
-       * Show the dialog as a modal, meaning it should render all other elements in the same
-       * container `inert` and block scroll.
+       * Show the dialog as a modal, meaning it should render all other elements
+       * in the same container `inert` and block scroll.
        */
       modal?: boolean;
-      /**
-       * Close the dialog whenever user clicks outside.
-       */
+      /** Close the dialog whenever user clicks outside. */
       lightDismiss?: boolean;
-      /**
-       * If the user should control visibility of rhe.
-       */
+      /** If the user should control visibility of rhe. */
       forceVisible?: boolean;
       /**
-       * Callback executed before attempting to open the dialog. Return true to proceed, else will
-       * prevent opening the dialog.
+       * Callback executed before attempting to open the dialog. Return true to
+       * proceed, else will prevent opening the dialog.
        */
       beforeOpen?: (e?: Event) => boolean;
-      /**
-       * Callback executed once the dialog has successfylly opened.
-       */
+      /** Callback executed once the dialog has successfylly opened. */
       onOpen?: (e?: Event) => void;
       /**
-       * Callback executed before attempting to close the dialog. Return true to proceed, else will
-       * prevent closing the dialog.
+       * Callback executed before attempting to close the dialog. Return true to
+       * proceed, else will prevent closing the dialog.
        */
       beforeClose?: (e?: Event) => boolean;
-      /**
-       * Callback executed once the dialog has successfully closed.
-       */
+      /** Callback executed once the dialog has successfully closed. */
       onClose?: (e?: Event) => void;
     } = {},
   ) {
@@ -73,6 +68,11 @@ export class Dialog {
       this.#lockscroll = new Lockscroll(document.documentElement);
     }
 
+    /**
+     * Should be implemented through createSubscriber() instead.
+     *
+     * @see https://www.youtube.com/live/BGNykPO4L7c?si=BO4UcJQR0ds70ybd&t=5934
+     */
     $effect.root(() => {
       if (options.open) {
         this.open = true;
@@ -118,8 +118,8 @@ export class Dialog {
   }
 
   /**
-   * Update the dialog state with the appropriate state change handlers. Allows granular control of
-   * events triggering state changes.
+   * Update the dialog state with the appropriate state change handlers. Allows
+   * granular control of events triggering state changes.
    *
    * @returns `true` if successfully changed state, else `false` if aborted.
    *
@@ -133,7 +133,9 @@ export class Dialog {
       return;
     }
     // Preceding handlers.
-    const proceed = (value ? this.#options.beforeOpen : this.#options.beforeClose)?.(e) ?? true;
+    const proceed =
+      (value ? this.#options.beforeOpen : this.#options.beforeClose)?.(e) ??
+      true;
     if (!proceed) {
       if (!e?.defaultPrevented) {
         e?.preventDefault();
@@ -167,7 +169,8 @@ export class Dialog {
   /**
    * @returns Attributes for the functional dialog element.
    *
-   * @todo Use attachment once feature is released. (https://github.com/sveltejs/svelte/pull/15000)
+   * @todo Use attachment once feature is released.
+   *   (https://github.com/sveltejs/svelte/pull/15000)
    */
   getRootAttributes() {
     $effect(() => {
@@ -186,7 +189,9 @@ export class Dialog {
       [Dialog.attr.root]: this.#id,
       'aria-modal': this.modal || undefined,
       onclick: (e) => {
-        const content = document.querySelector(attrSelector(Dialog.attr.content, this.#id));
+        const content = document.querySelector(
+          attrSelector(Dialog.attr.content, this.#id),
+        );
         if (this.lightDismiss) {
           if (isHTMLElement(e.target) && content?.contains(e.target)) {
             return;
@@ -203,9 +208,7 @@ export class Dialog {
     } as HTMLDialogAttributes;
   }
 
-  /**
-   * @returns Attributes for custom backdrop.
-   */
+  /** @returns Attributes for custom backdrop. */
   getOverlayAttributes() {
     return {
       ...this.#baseAttr,
@@ -214,8 +217,9 @@ export class Dialog {
   }
 
   /**
-   * @returns Attributes for the dialog's visual content box. This additionnal nesting is needed to
-   *   allow better handling of light dismissal and customization of backdrops.
+   * @returns Attributes for the dialog's visual content box. This additionnal
+   *   nesting is needed to allow better handling of light dismissal and
+   *   customization of backdrops.
    */
   getContentAttributes() {
     return {
@@ -225,7 +229,8 @@ export class Dialog {
   }
 
   /**
-   * @returns Attributes for open/close/toggle trigger(s), typically used outside the dialog.
+   * @returns Attributes for open/close/toggle trigger(s), typically used
+   *   outside the dialog.
    */
   getTriggerAttributes({
     mode = 'toggle',
@@ -237,15 +242,14 @@ export class Dialog {
       [Dialog.attr.trigger]: '',
       'aria-haspopup': 'dialog' as const,
       onclick: (e) => {
-        const open = mode === 'open' ? true : mode === 'close' ? false : !this.open;
+        const open =
+          mode === 'open' ? true : mode === 'close' ? false : !this.open;
         this.#setOpen(open, e);
       },
     } satisfies HTMLButtonAttributes;
   }
 
-  /**
-   * @returns Attributes for close button(s).
-   */
+  /** @returns Attributes for close button(s). */
   getCloseAttributes() {
     return {
       [Dialog.attr.close]: '',

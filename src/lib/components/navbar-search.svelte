@@ -2,7 +2,7 @@
   import * as m from '$messages';
   import { Command, Search } from 'lucide-svelte';
   import Ripple from './ripple.svelte';
-  import * as search from './searchbar.svelte';
+  import * as search from './search.svelte';
 </script>
 
 <button class="input-group-bordered" {...search.dialog.getTriggerAttributes()}>

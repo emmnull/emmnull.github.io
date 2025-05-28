@@ -4,142 +4,155 @@
 .button-ghost,
 .button-cta,
 .button-nav {
-  --button-text: ;
-  --button-face: ;
-  --button-border: ;
+  /* props */
+  --button-color: ;
+  --button-background: ;
+  --button-border-color: ;
   --button-border-style: ;
-
-  contain: layout;
+  /* base */
+  color: var(--button-color);
+  background: var(--button-background);
+  border-color: var(--button-border-color);
+  border-style: var(--button-border-style);
+  /* contain: layout; */
   position: relative;
   display: inline-flex;
   flex-direction: row;
   flex-wrap: nowrap;
   text-overflow: ellipsis;
   align-items: center;
-  gap: var(--spacing-io-gap);
-  height: var(--spacing-io);
-  color: var(--button-text, currentcolor);
-  background: --alpha(var(--button-face) / var(--button-face-opacity));
-  border-color: --alpha(var(--button-border) / var(--button-border-opacity));
-  border-width: var(--border-width-io);
-  border-style: var(--button-border-style);
+  justify-content: center;
+  transition-property: color, background, border, inset;
+  transition-timing-function: ease-out;
+  transition-duration: var(--default-transition-duration);
   padding-inline: var(--spacing-io-padding);
   border-radius: var(--radius-io);
-  transition-duration: var(--default-transition-duration);
-  transition-property: all;
-  transition-timing-function: ease-out;
-
-  &:not(input, select, textarea) {
-    background: var(--button-pseudo-face, var(--button-face));
-    border-style: var(--button-pseudo-border, var(--button-border-style));
-
-    /* pseudo-face */
-    &::before {
-      content: var(--button-pseudo-face);
-      background: --alpha(var(--button-face) / var(--button-face-opacity));
-      inset: var(--spacing-io-face-inset);
-      pointer-events: none;
-      z-index: -1;
-      position: absolute;
-      border-radius: inherit;
-      transition-property: all;
-      transition-duration: inherit;
-      transition-timing-function: inherit;
-    }
-
-    /* pseudo-border */
-    &::after {
-      content: var(--button-pseudo-border);
-      border-style: var(--button-border-style);
-      pointer-events: none;
-      z-index: 1;
-      position: absolute;
-      border-radius: inherit;
-      border-width: inherit;
-      border-color: inherit;
-      inset: 0;
-      transition-property: all;
-      transition-duration: inherit;
-      transition-timing-function: inherit;
-    }
-  }
-
+  gap: var(--spacing-io-gap);
+  height: var(--spacing-io);
+  border-width: var(--border-width-io);
   /* icon */
   .button-icon,
-  @variant *:icon {
+  > svg[data-icon],
+  > svg.lucide-icon {
     width: var(--spacing-io-icon);
     height: var(--spacing-io-icon);
     transition-duration: inherit;
     stroke-width: var(--stroke-width-io-icon);
   }
-
   /* hover */
   &:hover {
     &:not(:active) {
       transition-duration: 0s;
-      &::before {
-        transition-property: inset;
-        transition-duration: calc(0.25 * var(--default-transition-duration));
-      }
-    }
-    @variant not-current {
-      &::before {
-        inset: 0;
-      }
     }
   }
-
   /* focused */
   &:focus-visible {
     outline-color: var(--color-cta-accent);
     outline-width: var(--outline-width-io-focus);
   }
-
   /* active */
   &:active {
     transition-duration: calc(0.5 * var(--default-transition-duration));
-    scale: var(--scale-io-press);
+    transform: var(--transform-io-active);
   }
-
   /* current */
-  @variant current {
-    &::before {
-      inset: 0;
-    }
+  &:is([aria-current], :target) {
     .button-icon,
-    @variant *:icon {
+    > svg[data-icon],
+    > svg.lucide-icon {
       opacity: 100%;
     }
   }
-
   /* aspect */
   &.aspect-square {
     padding-inline: 0;
-    justify-content: center;
   }
   &:not(.aspect-square) {
     .button-icon,
-    @variant *:icon {
-      opacity: 30%;
+    > svg[data-icon],
+    > svg.lucide-icon {
+      opacity: 35%;
     }
     &:hover {
-      .button-icon {
-        opacity: 60%;
+      .button-icon,
+      > svg[data-icon],
+      > svg.lucide-icon {
+        opacity: 70%;
       }
+    }
+  }
+}
+
+/* with pseudo face
+(animated inset) */
+.button-bordered,
+.button-dashed,
+.button-ghost,
+.button-nav {
+  &:not(input, select, textarea) {
+    /* reset */
+    background: none;
+    /* base */
+    &::before {
+      content: '';
+      background: var(--button-background);
+      inset: var(--spacing-io-face-inset);
+      pointer-events: none;
+      z-index: -1;
+      position: absolute;
+      border-radius: inherit;
+      transition: inherit;
+    }
+    /* hover */
+    &:hover {
+      &:not(:active)::before {
+        transition-property: inset;
+        transition-duration: calc(0.25 * var(--default-transition-duration));
+      }
+      &:not([aria-current], :target)::before {
+        inset: 0;
+      }
+    }
+    /* current */
+    &:is([aria-current], :target)::before {
+      inset: 0;
+    }
+  }
+}
+
+/* with pseudo-border
+(prevent affecting sizing and inner layout) */
+.button-bordered,
+.button-dashed,
+.button-nav {
+  &:not(input, select, textarea) {
+    /* reset */
+    border-style: none;
+    /* base */
+    &::after {
+      content: '';
+      border-color: var(--button-border-color);
+      border-style: var(--button-border-style);
+      border-width: var(--border-width-io);
+      pointer-events: none;
+      z-index: 1;
+      position: absolute;
+      border-radius: inherit;
+      inset: 0;
+      transition-property: all;
+      transition-duration: inherit;
+      transition-timing-function: inherit;
     }
   }
 }
 
 /* default */
 .button {
-  --button-pseudo-face: '';
-  --button-text: var(--color-on-io);
-  --button-face: var(--color-io);
-  --button-face-opacity: 0;
+  /* --button-color: var(--color-primary); */
+  --button-background: --alpha(var(--color-io) / var(--opacity-io-background));
   &:hover {
-    @variant not-current {
+    &:not([aria-current], :target) {
       --button-text: color-mix(in oklch, currentcolor, light-dark(black, white) 50%);
-      --button-face-opacity: var(--opacity-io-face);
     }
   }
 }
@@ -147,7 +160,7 @@
 /* bordered */
 .button-bordered,
 .button-dashed {
-  --button-pseudo-face: '';
+  /* --button-pseudo-face: '';
   --button-pseudo-border: '';
   --button-text: var(--color-on-io);
   --button-face: var(--color-io);
@@ -156,12 +169,12 @@
   --button-border-opacity: calc(125% * var(--opacity-io-face));
   --button-border-style: solid;
   &:hover {
-    @variant not-current {
+    &:not([aria-current], :target) {
       --button-text: color-mix(in oklch, currentcolor, light-dark(black, white) 50%);
       --button-face-opacity: var(--opacity-io-face);
       --button-border-opacity: 0%;
     }
-  }
+  } */
 }
 
 /* dashed */
@@ -171,50 +184,34 @@
 
 /* ghost/skeleton */
 .button-ghost {
-  --button-pseudo-face: '';
-  --button-text: var(--color-on-io);
-  --button-face: var(--color-io);
-  --button-face-opacity: 0;
-  &:hover {
-    @variant not-current {
-      --button-text: color-mix(in oklch, currentcolor, light-dark(black, white) 50%);
-      --button-face-opacity: var(--opacity-io-face);
-    }
-  }
-  /* @variant current {
-    --button-text: var(--color-cta-accent);
-    --button-face: --alpha(var(--color-cta-accent) / var(--opacity-io-face));
-  } */
 }
 
 /* call-to-action */
 .button-cta {
-  color: var(--color-on-cta);
-  --button-face: var(--color-cta);
-  &:hover {
-    color: var(--color-on-cta-accent);
-    --button-face: var(--color-cta-accent);
-  }
 }
 
 /* nav */
 .button-nav {
-  --pseudo-face: '';
-  color: var(--color-on-io);
-  /* backdrop-filter: url(#glass); */
+  /* backdrop-filter: url(#beveled); */
+  font-weight: var(--font-weight-semibold);
+  --button-color: var(--color-on-io);
+  --button-background: color-mix(in oklch, var(--color-primary) 0%, transparent);
+  --button-border-color: color-mix(in oklch, currentcolor 0%, transparent);
+  --button-border-style: solid;
   &:hover {
-    @variant not-current {
-      --button-face: --alpha(var(--color-cta-accent) / var(--opacity-io-face));
-      color: var(--color-cta-accent);
+    &:not([aria-current], :target) {
+      --button-color: var(--color-primary);
+      --button-background: color-mix(in oklch, var(--color-primary) var(--opacity-io-background), transparent);
     }
   }
-  @variant current {
-    color: var(--color-cta);
-    & > * {
-      @variant icon {
-        opacity: 50%;
-        animation: var(--animate-pulse);
-      }
+  &:is([aria-current], :target) {
+    --button-color: var(--color-primary);
+    --button-border-color: color-mix(in oklch, var(--color-primary) var(--opacity-io-border), transparent);
+    .button-icon,
+    > svg[data-icon],
+    & > svg.lucide-icon {
+      opacity: 50%;
+      animation: 5s pulse infinite;
     }
   }
 }

@@ -1,4 +1,24 @@
-.chip {
+.chip,
+.chip-bordered,
+.chip-dashed,
+.chip-ghost,
+.chip-cta {
+  /* props */
+  --chip-color: ;
+  --chip-background: ;
+  --chip-border-color: ;
+  --chip-border-style: ;
+  /* base */
   position: relative;
   height: var(--spacing-io);
+  white-space: nowrap;
+  border-radius: var(--radius-full);
+}
+
+/* default */
+.chip {
+}
+
+/* bordered */
+.chip-bordered {
 }

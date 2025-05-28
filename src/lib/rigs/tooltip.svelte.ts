@@ -1,5 +1,5 @@
-import { KEYS } from '$lib/common/constants';
 import { randomId } from '$lib/common/string';
+import { KEYS } from '$lib/data/meta';
 import {
   autoUpdate,
   computePosition,
@@ -38,61 +38,45 @@ export class Tooltip {
 
   constructor(options: {
     /**
-     * Optional group to which the tooltip's exclusivity and visibility behaviors should be related.
-     * Useful to refine consideration of preceding or succeding active tooltips in logic such as
-     * opening and closing delay.
+     * Optional group to which the tooltip's exclusivity and visibility
+     * behaviors should be related. Useful to refine consideration of preceding
+     * or succeding active tooltips in logic such as opening and closing delay.
      */
     group?: unknown;
     /**
-     * Immediately close the tooltip whenever user clicks outside the tooltip content or presses
-     * `Esc`. Also applies if the click occurs on trigger element.
+     * Immediately close the tooltip whenever user clicks outside the tooltip
+     * content or presses `Esc`. Also applies if the click occurs on trigger
+     * element.
      */
     lightDismiss?: boolean;
     /**
-     * Delay in `ms` before the tooltip should open once focused/hovered. Open delay is not applied
-     * if tooltip from same group was previously triggered and is still opened.
+     * Delay in `ms` before the tooltip should open once focused/hovered. Open
+     * delay is not applied if tooltip from same group was previously triggered
+     * and is still opened.
      */
     openDelay?: number;
     /**
-     * Delay in `ms` before the tooltip should close after focus/hover is done. Delay is aborted if
-     * another tooltip in the same group is triggered.
+     * Delay in `ms` before the tooltip should close after focus/hover is done.
+     * Delay is aborted if another tooltip in the same group is triggered.
      */
     closeDelay?: number;
-    /**
-     * Initial state of the tooltip.
-     */
+    /** Initial state of the tooltip. */
     open?: boolean;
-    /**
-     * If the consumer controls visibility.
-     */
+    /** If the consumer controls visibility. */
     forceVisible?: boolean;
-    /**
-     * Floating placement.
-     */
+    /** Floating placement. */
     placement?: Placement;
-    /**
-     * Floating strategy.
-     */
+    /** Floating strategy. */
     strategy?: Strategy;
-    /**
-     * @see https://floating-ui.com/docs/offset
-     */
+    /** @see https://floating-ui.com/docs/offset */
     offset?: OffsetOptions | false;
-    /**
-     * @see https://floating-ui.com/docs/flip
-     */
+    /** @see https://floating-ui.com/docs/flip */
     flip?: FlipOptions | false;
-    /**
-     * @see https://floating-ui.com/docs/shift
-     */
+    /** @see https://floating-ui.com/docs/shift */
     shift?: ShiftOptions | false;
-    /**
-     * @see https://floating-ui.com/docs/arrow
-     */
+    /** @see https://floating-ui.com/docs/arrow */
     arrow?: Omit<ArrowOptions, 'element'>;
-    /**
-     * Apply transform-origin middleware.
-     */
+    /** Apply transform-origin middleware. */
     transformOrigin?: false;
   }) {
     this.#options = options;
@@ -202,9 +186,7 @@ export class Tooltip {
     }
   }
 
-  /**
-   * @returns Attributes for the triggering anchor element.
-   */
+  /** @returns Attributes for the triggering anchor element. */
   getTriggerAttributes() {
     return {
       ...this.#baseAttr,
@@ -231,20 +213,24 @@ export class Tooltip {
     } satisfies HTMLAttributes<HTMLElement>;
   }
 
-  /**
-   * @returns Attributes for the floating tooltip element.
-   */
+  /** @returns Attributes for the floating tooltip element. */
   getContentAttributes() {
     let cleanup: ReturnType<typeof autoUpdate> | undefined;
     $effect(() => {
-      const contentEl = document.querySelector(attrSelector(Tooltip.attr.content, this.#id));
+      const contentEl = document.querySelector(
+        attrSelector(Tooltip.attr.content, this.#id),
+      );
       if (!isHTMLElement(contentEl)) {
         return;
       }
-      const arrowEl = document.querySelector(attrSelector(Tooltip.attr.arrow, this.#id));
+      const arrowEl = document.querySelector(
+        attrSelector(Tooltip.attr.arrow, this.#id),
+      );
       if (this.open || this.forceVisible) {
         contentEl.showPopover();
-        const triggerEl = document.querySelector(attrSelector(Tooltip.attr.trigger, this.#id));
+        const triggerEl = document.querySelector(
+          attrSelector(Tooltip.attr.trigger, this.#id),
+        );
         if (!isHTMLElement(triggerEl)) {
           return;
         }
@@ -253,7 +239,8 @@ export class Tooltip {
             placement: this.placement,
             strategy: this.strategy,
             middleware: [
-              this.#options.offset !== false && offset(this.#options.offset ?? { mainAxis: 12 }),
+              this.#options.offset !== false &&
+                offset(this.#options.offset ?? { mainAxis: 12 }),
               this.#options.flip !== false && flip(this.#options.flip),
               this.#options.shift !== false && shift(this.#options.shift),
               arrowEl && arrow({ ...this.#options.arrow, element: arrowEl }),
@@ -295,7 +282,10 @@ export class Tooltip {
         this.open = true;
       },
       onfocusout: (e) => {
-        if (!isHTMLElement(e.relatedTarget) || !e.currentTarget.contains(e.relatedTarget)) {
+        if (
+          !isHTMLElement(e.relatedTarget) ||
+          !e.currentTarget.contains(e.relatedTarget)
+        ) {
           this.open = false;
         }
       },

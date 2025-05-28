@@ -1,16 +1,11 @@
-import adapter from '@sveltejs/adapter-static';
-import markdown from './preprocessors/markdown.js';
+export const extensions = ['.md'];
 
-export const markdown_ext = ['.md'];
-
-/**
- * @type {import('@sveltejs/kit').Config}
- */
+/** @type {import('@sveltejs/kit').Config} */
 const config = {
-  extensions: ['.svelte', ...markdown_ext],
-  preprocess: [markdown({ extensions: markdown_ext })],
+  extensions: ['.svelte', ...extensions],
+  // preprocess: [mdsx({ extensions })],
   kit: {
-    adapter: adapter({ fallback: '404.html' }),
+    // adapter: adapter({ fallback: '404.html' }),
     alias: {
       $messages: 'src/lib/i18n/generated/messages.js',
     },

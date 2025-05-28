@@ -1,0 +1,86 @@
+.badge,
+.badge-ghost,
+.badge-bordered,
+.badge-dashed,
+.badge-cta {
+  /* props */
+  --badge-color: ;
+  --badge-background: ;
+  --badge-border-color: ;
+  --badge-border-style: ;
+  /* base */
+  color: var(--badge-color);
+  background: var(--badge-background);
+  border-color: var(--badge-color);
+  border-style: var(--border-style);
+  border-width: var(--border-width-io);
+  /* contain: layout; */
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  text-overflow: ellipsis;
+  align-items: center;
+  justify-content: center;
+  transition-property: color, background;
+  transition-timing-function: ease-out;
+  transition-duration: calc(var(--default-transition-duration) * 0.5);
+  gap: calc(var(--spacing-io-gap) * 0.55);
+  padding-inline: calc(var(--spacing-io-padding) * 0.6);
+  height: calc(var(--spacing-io) * 0.65);
+  border-radius: calc(var(--radius-io) * 0.7);
+  /* icon */
+  .badge-icon,
+  > svg[data-icon],
+  > svg.lucide-icon {
+    height: var(--spacing-io-icon);
+    width: var(--spacing-io-icon);
+    transition-duration: inherit;
+    stroke-width: var(--stroke-width-io-icon);
+  }
+  /* hover */
+  &:hover {
+    &:not(:active) {
+      transition-duration: 0s;
+    }
+  }
+  /* focused */
+  &:focus-visible {
+    outline-color: var(--color-cta-accent);
+    outline-width: var(--outline-width-io-focus);
+  }
+  /* active */
+  &:active {
+    transition-duration: calc(0.5 * var(--default-transition-duration));
+    transform: var(--transform-io-active);
+  }
+  /* aspect */
+  &.aspect-square {
+    padding-inline: 0;
+  }
+  &:not(.aspect-square) {
+    .button-icon,
+    > svg[data-icon],
+    > svg.lucide-icon {
+      opacity: 50%;
+    }
+    &:hover {
+      .button-icon,
+      > svg[data-icon],
+      > svg.lucide-icon {
+        opacity: 70%;
+      }
+    }
+  }
+}
+
+.badge {
+  --badge-color: var(--color-on-io-alt);
+  --badge-background: var(--color-io-alt);
+}
+
+.badge-cta {
+  --badge-color: var(--color-on-cta);
+  --badge-background: var(--color-cta);
+}

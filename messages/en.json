@@ -1,17 +1,57 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "hello": "world",
-  "posts": "Posts",
+  "available": "Available",
   "back_to_top": "Back to top",
-  "tools": "Tools",
-  "not_defined": "Not defined",
   "blog": "Blog",
+  "copy": "Copy",
+  "education": "Education",
+  "education_ba": "BA",
+  "education_bachelor": "Bachelor’s degree",
+  "education_desco": "Planning, Design and Complexity",
+  "education_graphic_design": "Graphic Design",
+  "education_master": "Master’s degree",
+  "education_msc": "MSc",
+  "home": "Home",
+  "home_catchphrase": "Hi, I'm Emmanuel and I like to design interfaces",
+  "language": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "match": {
+        "countPlural=one": "Language",
+        "countPlural=other": "Languages"
+      },
+      "selectors": ["countPlural"]
+    }
+  ],
+  "not_defined": "Not defined",
+  "post": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "match": {
+        "countPlural=one": "Post",
+        "countPlural=other": "Posts"
+      },
+      "selectors": ["countPlural"]
+    }
+  ],
+  "resume": "Resume",
   "search": "Search",
-  "language": "Language",
-  "workshop": "Workshop",
-  "theme_system": "System",
+  "styles": "Styles",
+  "theme": "Theme",
   "theme_dark": "Dark",
   "theme_light": "Light",
-  "theme": "Theme",
-  "design_system": "Design system"
+  "theme_system": "System",
+  "tool": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "match": {
+        "countPlural=one": "Tool",
+        "countPlural=other": "Tools"
+      },
+      "selectors": ["countPlural"]
+    }
+  ],
+  "work": "Work",
+  "workshop": "Workshop",
+  "workshop_catchphrase": "Crafty things I'm up to"
 }
