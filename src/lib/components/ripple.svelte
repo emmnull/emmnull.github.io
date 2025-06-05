@@ -1,10 +1,9 @@
 <script module lang="ts">
-  import { attrSelector, isHTMLElement } from '$lib//rigs/utils';
-  import { randomId } from '$lib/common/string';
+  import { createAttachmentKey } from 'svelte/attachments';
   import type { HTMLAttributes } from 'svelte/elements';
   import { on } from 'svelte/events';
 
-  class Wave {
+  class Ripple {
     #context;
     #x;
     #y;
@@ -15,7 +14,7 @@
     #animations = 0;
     #bindings: (() => void)[] = [];
 
-    constructor(host: HTMLElement, event: PointerEvent, context: Ripple) {
+    constructor(host: HTMLElement, event: PointerEvent, context: Ripples) {
       this.#context = context;
       // Using bounding client rect, even if a bit more expensive, to account for
       // child element event targets that steal the offsetX and offsetY value referentials.
@@ -32,12 +31,6 @@
         on(host, 'pointerenter', this.#enter.bind(this)),
         on(host, 'pointerleave', this.#leave.bind(this)),
       );
-
-      $effect.root(() => {
-        return () => {
-          this.cleanup();
-        };
-      });
     }
 
     #enter(e: PointerEvent) {
@@ -51,7 +44,7 @@
     }
 
     #end(e: PointerEvent) {
-      this.cleanup();
+      this.#cleanup();
       this.#done = true;
       if (e.type === 'pointercancel' || this.#outside) {
         this.#abort = true;
@@ -59,193 +52,140 @@
     }
 
     #destroy() {
-      this.cleanup();
-      this.#context.waves.splice(this.#context.waves.indexOf(this), 1);
+      this.#cleanup();
+      this.#context.ripples.splice(this.#context.ripples.indexOf(this), 1);
     }
 
-    cleanup() {
+    #cleanup() {
       for (const unbind of this.#bindings) {
         unbind();
       }
     }
 
-    getRootAttributes() {
-      const spreadDuration =
-        typeof this.#context.spreadDuration === 'function'
-          ? this.#context.spreadDuration(this.#d)
-          : this.#context.spreadDuration;
-      const outroDuration =
-        typeof this.#context.outroDuration === 'function'
-          ? this.#context.outroDuration(this.#d)
-          : this.#context.outroDuration;
+    rippleAttributes() {
       return {
-        [Ripple.attr.wave]: '',
-        [Ripple.attr.abort]: this.#abort || undefined,
-        [Ripple.attr.hide]: this.#outside || undefined,
-        [Ripple.attr.hold]: !this.#done || undefined,
+        [Ripples.attributes.ripple]: '',
+        [Ripples.attributes.abort]: this.#abort || undefined,
+        [Ripples.attributes.hide]: this.#outside || undefined,
+        [Ripples.attributes.hold]: !this.#done || undefined,
         style:
-          `${Ripple.cssvars.x}:${Math.round(this.#x)}px;` +
-          `${Ripple.cssvars.y}:${Math.round(this.#y)}px;` +
-          `${Ripple.cssvars.d}:${Math.ceil(this.#d)}px;` +
-          `${Ripple.cssvars.spreadDuration}:${spreadDuration}${typeof spreadDuration === 'string' ? '' : 'ms'};` +
-          `${Ripple.cssvars.outroDuration}:${outroDuration}${typeof outroDuration === 'string' ? '' : 'ms'};` +
-          `left: ${this.#x}px;` +
-          `top: ${this.#y}px;` +
-          `position: absolute;` +
-          `aspect-ratio: 1 / 1;` +
-          `translate: -50% -50%;` +
-          `border-radius: calc(infinity * 1px);`,
+          `--ripple-x: ${Math.round(this.#x)};` +
+          `--ripple-y: ${Math.round(this.#y)};` +
+          `--ripple-d: ${Math.ceil(this.#d)};`,
         onanimationendcapture: (e) => {
           if (e.target !== e.currentTarget) {
             return;
           }
           this.#animations++;
-          // 2 animations (spread and outro)
+          // track 2 animations (spread and outro)
           if (this.#animations >= 2) {
             this.#destroy();
           }
+        },
+        [createAttachmentKey()]: (node) => {
+          () => {
+            this.#cleanup();
+          };
         },
       } satisfies HTMLAttributes<HTMLElement>;
     }
   }
 
-  export class Ripple {
-    static attr = {
+  class Ripples {
+    static readonly attributes = {
       host: 'data-ripple-host',
-      root: 'data-ripple-root',
-      wave: 'data-ripple-wave',
+      container: 'data-ripple-container',
+      ripple: 'data-ripple',
       abort: 'data-ripple-abort',
       hold: 'data-ripple-hold',
       hide: 'data-ripple-hide',
     } as const;
 
-    static cssvars = {
-      x: '--ripple-x',
-      y: '--ripple-y',
-      d: '--ripple-d',
-      spreadDuration: '--ripple-spread-duration',
-      outroDuration: '--ripple-outro-duration',
-      spreadEasing: '--ripple-spread-easing',
-      outroEasing: '--ripple-outro-easing',
-    } as const;
+    ripples = $state<Ripple[]>([]);
 
-    #id = randomId(8);
-    #options;
-    #waves = $state<Wave[]>([]);
-
-    constructor(options: {
-      spreadDuration?: string | number | ((diameter: number) => string | number);
-      spreadEasing?: string;
-      outroDuration?: string | number | ((diameter: number) => string | number);
-      outroEasing?: string;
-    }) {
-      this.#options = options;
-      $effect.root(() => {
-        return () => {
-          for (const wave of this.#waves) {
-            wave.cleanup();
-          }
-        };
-      });
-    }
-
-    get waves() {
-      return this.#waves;
-    }
-
-    get spreadDuration() {
-      return this.#options.spreadDuration ?? ((d) => 150 + d * 0.25);
-    }
-
-    get outroDuration() {
-      return this.#options.outroDuration ?? 1000;
-    }
-
-    getRootAttributes() {
-      $effect(() => {
-        const rootEl = document.querySelector(attrSelector(Ripple.attr.root, this.#id));
-        if (!isHTMLElement(rootEl)) {
-          return;
-        }
-        const hostEl = rootEl.parentElement;
-        if (!hostEl) {
-          return;
-        }
-        hostEl.setAttribute(Ripple.attr.host, '');
-        const unpointerdown = on(hostEl, 'pointerdown', (e) => {
-          // Catching only the directly descending events, prevents conflict between nested ripple triggers.
-          if (
-            e.target instanceof Element &&
-            e.target.closest(attrSelector(Ripple.attr.host)) === e.currentTarget
-          ) {
-            this.#waves.push(new Wave(hostEl, e, this));
-          }
-        });
-        return () => {
-          unpointerdown();
-          hostEl.removeAttribute(Ripple.attr.host);
-        };
-      });
-      const outroEasing = this.#options.outroEasing
-        ? `${Ripple.cssvars.outroEasing}:${this.#options.outroEasing}`
-        : '';
-      const spreadEasing = this.#options.spreadEasing
-        ? `${Ripple.cssvars.spreadEasing}:${this.#options.spreadEasing}`
-        : '';
+    containerAttributes() {
       return {
-        [Ripple.attr.root]: this.#id,
-        style:
-          `pointer-events: none;` +
-          `position: absolute;` +
-          `top: 0;` +
-          `left: 0;` +
-          `bottom: 0;` +
-          `right: 0;` +
-          `overflow: hidden;` +
-          `border-radius: inherit;` +
-          outroEasing +
-          spreadEasing,
+        [Ripples.attributes.container]: '',
+        [createAttachmentKey()]: (node) => {
+          const host = node.parentElement;
+          if (!host) {
+            return;
+          }
+          host.setAttribute(Ripples.attributes.host, '');
+          const unpointerdown = on(host, 'pointerdown', (e) => {
+            // Catching only the directly descending events,
+            // prevents conflict between nested ripple triggers.
+            if (
+              e.target instanceof Element &&
+              e.target.closest(`[${Ripples.attributes.host}]`) ===
+                e.currentTarget
+            ) {
+              this.ripples.push(new Ripple(host, e, this));
+            }
+          });
+          return () => {
+            unpointerdown();
+            host.removeAttribute(Ripples.attributes.host);
+          };
+        },
       } satisfies HTMLAttributes<HTMLElement>;
     }
   }
 </script>
 
 <script lang="ts">
-  let {
-    class: className,
-    ...rippleProps
-  }: {
-    class?: string;
-  } & ConstructorParameters<typeof Ripple>[0] = $props();
-
-  const ripple = new Ripple(rippleProps);
+  const ripples = new Ripples();
 </script>
 
-<div class={className} {...ripple.getRootAttributes()}>
-  {#each ripple.waves as wave (wave)}
-    <div {...wave.getRootAttributes()}></div>
+<div {...ripples.containerAttributes()}>
+  {#each ripples.ripples as wave (wave)}
+    <div {...wave.rippleAttributes()}></div>
   {/each}
 </div>
 
 <style>
-  /* to do: implement as tailwind component */
-  [data-ripple-wave] {
+  [data-ripple-container] {
     --ripple-spread-easing: cubic-bezier(0, 0, 0, 1);
     --ripple-outro-easing: cubic-bezier(0, 0, 0.5, 1);
-    /* background: radial-gradient(
-			circle at center,
-			var(--ripple-color),
-			transparent calc(1.25 * var(--ripple-d))
-		); */
+    /* container-type: size;
+    container-name: ripples; */
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: hidden;
+    border-radius: inherit;
+  }
+
+  [data-ripple] {
+    --ripple-d: ;
+    --ripple-x: ;
+    --ripple-y: ;
+    --ripple-outro-duration: 1s;
+    --ripple-spread-duration: calc(150ms + var(--ripple-d) * 0.25ms);
     width: 0;
+    left: calc(1px * var(--ripple-x));
+    top: calc(1px * var(--ripple-y));
+    position: absolute;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border-radius: calc(infinity * 1px);
     opacity: 25%;
-    background: radial-gradient(circle at center, transparent -25%, currentColor 100%);
+    background: radial-gradient(
+      circle at center,
+      transparent -25%,
+      currentColor 100%
+    );
     filter: blur(6px);
-    transition: opacity calc(var(--ripple-outro-duration) * 0.25) var(--ripple-outro-easing);
+    transition: opacity calc(var(--ripple-outro-duration) * 0.25)
+      var(--ripple-outro-easing);
     animation:
-      var(--ripple-spread-duration) var(--ripple-spread-easing) 0s 1 forwards ripple-spread,
-      var(--ripple-outro-duration) var(--ripple-outro-easing) var(--ripple-spread-duration) 1
-        forwards ripple-outro;
+      var(--ripple-spread-duration) var(--ripple-spread-easing) 0s 1 forwards
+        ripple-spread,
+      var(--ripple-outro-duration) var(--ripple-outro-easing)
+        var(--ripple-spread-duration) 1 forwards ripple-outro;
   }
 
   [data-ripple-abort] {
@@ -269,7 +209,7 @@
 
   @keyframes ripple-spread {
     to {
-      width: var(--ripple-d);
+      width: calc(1px * var(--ripple-d));
     }
   }
 </style>
