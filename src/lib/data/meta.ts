@@ -78,6 +78,26 @@ export const tags_details = {
     label: 'Zod',
     type: 'library',
   },
+  d3js: {
+    label: 'D3.js',
+    type: 'library',
+  },
+  babylonjs: {
+    label: 'Babylon.js',
+    type: 'library',
+  },
+  maplibre: {
+    label: 'MapLibre',
+    type: 'library',
+  },
+  mapbox: {
+    label: 'MapBox',
+    type: 'library',
+  },
+  leaflet: {
+    label: 'Leaflet',
+    type: 'library',
+  },
   figma: {
     label: 'Figma',
     type: 'software',
@@ -134,3 +154,21 @@ export const tags_details = {
 
 export const tags = Object.keys(tags_details) as Tag[];
 export type Tag = keyof typeof tags_details;
+
+export const duties_details = {
+  graphism: {
+    label: 'Graphic design',
+  },
+  print: {
+    label: 'Print design',
+  },
+  ix: {
+    label: 'Interaction design',
+  },
+  ux: {
+    label: 'UX',
+  },
+  research: {
+    label: 'Research',
+  },
+} as const satisfies Record<string, { label: string }>;

@@ -1,3 +1,23 @@
+@layer components {
+  .link,
+  .link-cta {
+    /* props */
+    --link-color: ;
+    --link-background: ;
+    --link-icon-color: ;
+    --link-icon-opacity: ;
+    /* base */
+    text-decoration: none;
+    /* icon */
+    .link-icon {
+    }
+    > * {
+      @variant icon {
+      }
+    }
+  }
+}
+
 @utility prose {
   ol,
   ul {

@@ -14,7 +14,10 @@
     "url": {
       "type": "string",
       "format": "uri"
+    },
+    "repoUrl": {
+      "type": "string",
+      "format": "uri"
     }
-  },
-  "required": []
+  }
 }

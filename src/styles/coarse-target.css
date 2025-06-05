@@ -1,33 +1,8 @@
 @utility coarse-target {
-  position: absolute;
-  translate: -50% -50%;
-  top: 50%;
-  left: 50%;
-  min-width: var(--default-spacing-coarse-target, 48px);
-  min-height: var(--default-spacing-coarse-target, 48px);
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-  opacity: 0;
-
-  @media (pointer: fine) {
-    display: hidden;
-  }
+  @apply absolute top-1/2 left-1/2 size-full min-h-[48px] min-w-[48px] -translate-1/2 rounded-[inherit] opacity-0 pointer-fine:hidden;
 }
 
 @utility coarse-target-* {
-  position: absolute;
-  translate: -50% -50%;
-  top: 50%;
-  left: 50%;
-  min-width: --value(--spacing- *, [length]);
-  min-height: --value(--spacing- *, [length]);
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-  opacity: 0;
-
-  @media (pointer: fine) {
-    display: hidden;
-  }
+  --coarse-target-size: --value(--spacing- *, [length]);
+  @apply absolute top-1/2 left-1/2 size-full min-h-(--coarse-target-size) min-w-(--coarse-target-size) -translate-1/2 rounded-[inherit] opacity-0 pointer-fine:hidden;
 }

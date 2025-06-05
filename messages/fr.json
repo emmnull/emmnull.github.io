@@ -12,26 +12,36 @@
   "education_master": "Maitrise",
   "education_msc": "M.Sc.",
   "home": "Accueil",
-  "home_catchphrase": "Hi, I'm Emmanuel and I like to design interfaces",
+  "home_catchphrase": "Allô, moi c'est Emmanuel et j'aime concevoir des interfaces :)",
   "language": [
     {
-      "declarations": ["input count", "local countPlural = count: plural"],
+      "declarations": [
+        "input count",
+        "local countPlural = count: plural"
+      ],
+      "selectors": [
+        "countPlural"
+      ],
       "match": {
         "countPlural=one": "Langue",
         "countPlural=other": "Langues"
-      },
-      "selectors": ["countPlural"]
+      }
     }
   ],
   "not_defined": "Non défini",
   "post": [
     {
-      "declarations": ["input count", "local countPlural = count: plural"],
+      "declarations": [
+        "input count",
+        "local countPlural = count: plural"
+      ],
+      "selectors": [
+        "countPlural"
+      ],
       "match": {
         "countPlural=one": "Publication",
         "countPlural=other": "Publications"
-      },
-      "selectors": ["countPlural"]
+      }
     }
   ],
   "resume": "CV",
@@ -43,12 +53,17 @@
   "theme_system": "Système",
   "tool": [
     {
-      "declarations": ["input count", "local countPlural = count: plural"],
+      "declarations": [
+        "input count",
+        "local countPlural = count: plural"
+      ],
+      "selectors": [
+        "countPlural"
+      ],
       "match": {
         "countPlural=one": "Outil",
         "countPlural=other": "Outils"
-      },
-      "selectors": ["countPlural"]
+      }
     }
   ],
   "work": "Travail",

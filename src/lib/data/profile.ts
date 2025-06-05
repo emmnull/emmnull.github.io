@@ -29,21 +29,14 @@ export const skills = [
   'aftereffects',
 ] satisfies Tag[];
 
-export const want = [
-  'solid',
-  'remix',
-  'reactnative',
-  'reactrouter',
-] satisfies Tag[];
-
 export const education = [
   {
     start: new Date(2016, 9, 1),
     end: new Date(2019, 12, 1),
     program: {
-      name: m['education.desco'](),
-      title: m['education.msc'](),
-      degree: m['education.master'](),
+      name: m.education_desco(),
+      title: m.education_msc(),
+      degree: m.education_master(),
     },
     school: {
       name: 'University de Montréal',
@@ -55,9 +48,9 @@ export const education = [
     start: new Date(2011, 9, 1),
     end: new Date(2015, 5, 1),
     program: {
-      name: m['education.graphic'](),
-      title: m['education.ba'](),
-      degree: m['education.bachelor'](),
+      name: m.education_graphic_design(),
+      title: m.education_ba(),
+      degree: m.education_bachelor(),
     },
     school: {
       name: 'University du Québec à Montréal',
@@ -83,14 +76,14 @@ export const education = [
 export const links = {
   github: {
     label: 'GitHub',
-    url: new URL(PUBLIC_GITHUB_USERNAME, 'https://github.com/'),
+    url: `https://github.com/${PUBLIC_GITHUB_USERNAME}`,
     icon: Github,
   },
 } satisfies Record<
   string,
   {
     label: string;
-    url: URL;
+    url: string;
     icon?: Component;
   }
 >;

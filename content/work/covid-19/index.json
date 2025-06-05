@@ -1,3 +1,6 @@
 {
-  "$schema": "../schema.json"
+  "$schema": "../schema.json",
+  "year": 2020,
+  "url": "https://covid19.unesco-paysage.umontreal.ca/",
+  "repoUrl": "https://github.com/CUPUM/montreal-confinement"
 }

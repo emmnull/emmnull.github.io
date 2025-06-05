@@ -1,22 +1,101 @@
-.switch,
-.switch-bordered,
-.switch-dashed,
-.switch-ghost {
-  /* --nested */
-  display: flex;
-  flex-direction: row;
-  border-radius: var(--radius-io);
-  background: red;
+/* @utility flex-col {
+} */
 
-  @variant vertical {
-    flex-direction: column;
+@layer components {
+  .switch,
+  .switch-bordered,
+  .switch-dashed,
+  .switch-ghost {
+    /* props */
+    --switch-color: ;
+    --switch-background: ;
+    --switch-border-color: ;
+    --switch-border-style: ;
+    /* base */
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    border-radius: var(--radius-io);
+    background: var(--switch-background);
+    color: var(--switch-color);
+    padding: var(--spacing-io-nesting);
+    gap: var(--outline-width-focus);
+    min-height: var(--spacing-io);
+    max-height: 100%;
+    min-width: var(--spacing-io);
+
+    @apply io-nest;
+
+    /* item */
+    .switch-item {
+      /* props */
+      --switch-item-background: ;
+      --switch-item-color: ;
+      --switch-item-border-color: ;
+      --switch-item-border-style: ;
+      --switch-item-icon-color: ;
+      --switch-item-icon-opacity: ;
+      /* base */
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding-inline: var(--spacing-io-padding);
+      gap: var(--spacing-io-gap);
+      height: var(--spacing-io);
+      border-radius: var(--radius-io);
+      color: var(--switch-item-color);
+      background: var(--switch-item-background);
+
+      /* item thumb indicator */
+      .switch-thumb {
+        /* props */
+        --switch-thumb-background: ;
+        /* base */
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        border-radius: inherit;
+        pointer-events: none;
+        background: var(--switch-thumb-background);
+      }
+    }
   }
 
-  .switch-thumb {
+  /* default */
+  .switch {
+    --switch-color: var(--color-on-io);
+    --switch-background: --alpha(var(--color-io) / var(--opacity-io-background));
+    .switch-item {
+      &:hover {
+        --switch-item-color: var(--color-on-io);
+        --switch-item-background: --alpha(var(--color-io) / var(--opacity-io-background));
+      }
+    }
   }
-  .switch-item {
-  }
-}
 
-.switch {
+  /* bordered */
+  .bordered,
+  .dashed {
+  }
+
+  /* dashed */
+  .dashed {
+  }
+
+  /* ghost */
+  .switch-ghost {
+    --switch-color: var(--color-on-io);
+    --switch-background: transparent;
+
+    .switch-item {
+      &:hover {
+        --switch-item-color: var(--color-on-io);
+        --switch-item-background: --alpha(var(--color-io) / var(--opacity-io-background));
+      }
+    }
+  }
 }

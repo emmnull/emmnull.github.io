@@ -1,20 +1,16 @@
 import type { HTMLAttributes } from 'svelte/elements';
-import { Bound } from './bound.svelte';
-import { asGetSet } from './utils';
 
 /**
- * Create tabs and track state of currently selected tab and its corresponding pannel(s).
+ * Create tabs and track state of currently selected tab and its corresponding
+ * pannel(s).
  */
 export class Tabs<T> {
   #options;
-  #current: Bound<T>;
+  #current: T | (() => T);
 
-  constructor(options: { value: T; forceVisible?: boolean }) {
+  constructor(options: { value: T | (() => T); forceVisible?: boolean }) {
     this.#options = options;
-    this.#current = new Bound({
-      ...asGetSet(options, 'value'),
-      fallback: options.value,
-    });
+    this.#current = $state(options.value);
   }
 
   get current() {
@@ -29,10 +25,8 @@ export class Tabs<T> {
     return this.#options.forceVisible ?? true;
   }
 
-  /**
-   * @returns Attributes for a tab trigger corresponding to a certain value.
-   */
-  getTriggerAttributes(value: T) {
+  /** @returns Attributes for a tab trigger corresponding to a certain value. */
+  triggerAttributes(value: T) {
     return {
       role: 'tab' as const,
       'aria-selected': value === this.current,
@@ -42,10 +36,8 @@ export class Tabs<T> {
     } satisfies HTMLAttributes<HTMLElement>;
   }
 
-  /**
-   * @returns Attributes for the element hosting a tab's content.
-   */
-  getContentAttributes(value: T) {
+  /** @returns Attributes for the element hosting a tab's content. */
+  contentAttributes(value: T) {
     return {
       role: 'tabpanel' as const,
       hidden: !this.forceVisible && value !== this.current,

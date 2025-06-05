@@ -12,26 +12,36 @@
   "education_master": "Master’s degree",
   "education_msc": "MSc",
   "home": "Home",
-  "home_catchphrase": "Hi, I'm Emmanuel and I like to design interfaces",
+  "home_catchphrase": "Hi, I'm Emmanuel and I enjoy designing interfaces :)",
   "language": [
     {
-      "declarations": ["input count", "local countPlural = count: plural"],
+      "declarations": [
+        "input count",
+        "local countPlural = count: plural"
+      ],
+      "selectors": [
+        "countPlural"
+      ],
       "match": {
         "countPlural=one": "Language",
         "countPlural=other": "Languages"
-      },
-      "selectors": ["countPlural"]
+      }
     }
   ],
   "not_defined": "Not defined",
   "post": [
     {
-      "declarations": ["input count", "local countPlural = count: plural"],
+      "declarations": [
+        "input count",
+        "local countPlural = count: plural"
+      ],
+      "selectors": [
+        "countPlural"
+      ],
       "match": {
         "countPlural=one": "Post",
         "countPlural=other": "Posts"
-      },
-      "selectors": ["countPlural"]
+      }
     }
   ],
   "resume": "Resume",
@@ -43,15 +53,22 @@
   "theme_system": "System",
   "tool": [
     {
-      "declarations": ["input count", "local countPlural = count: plural"],
+      "declarations": [
+        "input count",
+        "local countPlural = count: plural"
+      ],
+      "selectors": [
+        "countPlural"
+      ],
       "match": {
         "countPlural=one": "Tool",
         "countPlural=other": "Tools"
-      },
-      "selectors": ["countPlural"]
+      }
     }
   ],
   "work": "Work",
   "workshop": "Workshop",
-  "workshop_catchphrase": "Crafty things I'm up to"
+  "workshop_catchphrase": "Crafty things I'm up to",
+  "home_catchphrase_test": "Hi there I'm {name}",
+  "skills_catchphrase": "My tools of the trade"
 }

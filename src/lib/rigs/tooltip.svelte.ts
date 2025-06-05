@@ -17,7 +17,7 @@ import {
 import type { HTMLAttributes } from 'svelte/elements';
 import { on } from 'svelte/events';
 import { Bound } from './bound.svelte';
-import { arrow, transformOrigin } from './floating';
+import { arrow, transformOrigin } from './floating.svelte';
 import { asGetSet, attrSelector, isHTMLElement } from './utils';
 
 export class Tooltip {

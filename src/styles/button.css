@@ -1,217 +1,232 @@
-.button,
-.button-bordered,
-.button-dashed,
-.button-ghost,
-.button-cta,
-.button-nav {
-  /* props */
-  --button-color: ;
-  --button-background: ;
-  --button-border-color: ;
-  --button-border-style: ;
-  /* base */
-  color: var(--button-color);
-  background: var(--button-background);
-  border-color: var(--button-border-color);
-  border-style: var(--button-border-style);
-  /* contain: layout; */
-  position: relative;
-  display: inline-flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  text-overflow: ellipsis;
-  align-items: center;
-  justify-content: center;
-  transition-property: color, background, border, inset;
-  transition-timing-function: ease-out;
-  transition-duration: var(--default-transition-duration);
-  padding-inline: var(--spacing-io-padding);
-  border-radius: var(--radius-io);
-  gap: var(--spacing-io-gap);
-  height: var(--spacing-io);
-  border-width: var(--border-width-io);
-  /* icon */
-  .button-icon,
-  > svg[data-icon],
-  > svg.lucide-icon {
-    width: var(--spacing-io-icon);
-    height: var(--spacing-io-icon);
-    transition-duration: inherit;
-    stroke-width: var(--stroke-width-io-icon);
-  }
-  /* hover */
-  &:hover {
-    &:not(:active) {
-      transition-duration: 0s;
-    }
-  }
-  /* focused */
-  &:focus-visible {
-    outline-color: var(--color-cta-accent);
-    outline-width: var(--outline-width-io-focus);
-  }
-  /* active */
-  &:active {
-    transition-duration: calc(0.5 * var(--default-transition-duration));
-    transform: var(--transform-io-active);
-  }
-  /* current */
-  &:is([aria-current], :target) {
-    .button-icon,
-    > svg[data-icon],
-    > svg.lucide-icon {
-      opacity: 100%;
-    }
-  }
-  /* aspect */
-  &.aspect-square {
+@utility aspect-square {
+  &.button,
+  &.button-bordered,
+  &.button-dashed,
+  &.button-ghost,
+  &.button-cta,
+  &.button-nav {
+    --button-icon-opacity: 100%;
     padding-inline: 0;
-  }
-  &:not(.aspect-square) {
-    .button-icon,
-    > svg[data-icon],
-    > svg.lucide-icon {
-      opacity: 35%;
-    }
-    &:hover {
-      .button-icon,
-      > svg[data-icon],
-      > svg.lucide-icon {
-        opacity: 70%;
-      }
-    }
   }
 }
 
-/* with pseudo face
-(animated inset) */
-.button-bordered,
-.button-dashed,
-.button-ghost,
-.button-nav {
-  &:not(input, select, textarea) {
-    /* reset */
-    background: none;
+@layer components {
+  .button,
+  .button-bordered,
+  .button-dashed,
+  .button-ghost,
+  .button-cta,
+  .button-nav {
+    /* props */
+    --button-color: ;
+    --button-background: ;
+    --button-border-color: ;
+    --button-border-style: ;
+    --button-icon-color: ;
+    --button-icon-opacity: ;
     /* base */
-    &::before {
-      content: '';
-      background: var(--button-background);
-      inset: var(--spacing-io-face-inset);
-      pointer-events: none;
-      z-index: -1;
-      position: absolute;
-      border-radius: inherit;
-      transition: inherit;
-    }
+    color: var(--button-color);
+    background: var(--button-background);
+    border-color: var(--button-border-color);
+    border-style: var(--button-border-style);
+    /* contain: layout; */
+    position: relative;
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    text-overflow: ellipsis;
+    align-items: center;
+    justify-content: center;
+    transition-property: all;
+    transition-timing-function: ease-out;
+    transition-duration: var(--default-transition-duration);
+    padding-inline: var(--spacing-io-padding);
+    border-radius: var(--radius-io);
+    gap: var(--spacing-io-gap);
+    height: var(--spacing-io);
+    max-height: 100%;
+    border-width: var(--border-width-io);
+    outline-color: var(--color-cta);
+
     /* hover */
     &:hover {
-      &:not(:active)::before {
-        transition-property: inset;
-        transition-duration: calc(0.25 * var(--default-transition-duration));
+      &:not(:active) {
+        transition-duration: 0s;
       }
-      &:not([aria-current], :target)::before {
+    }
+
+    /* focused */
+    &:focus-visible {
+      outline-style: solid;
+      outline-width: var(--outline-width-focus);
+    }
+
+    /* active */
+    &:active {
+      transition-duration: calc(0.5 * var(--default-transition-duration));
+      transform: var(--transform-io-active);
+    }
+
+    /* icon */
+    .button-icon {
+      transition-duration: inherit;
+      color: var(--button-icon-color);
+      opacity: var(--button-icon-opacity);
+      width: var(--spacing-io-icon);
+      height: var(--spacing-io-icon);
+      stroke-width: var(--stroke-width-io-icon);
+    }
+    & > * {
+      @variant icon {
+        transition-duration: inherit;
+        color: var(--button-icon-color);
+        opacity: var(--button-icon-opacity);
+        width: var(--spacing-io-icon);
+        height: var(--spacing-io-icon);
+        stroke-width: var(--stroke-width-io-icon);
+      }
+    }
+
+    /* with leading/trailing content */
+    &:has(> .button-leading) {
+      padding-left: var(--spacing-io-nesting);
+    }
+    &:has(> .button-trailing) {
+      padding-right: var(--spacing-io-nesting);
+    }
+    .button-peer,
+    .button-leading,
+    .button-trailing {
+      max-height: calc(var(--spacing-io) - var(--spacing-io-nesting));
+    }
+  }
+
+  /* with pseudo face */
+  .button-bordered,
+  .button-dashed,
+  .button-ghost,
+  .button-nav {
+    &:not(input, select, textarea) {
+      /* reset */
+      background: none;
+      /* base */
+      &::before {
+        content: '';
+        background: var(--button-background);
+        inset: var(--spacing-io-background-inset);
+        pointer-events: none;
+        z-index: -1;
+        position: absolute;
+        border-radius: inherit;
+        transition: inherit;
+      }
+      /* hover */
+      &:hover {
+        &:not(:active)::before {
+          transition-property: inset;
+          transition-duration: calc(0.25 * var(--default-transition-duration));
+        }
+        &:not([aria-current], :target)::before {
+          inset: 0;
+        }
+      }
+      /* current */
+      &:is([aria-current], :target)::before {
         inset: 0;
       }
     }
-    /* current */
-    &:is([aria-current], :target)::before {
-      inset: 0;
+  }
+
+  /* with pseudo-border */
+  .button-bordered,
+  .button-dashed,
+  .button-nav {
+    &:not(input, select, textarea) {
+      /* reset */
+      border-style: none;
+      /* base */
+      &::after {
+        content: '';
+        border-color: var(--button-border-color);
+        border-style: var(--button-border-style);
+        border-width: var(--border-width-io);
+        pointer-events: none;
+        z-index: 1;
+        position: absolute;
+        border-radius: inherit;
+        inset: 0;
+        transition-property: all;
+        transition-duration: inherit;
+        transition-timing-function: inherit;
+      }
     }
   }
-}
 
-/* with pseudo-border
-(prevent affecting sizing and inner layout) */
-.button-bordered,
-.button-dashed,
-.button-nav {
-  &:not(input, select, textarea) {
-    /* reset */
-    border-style: none;
-    /* base */
-    &::after {
-      content: '';
-      border-color: var(--button-border-color);
-      border-style: var(--button-border-style);
-      border-width: var(--border-width-io);
-      pointer-events: none;
-      z-index: 1;
-      position: absolute;
-      border-radius: inherit;
-      inset: 0;
-      transition-property: all;
-      transition-duration: inherit;
-      transition-timing-function: inherit;
+  /* default */
+  .button {
+    --button-icon-opacity: var(--opacity-io-icon);
+    --button-background: --alpha(var(--color-io) / var(--opacity-io-background));
+    &:hover {
+      &:not([aria-current], :target) {
+        --button-icon-opacity: calc(var(--opacity-io-icon) * 1.5);
+        --button-text: color-mix(in oklch, currentcolor, light-dark(black, white) 50%);
+      }
     }
   }
-}
 
-/* default */
-.button {
-  /* --button-color: var(--color-primary); */
-  --button-background: --alpha(var(--color-io) / var(--opacity-io-background));
-  &:hover {
-    &:not([aria-current], :target) {
-      --button-text: color-mix(in oklch, currentcolor, light-dark(black, white) 50%);
-    }
+  /* bordered */
+  .button-bordered,
+  .button-dashed {
+    /* --button-pseudo-face: '';
+		--button-pseudo-border: '';
+		--button-text: var(--color-on-io);
+		--button-face: var(--color-io);
+		--button-face-opacity: 0;
+		--button-border: currentcolor;
+		--button-border-opacity: calc(125% * var(--opacity-io-face));
+		--button-border-style: solid;
+		&:hover {
+			&:not([aria-current], :target) {
+				--button-text: color-mix(in oklch, currentcolor, light-dark(black, white) 50%);
+				--button-face-opacity: var(--opacity-io-face);
+				--button-border-opacity: 0%;
+			}
+		} */
   }
-}
 
-/* bordered */
-.button-bordered,
-.button-dashed {
-  /* --button-pseudo-face: '';
-  --button-pseudo-border: '';
-  --button-text: var(--color-on-io);
-  --button-face: var(--color-io);
-  --button-face-opacity: 0;
-  --button-border: currentcolor;
-  --button-border-opacity: calc(125% * var(--opacity-io-face));
-  --button-border-style: solid;
-  &:hover {
-    &:not([aria-current], :target) {
-      --button-text: color-mix(in oklch, currentcolor, light-dark(black, white) 50%);
-      --button-face-opacity: var(--opacity-io-face);
-      --button-border-opacity: 0%;
-    }
-  } */
-}
-
-/* dashed */
-.button-dashed {
-  --button-border-style: dashed;
-}
-
-/* ghost/skeleton */
-.button-ghost {
-}
-
-/* call-to-action */
-.button-cta {
-}
-
-/* nav */
-.button-nav {
-  /* backdrop-filter: url(#beveled); */
-  font-weight: var(--font-weight-semibold);
-  --button-color: var(--color-on-io);
-  --button-background: color-mix(in oklch, var(--color-primary) 0%, transparent);
-  --button-border-color: color-mix(in oklch, currentcolor 0%, transparent);
-  --button-border-style: solid;
-  &:hover {
-    &:not([aria-current], :target) {
-      --button-color: var(--color-primary);
-      --button-background: color-mix(in oklch, var(--color-primary) var(--opacity-io-background), transparent);
-    }
+  /* dashed */
+  .button-dashed {
+    --button-border-style: dashed;
   }
-  &:is([aria-current], :target) {
-    --button-color: var(--color-primary);
-    --button-border-color: color-mix(in oklch, var(--color-primary) var(--opacity-io-border), transparent);
-    .button-icon,
-    > svg[data-icon],
-    & > svg.lucide-icon {
-      opacity: 50%;
-      animation: 5s pulse infinite;
+
+  /* ghost/skeleton */
+  .button-ghost {
+  }
+
+  /* call-to-action */
+  .button-cta {
+  }
+
+  /* nav */
+  .button-nav {
+    backdrop-filter: url(#beveled);
+    font-weight: var(--font-weight-semibold);
+    --button-color: var(--color-on-io);
+    --button-background: color-mix(in oklch, var(--color-cta) 0%, transparent);
+    --button-border-color: color-mix(in oklch, currentcolor 0%, transparent);
+    --button-border-style: solid;
+    --button-icon-opacity: var(--opacity-io-icon);
+    &:hover {
+      &:not([aria-current], :target) {
+        --button-color: var(--color-cta);
+        --button-background: color-mix(in oklch, var(--color-cta) var(--opacity-io-background), transparent);
+        --button-icon-opacity: 100%;
+      }
+    }
+    &:is([aria-current], :target) {
+      --button-color: var(--color-cta);
+      --button-border-color: color-mix(in oklch, var(--color-cta) var(--opacity-io-border), transparent);
+      --button-icon-opacity: 100%;
     }
   }
 }

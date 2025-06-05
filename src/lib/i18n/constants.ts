@@ -1,6 +1,6 @@
-import type { AvailableLocale } from './generated/runtime';
+import type { Locale } from './generated/runtime';
 
-export const LOCALES = {
+export const locales_names = {
   en: 'English',
   fr: 'Français',
-} as const satisfies Record<AvailableLocale, string>;
+} as const satisfies Record<Locale, string>;

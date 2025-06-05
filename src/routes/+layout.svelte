@@ -1,13 +1,25 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { locales, localizeHref } from '$lib/i18n/generated/runtime';
-  import '@fontsource-variable/eb-garamond';
   import '@fontsource-variable/figtree';
-  import '@fontsource-variable/spline-sans-mono';
+  import '@fontsource/dm-mono';
+  import '@fontsource/instrument-serif';
+  // import '@fontsource-variable/outfit';
+  // import '@fontsource-variable/eb-garamond';
+  // import '@fontsource-variable/spline-sans-mono';
+  // Supports weights 200-800
+  // import '@fontsource-variable/newsreader';
+  import BreakpointProvider from '$lib/components/breakpoint-provider.svelte';
+  import ScrollProvider from '$lib/components/scroll-provider.svelte';
+  import ThemeProvider from '$lib/components/theme-provider.svelte';
   import '../app.css';
 
   let { children } = $props();
 </script>
+
+<ScrollProvider />
+<BreakpointProvider />
+<ThemeProvider />
 
 <!-- see https://inlang.com/m/gerre34r/library-inlang-paraglideJs/sveltekit#add-the-paraglidemiddleware-to-srchooksserverts -->
 <div style="display:none">
@@ -20,7 +32,7 @@
 <svg
   xmlns="http://www.w3.org/2000/svg"
   aria-hidden="true"
-  class="size-0 absolute opacity-0"
+  class="absolute size-0 opacity-0"
 >
   <defs>
     <!--
@@ -74,12 +86,12 @@
         yChannelSelector="R"
         result="bevel"
       />
-      <feGaussianBlur stdDeviation="1.5" result="blur" />
+      <feGaussianBlur stdDeviation="3" result="blur" />
       <feTurbulence result="turb" type="turbulence" baseFrequency="0.75" />
       <feDisplacementMap
         in="blur"
         in2="turb"
-        scale="5"
+        scale="15"
         xChannelSelector="R"
         yChannelSelector="B"
       />

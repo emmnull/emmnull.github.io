@@ -1,24 +1,80 @@
-.chip,
-.chip-bordered,
-.chip-dashed,
-.chip-ghost,
-.chip-cta {
-  /* props */
-  --chip-color: ;
-  --chip-background: ;
-  --chip-border-color: ;
-  --chip-border-style: ;
-  /* base */
-  position: relative;
-  height: var(--spacing-io);
-  white-space: nowrap;
-  border-radius: var(--radius-full);
-}
+@layer components {
+  .chip,
+  .chip-base,
+  .chip-bordered,
+  .chip-dashed,
+  .chip-ghost,
+  .chip-cta,
+  .group\/chip,
+  .group\/chip-base,
+  .group\/chip-bordered,
+  .group\/chip-dashed,
+  .group\/chip-ghost,
+  .group\/chip-cta {
+    /* props */
+    --chip-color: ;
+    --chip-background: ;
+    --chip-border-color: ;
+    --chip-border-style: ;
+    /* base */
+    color: var(--chip-color);
+    background: var(--chip-background);
+    border-color: var(--chip-border-color);
+    border-style: var(--chip-border-style);
+    /* contain: layout; */
+    position: relative;
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    text-overflow: ellipsis;
+    align-items: center;
+    justify-content: center;
+    transition-property: all;
+    transition-timing-function: ease-out;
+    transition-duration: var(--default-transition-duration);
+    padding-inline: var(--spacing-io-padding);
+    border-radius: calc(infinity * 1px);
+    gap: var(--spacing-io-gap);
+    height: var(--spacing-io);
+    border-width: var(--border-width-io);
+    /* icon */
+  }
 
-/* default */
-.chip {
-}
+  /* composed chip */
+  .group\/chip,
+  .group\/chip-base,
+  .group\/chip-bordered,
+  .group\/chip-dashed,
+  .group\/chip-ghost,
+  .group\/chip-cta {
+    padding: var(--spacing-io-nesting);
 
-/* bordered */
-.chip-bordered {
+    /* content */
+    .chip-content {
+      padding-inline: calc(var(--spacing-io-padding) - var(--spacing-io-nesting));
+    }
+
+    /* peer content */
+    .chip-peer {
+    }
+  }
+
+  /* default */
+  .chip,
+  .group\/chip {
+    --chip-background: --alpha(var(--color-io) / var(--opacity-io-background));
+    --chip-color: var(--color-on-io);
+  }
+
+  /* bordered */
+  .chip-bordered,
+  .group\/chip-bordered {
+  }
+
+  /* cta */
+  .chip-cta,
+  .group\/chip-cta {
+    --chip-background: var(--color-primary);
+    --chip-color: var(--color-on-primary);
+  }
 }
