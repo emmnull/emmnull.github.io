@@ -39,12 +39,12 @@
 </script>
 
 <header
-  class="py-padding px-prose-padding has-focus-visible:from-overlay/overlay has-open:from-overlay/overlay has-hover:from-overlay/overlay z-frontmost ease to-overlay/0 from-overlay/0 pointer-events-none fixed top-0 flex min-h-1/4 w-full flex-row items-start justify-center bg-linear-to-b transition lg:justify-between lg:text-sm print:hidden"
+  class="py-padding px-prose-padding has-focus-visible:from-overlay/overlay has-open:from-overlay/overlay has-hover:from-overlay/overlay z-frontmost ease to-overlay/0 via-ease-circ-out pointer-events-none fixed top-0 flex min-h-1/4 w-full flex-row items-start justify-center bg-linear-to-b transition lg:justify-between lg:text-sm print:hidden"
 >
   <nav class="gap-menu-gap pointer-events-auto flex flex-row">
     <a
       in:intro|global
-      class="button-nav lg:mr-gap aspect-square rounded-full"
+      class="button-nav lg:mr-gap aspect-square rounded-full p-0"
       href="/"
     >
       <img
@@ -101,7 +101,7 @@
       ]}
       strategy="fixed"
     >
-      {#snippet anchor(popover)}
+      {#snippet children(popover)}
         <button
           {...popover.anchorAttributes()}
           class="button-nav aspect-square"
@@ -109,8 +109,6 @@
           <Ripple />
           <theme.currentOption.icon />
         </button>
-      {/snippet}
-      {#snippet target(popover)}
         <dialog
           bind:this={themePopover}
           {...popover.targetAttributes()}
@@ -126,7 +124,7 @@
       middleware={[offset({ mainAxis: 10 }), transformOrigin()]}
       strategy="fixed"
     >
-      {#snippet anchor(popover)}
+      {#snippet children(popover)}
         <button {...popover.anchorAttributes()} class="button-nav">
           <Ripple />
           <Languages />
@@ -134,8 +132,6 @@
             {getLocale()}
           </span>
         </button>
-      {/snippet}
-      {#snippet target(popover)}
         <dialog
           bind:this={langPopover}
           {...popover.targetAttributes()}
@@ -194,10 +190,3 @@
     {/each}
   </menu>
 {/snippet}
-
-<style>
-  [data-theme='a'],
-  [data-theme='a'] :not([data-theme] *) {
-    color: red;
-  }
-</style>

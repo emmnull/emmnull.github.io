@@ -6,14 +6,6 @@
   --spacing-io-nesting: 0.125em;
 }
 
-/* default dimensions */
-@utility io-reset {
-  --spacing-io: initial;
-  --radius-io: initial;
-  --spacing-io-padding: initial;
-  --spacing-io-nesting: initial;
-}
-
 /* spacious dimensions */
 @utility io-lg {
   --spacing-io: 5.5em;

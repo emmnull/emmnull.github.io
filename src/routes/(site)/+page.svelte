@@ -1,10 +1,13 @@
 <script lang="ts">
   import { random } from '$lib/common/number';
+  import Sidescroller from '$lib/components/sidescroller.svelte';
   import { tags_details } from '$lib/data/meta';
   import { links, skills } from '$lib/data/profile';
   import * as m from '$messages';
 
   const verbs = ['cooking', 'building', 'designing', 'realizing'];
+
+  let { data } = $props();
 </script>
 
 <!-- <Cursor /> -->
@@ -34,8 +37,7 @@
     {#each skills as skill, i}
       {@const details = tags_details[skill]}
       <li
-        class="chip chip-cta rotate-x-(--angle-x) rotate-y-(--angle-y) rotate-z-(--angle-z)"
-        data-themed={details.type}
+        class="chip-cta rotate-x-(--angle-x) rotate-y-(--angle-y) rotate-z-(--angle-z)"
         style:--i={i}
         style:--angle-x="{random(-6, 6)}deg"
         style:--angle-y="{random(-6, 6)}deg"
@@ -47,22 +49,31 @@
   </ul>
 </section>
 
-<section class="flex flex-col">
-  <hgroup class="p-prose-padding pb-navbar-height text-center lg:text-left">
-    <h2 class="font-misc text-2xl">
-      {m.work()}
-    </h2>
-  </hgroup>
-  <ul
-    class="p-padding gap-padding no-scrollbar flex flex-row overflow-x-scroll"
-  >
-    {#each ['asd', 'asd', 'asddasda', 'asdasdasd'] as work}
-      <li class="h-main-height bg-primary w-full flex-none">
-        Some screenshots
-      </li>
-    {/each}
-  </ul>
-</section>
+<Sidescroller>
+  {#snippet children(scroller)}
+    <section class="w-full" {...scroller.containerAttributes()}>
+      <div
+        class="sticky top-1/4 flex h-[50dvh] flex-row items-stretch overflow-x-hidden"
+        {...scroller.contentAttributes()}
+      >
+        <hgroup
+          class="p-prose-padding pb-navbar-height text-center lg:text-left"
+        >
+          <h2 class="font-misc text-2xl">
+            {m.work()}
+          </h2>
+        </hgroup>
+        {#each Object.entries(data.work) as [slug, work]}
+          <article
+            class="from-primary to-base w-full flex-none bg-gradient-to-r"
+          >
+            {work.title ?? slug}
+          </article>
+        {/each}
+      </div>
+    </section>
+  {/snippet}
+</Sidescroller>
 
 <!-- <section>
   Planning to fiddle with:

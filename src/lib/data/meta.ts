@@ -1,14 +1,50 @@
-export const tag_scopes = ['frontend', 'backend', 'design'] as const;
-export type TagScope = (typeof tag_scopes)[number];
+export const disciplines_details = {
+  frontend: {
+    label: 'Frontend',
+  },
+  backend: {
+    label: 'Backend',
+  },
+  design: {
+    label: 'Design',
+  },
+  cognition: {
+    label: 'Cognition',
+  },
+  ix: {
+    label: 'Interaction',
+  },
+  ux: {
+    label: 'User Experience',
+  },
+  research: {
+    label: 'Research',
+  },
+} as const satisfies Record<string, { label: string }>;
 
-export const tag_types = [
-  'language',
-  'library',
-  'framework',
-  'software',
-  'runtime',
-] as const;
-export type TagType = (typeof tag_types)[number];
+export const disciplines = Object.keys(disciplines_details) as Discipline[];
+export type Discipline = keyof typeof disciplines_details;
+
+export const tag_types_details = {
+  language: {
+    label: 'Language',
+  },
+  library: {
+    label: 'Library',
+  },
+  framework: {
+    label: 'Framework',
+  },
+  software: {
+    label: 'Software',
+  },
+  runtime: {
+    label: 'Runtime',
+  },
+} satisfies Record<string, { label: string }>;
+
+export const tag_types = Object.keys(tag_types_details) as TagType[];
+export type TagType = keyof typeof tag_types_details;
 
 export const tags_details = {
   svelte: {
@@ -148,27 +184,9 @@ export const tags_details = {
     label: string;
     url?: URL;
     type: TagType;
-    scopes?: TagScope[];
+    scopes?: Discipline[];
   }
 >;
 
 export const tags = Object.keys(tags_details) as Tag[];
 export type Tag = keyof typeof tags_details;
-
-export const duties_details = {
-  graphism: {
-    label: 'Graphic design',
-  },
-  print: {
-    label: 'Print design',
-  },
-  ix: {
-    label: 'Interaction design',
-  },
-  ux: {
-    label: 'UX',
-  },
-  research: {
-    label: 'Research',
-  },
-} as const satisfies Record<string, { label: string }>;

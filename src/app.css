@@ -2,12 +2,13 @@
 
 @import 'tailwindcss/preflight.css' layer(base);
 @import 'tailwindcss/utilities.css';
+@import './styles/appose.css';
 @import './styles/prose.css';
-@import './styles/io-dimensions.css';
-@import './styles/io-nesting.css';
 @import './styles/no-scrollbar.css';
 @import './styles/coarse-target.css';
-@import './styles/appose.css';
+@import './styles/io-dimensions.css';
+@import './styles/io-nesting.css';
+@import './styles/io-themes.css';
 @import './styles/dialog.css';
 @import './styles/popover.css';
 @import './styles/badge.css';
@@ -15,22 +16,41 @@
 @import './styles/chip.css';
 @import './styles/separator.css';
 @import './styles/switch.css';
+@import './styles/gradient-ease.css';
+
+@custom-variant icon {
+  &:is(svg)[data-icon],
+  &:is(svg).lucide {
+    @slot;
+  }
+}
+
+@custom-variant dark {
+  &[data-theme='dark'],
+  [data-theme='dark'] &:not([data-theme]):not([data-theme]:not([data-theme='dark']) *) {
+    @slot;
+  }
+}
+
+@custom-variant light {
+  &[data-theme='light'],
+  [data-theme='light'] &:not([data-theme]):not([data-theme]:not([data-theme='light']) *) {
+    @slot;
+  }
+}
 
 @theme {
-  --rotate-primary-hue: 292deg;
-  --rotate-secondary-hue: 174deg;
-
   --font-main: 'Figtree Variable', sans-serif;
   --font-misc: 'Instrument Serif', serif;
   --font-mono: 'DM Mono', monospace;
 
-  --color-base: light-dark(oklch(0.84 0.018 247), oklch(0.18 0.002 70));
+  --color-background: light-dark(oklch(0.84 0.018 247), oklch(0.18 0.002 70));
   --color-surface: light-dark(oklch(0.8 0.02 246), oklch(0.21 0.002 50));
-  --color-primary: light-dark(#1e1e1e, oklch(0.58 0.21 var(--rotate-primary-hue)));
-  --color-secondary: light-dark(#1e1e1e, oklch(0.55 0.21 var(--rotate-secondary-hue)));
+  --color-primary: light-dark(#1e1e1e, oklch(0.58 0.21 276));
+  --color-secondary: light-dark(#1e1e1e, oklch(0.55 0.21 165));
   --color-io: light-dark(#1e1e1e, buttonface);
   --color-cta: var(--color-primary);
-  --color-overlay: light-dark(oklch(0.86 0.016 248), oklch(0.16 0.002 70));
+  --color-overlay: light-dark(white, oklch(0.16 0.002 70));
   --color-popover: light-dark();
   --color-success: light-dark(green, green);
   --color-warning: light-dark();
@@ -126,8 +146,9 @@
   --z-index-frontmost: calc(infinity);
 
   --opacity-prose-alt: 45%;
-  --opacity-overlay: 85%;
+  --opacity-overlay: 87.5%;
   --opacity-io-background: 12.5%;
+  --opacity-io-background-alt: 20%;
   --opacity-io-border: 25%;
   --opacity-io-icon: 50%;
 
@@ -166,6 +187,16 @@
   --default-transition-timing-function: var(--ease-out);
 }
 
+* {
+  @variant dark {
+    color-scheme: dark;
+  }
+
+  @variant light {
+    color-scheme: light;
+  }
+}
+
 :root,
 :host {
   @variant lg {
@@ -180,7 +211,7 @@
   :root,
   :host {
     scroll-padding-top: var(--spacing-navbar-height);
-    background: var(--color-base);
+    background: var(--color-background);
     position: relative;
     color: var(--color-text);
     accent-color: var(--color-primary);
@@ -200,7 +231,7 @@
   }
 
   body > div > main {
-    background: var(--color-base);
+    background: var(--color-background);
     transform-origin: center calc(var(--spacing-scroll-px-y) + 50dvh);
     transition: all var(--default-transition-duration) var(--default-transition-timing-function);
 
@@ -232,104 +263,5 @@
       2px 0 var(--color-text),
       0 2px var(--color-text),
       -2px 0 var(--color-text);
-  }
-
-  [data-theme='dark'] {
-    color-scheme: dark;
-  }
-
-  [data-theme='light'] {
-    color-scheme: light;
-  }
-
-  [data-success],
-  [data-state='success'],
-  :user-valid {
-    --color-cta: var(--color-success);
-    --color-on-cta: var(--color-on-success);
-    --color-io: var(--color-success);
-    --color-on-io: var(--color-on-success);
-  }
-
-  [data-warning],
-  [data-state='warning'] {
-    --color-cta: var(--color-warning);
-    --color-on-cta: var(--color-on-warning);
-    --color-io: var(--color-warning);
-    --color-on-io: var(--color-on-warning);
-  }
-
-  [aria-invalid='true'],
-  [data-error],
-  [data-state='error'],
-  :user-invalid {
-    --color-cta: var(--color-error);
-    --color-on-cta: var(--color-on-error);
-    --color-io: var(--color-error);
-    --color-on-io: var(--color-on-error);
-  }
-
-  [data-info],
-  [data-state='info'] {
-    --color-cta: var(--color-info);
-    --color-on-cta: var(--color-on-info);
-    --color-io: var(--color-info);
-    --color-on-io: var(--color-on-info);
-  }
-
-  [data-themed='language'] {
-    --color-cta: ;
-    --color-on-cta: ;
-    --color-io: ;
-    --color-on-io: ;
-  }
-
-  [data-themed='library'] {
-    --color-cta: ;
-    --color-on-cta: ;
-    --color-io: ;
-    --color-on-io: ;
-  }
-
-  [data-themed='framework'] {
-    --color-cta: ;
-    --color-on-cta: ;
-    --color-io: ;
-    --color-on-io: ;
-  }
-
-  [data-themed='software'] {
-    --color-cta: ;
-    --color-on-cta: ;
-    --color-io: ;
-    --color-on-io: ;
-  }
-
-  [data-themed='runtime'] {
-    --color-cta: ;
-    --color-on-cta: ;
-    --color-io: ;
-    --color-on-io: ;
-  }
-}
-
-@custom-variant icon {
-  &:is(svg)[data-icon],
-  &:is(svg).lucide {
-    @slot;
-  }
-}
-
-@custom-variant dark {
-  &[data-theme='dark'],
-  [data-theme='dark'] &:not([data-theme]):not([data-theme]:not([data-theme='dark']) *) {
-    @slot;
-  }
-}
-
-@custom-variant light {
-  &[data-theme='light'],
-  [data-theme='light'] &:not([data-theme]):not([data-theme]:not([data-theme='light']) *) {
-    @slot;
   }
 }

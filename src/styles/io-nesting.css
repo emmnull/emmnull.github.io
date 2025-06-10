@@ -12,6 +12,16 @@
   }
 }
 
-/* @utility io-nest-* {
-  --radius-nested: 2;
-} */
+@utility io-nest-* {
+  --spacing-io-nested: calc(var(--spacing-io) - 2 * --value(--spacing- *, [length]));
+  --radius-io-nested: calc(var(--radius-io) - --value(--spacing- *, [length]));
+  --spacing-io-padding-nested: calc(var(--spacing-io-padding) - 0.2 * --value(--spacing- *, [length]));
+  --spacing-io-gap-nested: calc(var(--spacing-io-gap) - 0.1 * --value(--spacing- *, [length]));
+
+  > * {
+    --radius-io: var(--radius-io-nested);
+    --spacing-io: var(--spacing-io-nested);
+    --spacing-io-padding: var(--spacing-io-padding-nested);
+    --spacing-io-gap: var(--spacing-io-gap-nested);
+  }
+}

@@ -6,12 +6,11 @@ import {
   type ZodNumber,
   type ZodString,
 } from 'zod/v4';
-import { tag_scopes, tag_types, tags } from '../data/meta';
+import { disciplines, tag_types, tags } from '../data/meta';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function uniqueItems<T extends ZodString | ZodNumber | ZodEnum<any>>(
-  schema: ZodArray<T>,
-) {
+function uniqueItems<
+  T extends ZodString | ZodNumber | ZodEnum<Record<string, string>>,
+>(schema: ZodArray<T>) {
   return schema
     .check((ctx) => {
       if (new Set(ctx.value).size !== ctx.value.length) {
@@ -28,18 +27,16 @@ function uniqueItems<T extends ZodString | ZodNumber | ZodEnum<any>>(
     });
 }
 
-export const tagScopeSchema = z.enum(tag_scopes);
+export const disciplineSchema = z.enum(disciplines);
 
 export const tagTypeSchema = z.enum(tag_types);
 
 export const tagSchema = z.enum(tags);
 
-// export const workRoleSchema = z.enum();
-
 export const workSchema = z.object({
   year: z.number(),
   title: z.string(),
-  // roles: uniqueItems(workRoleSchema.array()),
+  disciplines: uniqueItems(disciplineSchema.array()),
   summary: z.string(),
   url: z.url().optional(),
   repoUrl: z.url().optional(),

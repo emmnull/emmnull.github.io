@@ -1,0 +1,49 @@
+/* 
+  Improved gradient easing stored in a variable.
+
+  @see https://larsenwork.com/easing-gradients/#editor
+*/
+
+/* cubic-bezier(0.25, 0.25, 0.5, 1) */
+@utility via-ease-out {
+  --gradient-ease-d: calc(var(--tw-gradient-to-position) - var(--tw-gradient-from-position));
+  --tw-gradient-via-stops:
+    var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position),
+    color-mix(in oklch, var(--tw-gradient-from) 94.4%, var(--tw-gradient-to)) calc(0.05 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 87.6%, var(--tw-gradient-to)) calc(0.101 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 80%, var(--tw-gradient-to)) calc(0.152 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 71.7%, var(--tw-gradient-to)) calc(0.205 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 63%, var(--tw-gradient-to)) calc(0.259 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 54%, var(--tw-gradient-to)) calc(0.316 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 45%, var(--tw-gradient-to)) calc(0.375 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 36.3%, var(--tw-gradient-to)) calc(0.438 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 28%, var(--tw-gradient-to)) calc(0.504 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 20.4%, var(--tw-gradient-to)) calc(0.574 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 13.6%, var(--tw-gradient-to)) calc(0.649 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 8%, var(--tw-gradient-to)) calc(0.728 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 3.7%, var(--tw-gradient-to)) calc(0.813 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 1%, var(--tw-gradient-to)) calc(0.903 * var(--gradient-ease-d)),
+    var(--tw-gradient-to) var(--tw-gradient-to-position);
+}
+
+/* cubic-bezier(0, 0.5, 0.5, 1) */
+@utility via-ease-circ-out {
+  --gradient-ease-d: calc(var(--tw-gradient-to-position) - var(--tw-gradient-from-position));
+  --tw-gradient-via-stops:
+    var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position),
+    color-mix(in oklch, var(--tw-gradient-from) 90%, var(--tw-gradient-to)) calc(0.007 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 80.1%, var(--tw-gradient-to)) calc(0.025 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 70.4%, var(--tw-gradient-to)) calc(0.056 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 60.9%, var(--tw-gradient-to)) calc(0.097 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 51.9%, var(--tw-gradient-to)) calc(0.148 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 43.2%, var(--tw-gradient-to)) calc(0.208 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 35.1%, var(--tw-gradient-to)) calc(0.276 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 27.6%, var(--tw-gradient-to)) calc(0.351 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 20.8%, var(--tw-gradient-to)) calc(0.432 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 14.8%, var(--tw-gradient-to)) calc(0.519 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 9.7%, var(--tw-gradient-to)) calc(0.609 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 5.6%, var(--tw-gradient-to)) calc(0.704 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 2.5%, var(--tw-gradient-to)) calc(0.801 * var(--gradient-ease-d)),
+    color-mix(in oklch, var(--tw-gradient-from) 0.7%, var(--tw-gradient-to)) calc(0.9 * var(--gradient-ease-d)),
+    var(--tw-gradient-to) var(--tw-gradient-to-position);
+}

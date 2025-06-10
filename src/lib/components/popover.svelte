@@ -4,7 +4,6 @@
   with internal Floating mechanics.
 -->
 <script lang="ts" module>
-  import type { ComputePositionConfig } from '@floating-ui/dom';
   import type { HTMLAttributes } from 'svelte/elements';
   import { Floating } from './floating.svelte';
 
@@ -29,14 +28,16 @@
       this.#floating = new Floating(options);
     }
 
-    anchorAttributes() {
+    anchorAttributes(options?: { modal?: boolean }) {
       return {
         ...this.#floating.referenceAttributes(),
         [Popover.attributes.anchor]: '',
         onclick: (e) => {
           this.#floating.active = true;
           if (this.#targetElement instanceof HTMLDialogElement) {
-            this.#targetElement.show();
+            options?.modal
+              ? this.#targetElement.showModal()
+              : this.#targetElement.show();
           } else {
             this.#targetElement?.showPopover();
           }
@@ -69,21 +70,18 @@
   }
 </script>
 
-<script lang="ts" generics="T extends ComputePositionConfig">
+<script lang="ts" generics="T extends ConstructorParameters<typeof Popover>[0]">
   import { type Snippet } from 'svelte';
   import { createAttachmentKey } from 'svelte/attachments';
 
   let {
-    anchor,
-    target,
+    children,
     ...options
   }: {
-    anchor: Snippet<[InstanceType<typeof Popover>]>;
-    target: Snippet<[InstanceType<typeof Popover>]>;
-  } & ConstructorParameters<typeof Popover<T>>[0] = $props();
+    children: Snippet<[InstanceType<typeof Popover<T>>]>;
+  } & T = $props();
 
   export const popover = new Popover(options);
 </script>
 
-{@render anchor(popover)}
-{@render target(popover)}
+{@render children(popover)}
