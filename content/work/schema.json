@@ -8,6 +8,22 @@
     "title": {
       "type": "string"
     },
+    "disciplines": {
+      "uniqueItems": true,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "frontend",
+          "backend",
+          "design",
+          "cognition",
+          "ix",
+          "ux",
+          "research"
+        ]
+      }
+    },
     "summary": {
       "type": "string"
     },

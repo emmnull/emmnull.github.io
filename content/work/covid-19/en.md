@@ -1,5 +1,6 @@
 ---
 # yaml-language-server: $schema=../schema.json
+test: ''
 ---
 
 # {title}
