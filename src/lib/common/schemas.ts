@@ -1,14 +1,16 @@
+import type { SvelteComponent } from 'svelte';
 import {
   NEVER,
   z,
   type ZodArray,
   type ZodEnum,
   type ZodNumber,
+  type ZodObject,
   type ZodString,
 } from 'zod/v4';
 import { disciplines, tag_types, tags } from '../data/meta';
 
-function uniqueItems<
+export function uniqueItems<
   T extends ZodString | ZodNumber | ZodEnum<Record<string, string>>,
 >(schema: ZodArray<T>) {
   return schema
@@ -27,6 +29,17 @@ function uniqueItems<
     });
 }
 
+export function markdownModule<T extends ZodObject>(metadata: T) {
+  return z.object({ default: z.custom<SvelteComponent>(), metadata });
+}
+
+export function localizedModules<T extends ZodObject>(metadata: T) {
+  return z.record(
+    z.string().transform((value) => value.substring(0, value.indexOf('/'))),
+    markdownModule(metadata),
+  );
+}
+
 export const disciplineSchema = z.enum(disciplines);
 
 export const tagTypeSchema = z.enum(tag_types);
@@ -36,10 +49,14 @@ export const tagSchema = z.enum(tags);
 export const workSchema = z.object({
   year: z.number(),
   title: z.string(),
-  disciplines: uniqueItems(disciplineSchema.array()),
-  summary: z.string(),
-  url: z.url().optional(),
-  repoUrl: z.url().optional(),
+  shortTitle: z.string().optional(),
+  disciplines: uniqueItems(disciplineSchema.array()).optional(),
+  tags: uniqueItems(tagSchema.array()).optional(),
+  summary: z.string().optional(),
+  cover: z.string().optional(),
+  banner: z.string().optional(),
+  link: z.url({ protocol: /^https?$/, hostname: z.regexes.domain }),
+  code: z.url({ protocol: /^https?$/, hostname: z.regexes.domain }),
 });
 
 export const postSchema = z.object({
@@ -47,39 +64,16 @@ export const postSchema = z.object({
   updatedAt: z.iso.date(),
   tags: uniqueItems(tagSchema.array()),
   title: z.string(),
+  shortTitle: z.string().optional(),
   summary: z.string().optional(),
+  cover: z.string().optional(),
+  banner: z.string().optional(),
+  links: z
+    .object({
+      url: z.url({ protocol: /^https?$/, hostname: z.regexes.domain }),
+      label: z.string(),
+      description: z.string().optional(),
+    })
+    .array()
+    .optional(),
 });
-
-// export const frontmatterSchema = z.object({
-//   name: z.string(),
-//   description: z.string(),
-//   properties: z.record(
-//     z.string(),
-//     z.object({
-//       description: z.string(),
-//       syntax: z
-//         .enum([
-//           'angle',
-//           'color',
-//           'custom-ident',
-//           'image',
-//           'integer',
-//           'length',
-//           'length-percentage',
-//           'number',
-//           'percentage',
-//           'resolution',
-//           'string',
-//           'time',
-//           'transform-function',
-//           'transform-list',
-//           'url',
-//         ])
-//         .array(),
-//     }),
-//   ),
-//   variants: z.record(
-//     z.string(),
-//     z.object({ name: z.string(), description: z.string().optional() }),
-//   ),
-// });
