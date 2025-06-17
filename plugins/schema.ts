@@ -1,27 +1,27 @@
 import { writeFile } from 'node:fs';
 import type { Plugin } from 'vite';
-import { z, type ZodType } from 'zod/v4';
-import type { $ZodRegistry } from 'zod/v4/core';
+import { z, type ZodObject } from 'zod/v4';
 
-const name = 'vite-plugin-schema' as const;
+const PLUGIN_NAME = 'vite-plugin-schema' as const;
 
 /**
  * Translate zod schemas to JSON schemas to get intellisense when authoring
  * content json or frontmatter (yaml) metadata in IDE.
  */
-export function schema(
-  sources: Record<string, ZodType | $ZodRegistry>,
-): Plugin {
+export function schema(sources: Record<string, ZodObject>): Plugin {
   return {
-    name,
+    name: PLUGIN_NAME,
     buildStart() {
       for (const out in sources) {
         // this.addWatchFile(out)
         const s = sources[out as keyof typeof sources];
-        const json = z.toJSONSchema(s, {
-          target: 'draft-7',
-          io: 'input',
-        });
+        const json = z.toJSONSchema(
+          s.extend({ $schema: z.string().optional() }),
+          {
+            target: 'draft-7',
+            io: 'input',
+          },
+        );
         write(out, JSON.stringify(json, undefined, 2));
       }
     },
@@ -35,9 +35,9 @@ async function write(out: string, json: string) {
   writeFile(out, json, (err) => {
     if (err) {
       return console.error(
-        `[${name}] couldn't generate json schema (${err.message}).`,
+        `[${PLUGIN_NAME}] couldn't generate json schema (${err.message}).`,
       );
     }
-    console.log(`[${name}] succesfully generated json schema (${out}).`);
+    console.log(`[${PLUGIN_NAME}] succesfully generated json schema (${out}).`);
   });
 }
