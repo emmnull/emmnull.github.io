@@ -197,19 +197,29 @@
     backdrop-filter: url(#beveled);
     font-weight: var(--font-weight-semibold);
     --button-color: var(--color-on-io);
-    --button-background: color-mix(in oklch, var(--color-cta) 0%, transparent);
-    --button-border-color: color-mix(in oklch, currentcolor 0%, transparent);
+    --button-background: --alpha(var(--color-cta) / 0%);
+    --button-border-color: --alpha(currentcolor / 0%);
     --button-icon-opacity: var(--opacity-io-icon);
     &:hover {
       &:not([aria-current], :target) {
-        --button-color: var(--color-cta);
-        --button-background: color-mix(in oklch, var(--color-cta) var(--opacity-io-background), transparent);
+        backdrop-filter: url(#beveled);
+        --button-color: var(--color-on-cta);
+        --button-background: --alpha(var(--color-cta) / var(--opacity-io-background-alt));
         --button-icon-opacity: 100%;
       }
     }
-    &:is([aria-current], :target) {
+    &:is(
+        [aria-current],
+        [aria-expanded='true'],
+        [aria-pressed='true'],
+        :target,
+        :open,
+        [data-open],
+        [data-state='open'],
+
+      ) {
       --button-color: var(--color-cta);
-      --button-border-color: color-mix(in oklch, var(--color-cta) var(--opacity-io-border), transparent);
+      --button-border-color: --alpha(var(--color-cta) / var(--opacity-io-border));
       --button-icon-opacity: 100%;
     }
   }

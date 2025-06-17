@@ -1,3 +1,18 @@
+/* @utility link-base {
+  @layer components {
+  }
+}
+
+@utility link {
+  @layer components {
+  }
+}
+
+@utility link-cta {
+  @layer components {
+  }
+} */
+
 @layer components {
   .link,
   .link-cta {

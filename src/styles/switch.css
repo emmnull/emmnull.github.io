@@ -48,6 +48,8 @@
       color: var(--switch-item-color);
       background: var(--switch-item-background);
 
+      /* icon */
+
       /* item thumb indicator */
       .switch-thumb {
         /* props */

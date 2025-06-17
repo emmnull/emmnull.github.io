@@ -1,5 +1,5 @@
 /* compact dimensions */
-@utility io-sm {
+@utility io-compact {
   --spacing-io: 2.25em;
   --radius-io: var(--radius-sm);
   --spacing-io-padding: 0.75em;
@@ -7,7 +7,7 @@
 }
 
 /* spacious dimensions */
-@utility io-lg {
+@utility io-wide {
   --spacing-io: 5.5em;
   --radius-io: var(--radius-lg);
   --spacing-io-padding: 2em;

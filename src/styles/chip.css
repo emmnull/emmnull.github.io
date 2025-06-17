@@ -91,6 +91,8 @@
 @utility chip {
   @layer components {
     @apply chip-base;
+    --chip-background: --alpha(var(--color-io) / var(--opacity-io-background));
+    --chip-color: var(--color-on-io);
   }
 }
 

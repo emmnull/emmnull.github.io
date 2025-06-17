@@ -68,7 +68,8 @@
 @utility pattern-crossdots {
   background-size: var(--pattern-spacing) var(--pattern-spacing);
   background-repeat: repeat;
-  background-image: radial-gradient(var(--pattern-color) calc(0.5 * var(--pattern-thickness)), 0%, transparent),
+  background-image:
+    radial-gradient(var(--pattern-color) calc(0.5 * var(--pattern-thickness)), 0%, transparent),
     radial-gradient(
       circle at 0% 0%,
       var(--pattern-color2, var(--pattern-color)) calc(0.5 * var(--pattern-thickness2, var(--pattern-thickness))),
@@ -104,7 +105,8 @@
 }
 
 @utility pattern-crosslines {
-  background-image: repeating-linear-gradient(
+  background-image:
+    repeating-linear-gradient(
       var(--pattern-angle),
       var(--pattern-color) 0% var(--pattern-thickness),
       transparent var(--pattern-thickness) var(--pattern-spacing)
@@ -129,7 +131,8 @@
 
 @utility pattern-crosses {
   --pattern-spread-half: calc(0.5 * var(--pattern-spread));
-  background-image: conic-gradient(
+  background-image:
+    conic-gradient(
       from -90deg at var(--pattern-thickness) var(--pattern-spread-half),
       var(--pattern-color) 90deg,
       0%,
