@@ -44,12 +44,6 @@
     /**
      * Make sure you set the appropriate styles yourself:
      *
-     * ```css
-     * container {
-     * 	overflow: hidden;
-     * }
-     * ```
-     *
      * ```html
      *
      * | > <container>
@@ -94,11 +88,7 @@
      *
      * ```css
      * content {
-     * 	overflow: hidden;
-     * 	position: sticky;
-     * 	top: 0;
-     * 	display: flex;
-     * 	flex-diretion: row;
+     * 	top: 0 or some other custom value;
      * }
      * ```
      *

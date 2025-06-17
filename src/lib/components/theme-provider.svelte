@@ -41,23 +41,17 @@
 
     set current(value) {
       this.#persisted.current = value;
-      document.documentElement.setAttribute('data-theme', this.resolved);
-    }
-
-    get currentOption() {
-      return Theme.options[this.current];
-    }
-
-    get resolvedOption() {
-      return Theme.options[this.resolved];
     }
   }
 
   export const theme = new Theme();
 </script>
 
-<!-- <script lang="ts">
-</script> -->
+<script lang="ts">
+  $effect(() => {
+    document.documentElement.setAttribute('data-theme', theme.resolved);
+  });
+</script>
 
 <svelte:head>
   <script>
@@ -74,5 +68,3 @@
     }
   </script>
 </svelte:head>
-
-<!-- <div class="hidden" data-theme={theme.resolved}></div> -->

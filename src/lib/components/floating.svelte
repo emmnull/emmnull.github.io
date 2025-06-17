@@ -223,21 +223,21 @@
   }
 </script>
 
-<script lang="ts" generics="T extends ComputePositionConfig">
+<script
+  lang="ts"
+  generics="T extends ConstructorParameters<typeof Floating>[0]"
+>
   import { calc, multiply } from '$lib/common/css';
   import { type Snippet } from 'svelte';
 
   let {
-    reference,
-    floating,
+    children,
     ...options
   }: {
-    reference: Snippet<[InstanceType<typeof Floating>]>;
-    floating: Snippet<[InstanceType<typeof Floating>]>;
-  } & ConstructorParameters<typeof Floating<T>>[0] = $props();
+    children: Snippet<[InstanceType<typeof Floating>]>;
+  } & T = $props();
 
-  export const float = new Floating(options);
+  export const floating = new Floating(options);
 </script>
 
-{@render reference(float)}
-{@render floating(float)}
+{@render children(floating)}

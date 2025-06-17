@@ -13,7 +13,12 @@
    *
    * @see Floating
    */
-  export class Popover<T extends ConstructorParameters<typeof Floating>[0]> {
+  export class Popover<
+    T extends Omit<
+      NonNullable<ConstructorParameters<typeof Floating>[0]>,
+      'active'
+    > & { open?: boolean },
+  > {
     static readonly attributes = {
       placement: 'data-popover-placement',
       anchor: 'data-popover-anchor',
@@ -22,41 +27,56 @@
     } as const;
 
     #floating;
-    #targetElement: HTMLElement | undefined;
 
-    constructor(options: T) {
-      this.#floating = new Floating(options);
+    constructor({ open: active, ...options }: T) {
+      this.#floating = new Floating({ ...options, active });
     }
 
-    anchorAttributes(options?: { modal?: boolean }) {
+    get open() {
+      return this.#floating.active;
+    }
+
+    set open(value) {
+      this.#floating.active = value;
+    }
+
+    anchorAttributes({
+      mode = 'toggle',
+    }: { mode?: 'toggle' | 'open' | 'close' } = {}) {
       return {
         ...this.#floating.referenceAttributes(),
         [Popover.attributes.anchor]: '',
+        'data-state': this.open ? 'open' : undefined,
         onclick: (e) => {
-          this.#floating.active = true;
-          if (this.#targetElement instanceof HTMLDialogElement) {
-            options?.modal
-              ? this.#targetElement.showModal()
-              : this.#targetElement.show();
-          } else {
-            this.#targetElement?.showPopover();
-          }
+          this.open =
+            mode === 'toggle' ? !this.open : mode === 'open' ? true : false;
         },
       } satisfies HTMLAttributes<HTMLElement>;
     }
 
-    targetAttributes() {
+    targetAttributes({ modal = false }: { modal?: boolean } = {}) {
       return {
         ...this.#floating.floatingAttributes(),
         [Popover.attributes.target]: '',
-        [createAttachmentKey()]: (node) => {
-          this.#targetElement = node;
-          return () => {
-            this.#targetElement = undefined;
-          };
-        },
         onclose: (e) => {
-          this.#floating.active = false;
+          if (!e.defaultPrevented) {
+            this.open = false;
+          }
+        },
+        [createAttachmentKey()]: (node) => {
+          if (this.open) {
+            if (node instanceof HTMLDialogElement) {
+              modal ? node.showModal() : node.show();
+            } else {
+              node.showPopover();
+            }
+          } else {
+            if (node instanceof HTMLDialogElement) {
+              node.close();
+            } else {
+              node.hidePopover();
+            }
+          }
         },
       } satisfies HTMLAttributes<HTMLElement>;
     }
@@ -78,7 +98,7 @@
     children,
     ...options
   }: {
-    children: Snippet<[InstanceType<typeof Popover<T>>]>;
+    children: Snippet<[InstanceType<typeof Popover>]>;
   } & T = $props();
 
   export const popover = new Popover(options);

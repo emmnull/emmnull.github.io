@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { browser } from '$app/environment';
   import { page } from '$app/state';
-  import { links } from '$lib/data/profile';
   import { locales_names } from '$lib/i18n/constants';
   import {
     deLocalizeHref,
@@ -11,7 +11,7 @@
   import { linkAttributes } from '$lib/rigs/link.svelte';
   import * as m from '$messages';
   import { offset, shift } from '@floating-ui/dom';
-  import { Languages, Menu, PencilRuler, ScrollText } from 'lucide-svelte';
+  import { FileUser, Languages, Menu, PencilRuler } from 'lucide-svelte';
   import { quadOut } from 'svelte/easing';
   import { fly } from 'svelte/transition';
   import { lg } from './breakpoint-provider.svelte';
@@ -39,10 +39,10 @@
 </script>
 
 <header
-  class="py-padding px-prose-padding has-focus-visible:from-overlay/overlay has-open:from-overlay/overlay has-hover:from-overlay/overlay z-frontmost ease to-overlay/0 via-ease-circ-out pointer-events-none fixed top-0 flex min-h-1/4 w-full flex-row items-start justify-center bg-linear-to-b transition lg:justify-between lg:text-sm print:hidden"
+  class="py-padding px-prose-padding has-focus-visible:from-overlay has-open:from-overlay has-hover:from-overlay z-frontmost ease via-ease-circ-out pointer-events-none fixed top-0 flex min-h-1/2 w-full flex-row items-start justify-center bg-linear-to-b to-transparent transition lg:justify-between lg:text-sm print:hidden"
 >
   <nav class="gap-menu-gap pointer-events-auto flex flex-row">
-    <a
+    <!-- <a
       in:intro|global
       class="button-nav lg:mr-gap aspect-square rounded-full p-0"
       href="/"
@@ -57,27 +57,39 @@
       <Ripple />
       <span
         data-state="success"
-        class="badge-cta io-sm appose-top-left-1/8 aspect-square rounded-full text-xs"
+        class="badge-cta io-compact appose-top-left-1/8 aspect-square rounded-full text-xs"
       >
       </span>
-    </a>
+			</a> -->
     <button
       in:intro|global
       class="button-nav aspect-square lg:hidden"
-      onclick={() => {
-        mobileDialog?.showModal();
+      onpointerup={(e) => {
+        mobileDialog.showModal();
       }}
     >
       <Ripple />
       <Menu />
     </button>
+    <dialog
+      class="dialog w-full origin-bottom self-end shadow-lg not-open:scale-96 starting:translate-y-1/4"
+      closedby="any"
+      bind:this={mobileDialog}
+      onpointerup={(e) => {
+        e.stopImmediatePropagation();
+      }}
+    >
+      {@render langMenu()}
+      {@render themeMenu()}
+      <nav>Other sections</nav>
+    </dialog>
     <a
       in:intro|global
       class="button-nav not-lg:hidden"
       {...linkAttributes('/cv', { currentOnSubpath: true })}
     >
       <Ripple />
-      <ScrollText />
+      <FileUser />
       {m.resume()}
     </a>
     <a
@@ -90,7 +102,9 @@
       {m.workshop()}
     </a>
   </nav>
-  <!-- <nav class="gap-menu-gap pointer-events-auto flex flex-1 flex-row"></nav> -->
+  <div
+    class="mx-gap h-io pattern-dots pattern-color-io/50 pattern-thickness-[1.5px] pattern-spacing-[1em] flex-1 bg-[50%] bg-repeat-x transition-all delay-500 duration-500 not-lg:hidden starting:opacity-0"
+  ></div>
   <nav class="gap-menu-gap pointer-events-auto flex flex-row not-lg:hidden">
     <Popover
       placement="bottom-end"
@@ -102,18 +116,23 @@
       strategy="fixed"
     >
       {#snippet children(popover)}
+        {@const current = Theme.options[theme.current]}
         <button
           {...popover.anchorAttributes()}
           class="button-nav aspect-square"
         >
           <Ripple />
-          <theme.currentOption.icon />
+          {#if browser}
+            {#key current.name}
+              <current.icon class="transition-all starting:translate-y-1/4" />
+            {/key}
+          {/if}
         </button>
         <dialog
           bind:this={themePopover}
           {...popover.targetAttributes()}
           closedby="any"
-          class="popover not-open:scale-90 starting:-translate-y-1/2"
+          class="popover not-open:scale-95 starting:-translate-y-1/4 starting:scale-95"
         >
           {@render themeMenu()}
         </dialog>
@@ -136,7 +155,7 @@
           bind:this={langPopover}
           {...popover.targetAttributes()}
           closedby="any"
-          class="popover not-open:scale-90 starting:-translate-y-1/2"
+          class="popover not-open:scale-95 starting:-translate-y-1/4 starting:scale-95"
         >
           {@render langMenu()}
         </dialog>
@@ -144,16 +163,6 @@
     </Popover>
   </nav>
 </header>
-
-<dialog
-  class="dialog w-full self-end shadow-lg not-open:scale-110 starting:translate-y-1/2"
-  closedby="any"
-  bind:this={mobileDialog}
->
-  {@render langMenu()}
-  {@render themeMenu()}
-  <nav>Other sections</nav>
-</dialog>
 
 {#snippet themeMenu()}
   <menu class="switch-ghost flex-col">
