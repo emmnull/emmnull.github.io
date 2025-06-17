@@ -13,7 +13,7 @@ const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 export default ts.config(
   includeIgnoreFile(gitignorePath),
   js.configs.recommended,
-  ...ts.configs.recommended,
+  ...ts.configs.strict,
   ...ts.configs.stylistic,
   ...svelte.configs.recommended,
   prettier,
@@ -33,9 +33,16 @@ export default ts.config(
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
       '@typescript-eslint/no-unused-vars': [
         'error',
-        { ignoreRestSiblings: true, destructuredArrayIgnorePattern: '^_' },
+        {
+          ignoreRestSiblings: true,
+          destructuredArrayIgnorePattern: '^_',
+          argsIgnorePattern: '^_',
+        },
       ],
-      '@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        { fixStyle: 'inline-type-imports' },
+      ],
       '@typescript-eslint/no-import-type-side-effects': 'error',
       'import/newline-after-import': [
         'error',
