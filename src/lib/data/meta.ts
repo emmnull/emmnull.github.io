@@ -50,12 +50,12 @@ export const tags_details = {
   svelte: {
     label: 'Svelte',
     type: 'language',
-    scopes: ['frontend'],
+    disciplines: ['frontend'],
   },
   sveltekit: {
     label: 'SvelteKit',
     type: 'framework',
-    scopes: ['frontend', 'backend'],
+    disciplines: ['frontend', 'backend'],
   },
   html: {
     label: 'HTML',
@@ -76,7 +76,7 @@ export const tags_details = {
   tailwind: {
     label: 'TailwindCSS',
     type: 'library',
-    scopes: ['frontend'],
+    disciplines: ['frontend'],
   },
   javascript: {
     label: 'JavaScript',
@@ -89,6 +89,10 @@ export const tags_details = {
   nodejs: {
     label: 'Node.js',
     type: 'runtime',
+  },
+  vue: {
+    label: 'Vue',
+    type: 'library',
   },
   react: {
     label: 'React',
@@ -114,7 +118,7 @@ export const tags_details = {
     label: 'Zod',
     type: 'library',
   },
-  d3js: {
+  d3: {
     label: 'D3.js',
     type: 'library',
   },
@@ -184,7 +188,7 @@ export const tags_details = {
     label: string;
     url?: URL;
     type: TagType;
-    scopes?: Discipline[];
+    disciplines?: Discipline[];
   }
 >;
 
