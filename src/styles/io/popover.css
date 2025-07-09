@@ -1,0 +1,31 @@
+@utility popover {
+  padding: var(--spacing-io-gap);
+  background: var(--color-surface);
+  border-radius: var(--radius-io);
+  transition-behavior: allow-discrete;
+  transition-property: all, left, top;
+  transition-duration: 0.15s, 0s, 0s;
+  transition-timing-function: var(--ease-out);
+
+  &::backdrop {
+    transition-timing-function: ease;
+    transition-duration: 0.35s;
+    transition-behavior: inherit;
+
+    @starting-style {
+      opacity: 0%;
+    }
+  }
+
+  @starting-style {
+    opacity: 0%;
+  }
+
+  &:not(*:is([open], :popover-open, :open)) {
+    opacity: 0;
+
+    &::backdrop {
+      opacity: 0%;
+    }
+  }
+}

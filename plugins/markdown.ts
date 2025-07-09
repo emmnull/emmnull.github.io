@@ -1,81 +1,336 @@
 import { compile, type MdsvexCompileOptions } from 'mdsvex';
+import { enhancedImages as remarkEnhancedImages } from 'mdsvex-enhanced-images';
 import { basename, dirname, extname } from 'path';
+import { cwd } from 'process';
 import type { Transformer } from 'unified';
+import { visit } from 'unist-util-visit';
 import type { Plugin } from 'vite';
 import { isLocale } from '../src/lib/i18n/generated/runtime';
 
-const PLUGIN_NAME = 'vite-plugin-markdown-svelte' as const;
+const PATH_PATTERN =
+  /\s*(\$\w+|\.{1,2})[/\\].*?\.\w+\s*(\?([^=&]+=[^=&]+)(&[^=&]+=[^=&]+)*)?/;
+const SCRIPT_START_PATTERN =
+  /<script(?:\s+?[a-zA-z]+(=(?:["']){0,1}[a-zA-Z0-9]+(?:["']){0,1}){0,1})*\s*?>/;
+const PROPS_PATTERN =
+  /(\w+)\s*=\s*(["'])(\s*(\$\w+|\.{1,2})[/\\].*?\.\w+\s*(\?([^=&]+=[^=&]+)(&[^=&]+=[^=&]+)*)?)\2/g;
+const CWD_PATTERN = new RegExp(
+  `^${cwd().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[\\/]*`,
+);
 
-/**
- * Support svelte markdown in vite for more control on timing with other
- * svelte-relevant vite plugins.
- */
-export function markdown({
-  sharedMetadata,
-  extensions = ['.md'],
-  ...options
-}: {
+type MarkdownOptions = {
   /**
    * Peer filename(s) of shared base metadata to inject into localized
    * markdown's frontmatter.
    */
   sharedMetadata?: `${string}.${'json' | 'jsonc'}`[];
-} & MdsvexCompileOptions): Plugin {
-  const pattern = new RegExp(`(${extensions.join('|')})$`, 'i');
-  return {
-    name: PLUGIN_NAME,
-    enforce: 'pre',
-    async transform(code, id) {
-      if (pattern.test(id)) {
-        const name = basename(id, extname(id));
-        const metadata: Record<string, unknown> = {};
-        if (isLocale(name) && sharedMetadata?.length) {
-          for (const shared of sharedMetadata) {
-            try {
-              const file = await import(`${dirname(id)}/${shared}`, {
-                with: { type: 'json' },
-              });
-              if (
-                file != null &&
-                typeof file === 'object' &&
-                file.default != null &&
-                typeof file.default === 'object'
-              ) {
-                Object.assign(metadata, file.default);
-              }
-            } catch (err) {
-              console.info(
-                `[${PLUGIN_NAME}] No index.json found for localized markdown ${id} (${JSON.stringify(err)})`,
-              );
-            }
-          }
-        }
-        if ('$schema' in metadata) {
-          delete metadata.$schema;
-        }
-        return compile(code, {
-          ...options,
-          remarkPlugins: [
-            // @ts-expect-error mdsvex typings are shite
-            [remarkInject, { metadata }],
-            ...(options.remarkPlugins ?? []),
-          ],
-        });
-      }
-    },
-  };
-}
+  // /**
+  //  * Name of file where to output virtual modules' type definitions based on
+  //  * collections schema.
+  //  */
+  // types?: string;
+  // /**
+  //  * Optional default filename for JSON schema ouput.
+  //  *
+  //  * Set to falsy value to omit schema output.
+  //  *
+  //  * @default 'schema.json'
+  //  */
+  // json?: string;
+  // /** Content collections for which to provide apis. */
+  // collections: Record<
+  //   string,
+  //   {
+  //     /**
+  //      * Name of virtual module.
+  //      *
+  //      * @default 'virtual:{key}'
+  //      */
+  //     name?: string;
+  //     /** Schema of content front matter metadata. */
+  //     schema: ZodObject;
+  //     /**
+  //      * Optional collection base path. Will be used as base path to determine
+  //      * where to output the collection's JSON schema (if the 'json' option is
+  //      * enabled).
+  //      */
+  //     base?: string;
+  //     /** Glob import pattern of files that should be part of the collection. */
+  //     pattern: string;
+  //     /**
+  //      * Optional collection-specific filename for JSON schema ouput.
+  //      *
+  //      * Set to nullish value to use default filename.
+  //      *
+  //      * Set to false to omit schema output regardless of default value.
+  //      */
+  //     json?: string;
+  //   }
+  // >;
+} & MdsvexCompileOptions;
 
 /**
- * When encountering locale-specific markdowns ([locale].md), look for shared
- * metadata (index.json) to inject alongside markdown metadata.
+ * Support svelte markdown in vite for more control on timing with other
+ * svelte-relevant vite plugins.
  */
-function remarkInject(options: {
-  metadata: Record<string, unknown>;
-}): Transformer {
-  return function transformer(tree, file) {
-    if ('fm' in file.data && typeof file.data.fm === 'object') {
-      file.data.fm = { ...options.metadata, ...file.data.fm };
-    }
+export default function markdown({
+  // types = 'markdown.d.ts',
+  // collections,
+  sharedMetadata,
+  extensions = ['.md'],
+  ...mdsvexOptions
+}: MarkdownOptions): Plugin {
+  const MARKDOWN_PATTERN = new RegExp(`(${extensions.join('|')})$`, 'i');
+  // const globbed = new Map<string, Set<string>>();
+  // const vmodules = new Map<string, string>();
+  return {
+    name: 'vite-plugin-markdown-svelte',
+    enforce: 'pre',
+    // async buildStart(options) {
+    //   let dts = `
+    // 		// This type declaration is generated by the markdown vite plugin.
+    // 		// Do not modify manually.
+
+    // 		import type { SvelteComponent } from 'svelte';
+
+    // 	`;
+    //   for (const name in collections) {
+    //     const collection = collections[name];
+    //     const pattern = (collection.base ?? '') + collection.pattern;
+    //     const items = await glob(pattern);
+    //     for (const item of items) {
+    //       if (!globbed.has(item)) {
+    //         globbed.set(item, new Set([name]));
+    //         continue;
+    //       }
+    //       globbed.get(item)?.add(name);
+    //     }
+    //     const vname = collection.name ?? 'virtual:' + name;
+    //     const code = dedent`
+    // 		export const all = import.meta.glob('${pattern}', { eager: true });
+    // 		export const one = (slug) => await import();
+    // 		`;
+    //     dts += `
+    // 		declare module '${vname}' {
+    // 			export const all = Record<string, ${''}>;
+    // 			export const one = async (slug: string) => await import();
+    // 		}
+    // 		`;
+    //     console.log(tsc.pr)
+    //     vmodules.set('\0' + vname, code);
+    //   }
+    //   writeFileSync(types, dedent(dts), { encoding: 'utf-8' });
+    // },
+    async transform(code, id) {
+      if (MARKDOWN_PATTERN.test(id)) {
+        const c = compile(code, {
+          ...mdsvexOptions,
+          remarkPlugins: [
+            // @ts-expect-error mdsvex types are shite
+            [remarkSharedMetadata, { id }],
+            remarkEnhancedImages,
+            ...(mdsvexOptions.remarkPlugins ?? []),
+          ],
+        });
+        // console.log(await c);
+        return c;
+      }
+    },
+    // resolveId(source, importer, options) {
+    //   if (vmodules.has('\0' + source)) {
+    //     return '\0' + source;
+    //   }
+    // },
+    // load(id, options) {
+    //   if (vmodules.has(id)) {
+    //     return vmodules.get(id);
+    //   }
+    // },
   };
+
+  /**
+   * When encountering locale-specific markdowns ([locale].md), look for shared
+   * metadata (index.json) to inject alongside markdown metadata.
+   */
+  function remarkSharedMetadata(options: { id: string }): Transformer {
+    const name = basename(options.id, extname(options.id));
+    const metadata: Record<string, unknown> = {};
+    return async function transformer(tree, vfile) {
+      if (isLocale(name) && sharedMetadata?.length) {
+        for (const filename of sharedMetadata) {
+          const filepath = `${dirname(options.id)}/${filename}`;
+          try {
+            const file = await import(filepath, {
+              with: { type: 'json' },
+            });
+            if (
+              file != null &&
+              typeof file === 'object' &&
+              file.default != null &&
+              typeof file.default === 'object'
+            ) {
+              Object.assign(metadata, file.default);
+            }
+          } catch (err) {
+            console.info(
+              `No "index.json" found for localized markdown ${options.id} (${JSON.stringify(err)})`,
+            );
+          }
+        }
+      }
+      if ('$schema' in metadata) {
+        delete metadata.$schema;
+      }
+      if (isMdsvexVfile(vfile)) {
+        vfile.data.fm = { ...metadata, ...vfile.data.fm };
+      }
+    };
+  }
+
+  // function remarkValidateMetadata(
+  //   options: { id: string; globbed: Map<string, Set<string>> } & Pick<
+  //     MarkdownOptions,
+  //     'collections'
+  //   >,
+  // ): Transformer {
+  //   return function transformer(tree, vfile) {
+  //     if (!isMdsvexVfile(vfile)) {
+  //       return;
+  //     }
+  //     const source = options.id.replace(CWD_PATTERN, '');
+  //     if (!options.globbed.has(source)) {
+  //       return;
+  //     }
+  //     options.globbed.get(source)?.forEach((name) => {
+  //       vfile.data.fm = options.collections[name].schema.parse(vfile.data.fm);
+  //     });
+  //   };
+  // }
+
+  /**
+   * Transform relative paths into imports.
+   *
+   * @credits pngwn
+   * @credits mattjennings
+   *
+   * @see https://github.com/mattjennings/mdsvex-relative-images/blob/main/index.js
+   */
+  function remarkRelativePath(): Transformer {
+    return function transformer(tree, vfile) {
+      const urls = new Map<string, string>();
+      const name_counts = new Map<string, number>();
+
+      function transformUrl(path: string, wrap?: boolean) {
+        path = path.trim();
+        path = decodeURIComponent(path);
+        const match = path.match(PATH_PATTERN);
+
+        if (match && match.length && match[0] == path) {
+          let name = path
+            .replace(/[^a-zA-Z0-9]+/g, ' ')
+            .trim()
+            .split(/\s+/)
+            .map((word, index) =>
+              index === 0
+                ? word.toLowerCase()
+                : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+            )
+            .join('')
+            .replace(/^(\d)/, '_$1');
+          const count = name_counts.get(name);
+          const dupe = urls.has(path);
+          if (count && !dupe) {
+            name_counts.set(name, count + 1);
+            name = `${name}_${count}`;
+          } else if (!dupe) {
+            name_counts.set(name, 1);
+          }
+          urls.set(path, name);
+          return wrap ? `{${name}}` : name;
+        }
+        return path;
+      }
+
+      // transform metadata
+      function transformMetadata(
+        metadata: Record<string | number | symbol, unknown>,
+      ) {
+        for (const k in metadata) {
+          if (typeof metadata[k] === 'string') {
+            metadata[k] = transformUrl(metadata[k]);
+          }
+          if (typeof metadata[k] === 'object' && metadata[k] !== null) {
+            transformMetadata(
+              metadata[k] as Record<string | number | symbol, unknown>,
+            );
+          }
+        }
+      }
+
+      if (isMdsvexVfile(vfile)) {
+        for (const k in vfile.data.fm) {
+          // reserve frontmatter prop names
+          name_counts.set(k, 1);
+        }
+        transformMetadata(vfile.data.fm);
+      }
+
+      // transform urls in images
+      visit(tree, ['image', 'definition'], (node) => {
+        node.url = transformUrl(node.url, true);
+      });
+
+      // transform src in html nodes
+      visit(tree, 'html', (node: { value: string }) => {
+        let match;
+        const props: string[] = [];
+
+        while ((match = PROPS_PATTERN.exec(node.value)) !== null) {
+          if (match[1]) {
+            props.push(match[3]);
+          }
+        }
+
+        for (const url of props) {
+          const transformed = transformUrl(url, true);
+          node.value = node.value.replace(`${url}`, transformed);
+        }
+      });
+
+      let scripts = '';
+      urls.forEach(
+        (name, path) => (scripts += `import ${name} from "${path}";\n`),
+      );
+
+      let is_script = false;
+
+      visit(tree, 'html', (node) => {
+        if (SCRIPT_START_PATTERN.test(node.value)) {
+          is_script = true;
+          node.value = node.value.replace(
+            SCRIPT_START_PATTERN,
+            (script: string) => {
+              return `${script}\n${scripts}`;
+            },
+          );
+        }
+      });
+
+      if (!is_script) {
+        tree.children.push({
+          type: 'html',
+          value: `<script>\n${scripts}</script>`,
+        });
+      }
+    };
+  }
+}
+
+function isMdsvexVfile<T extends Parameters<Transformer>[1]>(
+  vfile: T,
+): vfile is T & { data: { fm: Record<string, unknown> } } {
+  return (
+    'fm' in vfile.data &&
+    typeof vfile.data.fm === 'object' &&
+    vfile.data.fm !== null
+  );
 }

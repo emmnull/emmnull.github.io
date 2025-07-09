@@ -5,13 +5,13 @@
 <script module lang="ts">
   import { Persisted } from '$lib/rigs/persisted.svelte';
   import * as m from '$messages';
-  import { Monitor, Moon, Sun } from 'lucide-svelte';
+  import { Blend, Moon, Sun } from 'lucide-svelte';
   import { MediaQuery } from 'svelte/reactivity';
 
   export class Theme {
     static readonly options = {
       system: {
-        icon: Monitor,
+        icon: Blend,
         name: m.theme_system(),
       },
       dark: {

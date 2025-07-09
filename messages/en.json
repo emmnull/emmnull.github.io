@@ -68,7 +68,20 @@
   ],
   "work": "Work",
   "workshop": "Workshop",
-  "workshop_catchphrase": "Crafty things I'm up to",
-  "home_catchphrase_test": "Hi there I'm {name}",
-  "skills_catchphrase": "My tools of the trade"
+  "project": [
+    {
+      "declarations": [
+        "input count",
+        "local countPlural = count: plural"
+      ],
+      "selectors": [
+        "countPlural"
+      ],
+      "match": {
+        "countPlural=one": "Project",
+        "countPlural=other": "Projects"
+      }
+    }
+  ],
+  "locale_name": "English"
 }

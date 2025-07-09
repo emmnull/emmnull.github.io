@@ -1,22 +1,37 @@
 import { getLocale } from '$lib/i18n/generated/runtime';
+import type { z, ZodObject } from 'zod/v4';
+import { markdownSchema } from './schema';
 
-export function unbase<T>(files: Record<string, T>, base: string) {
-  const res: typeof files = {};
-  for (const p in files) {
-    const k = p.substring(base.length);
-    res[k] = files[p];
-  }
-  return res;
+export function createCollection<S extends ZodObject, G>(
+  schema: S,
+  files: Record<string, G>,
+) {
+  return () => {
+    const locale = getLocale();
+    const parsed: (z.infer<ReturnType<typeof markdownSchema<S>>> & {
+      slug: string;
+    })[] = [];
+    for (const filepath in files) {
+      const name = filepath.substring(
+        filepath.lastIndexOf('/') + 1,
+        filepath.lastIndexOf('.'),
+      );
+      if (name === locale) {
+        parsed.push({
+          ...markdownSchema(schema).parse(files[filepath]),
+          slug: filepath.substring(0, filepath.lastIndexOf('/')),
+        });
+      }
+    }
+    return parsed;
+  };
 }
 
-export function localized<T extends Record<string, unknown>>(files: T) {
-  const locale = getLocale();
-  const pattern = new RegExp(`^(.*(\\.|/))*${locale}\\.\\w+$`, 'i');
-  const filtered: Partial<T> = {};
-  for (const k in files) {
-    if (pattern.test(k)) {
-      filtered[k] = files[k];
-    }
-  }
-  return filtered;
+export function createOne<S extends ZodObject>(schema: S, base: string) {
+  return async (slug: string) => {
+    const file = await import(
+      /* @vite-ignore */ `${base}/${slug}/${getLocale()}.md`
+    );
+    return markdownSchema(schema).parse(file);
+  };
 }

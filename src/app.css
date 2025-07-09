@@ -1,267 +1,29 @@
 @layer theme, base, components, utilities;
 
 @import 'tailwindcss/preflight.css' layer(base);
-@import 'tailwindcss/utilities.css';
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@import './styles/theme.css';
+
+@import './styles/base.css' layer(base);
+@import './styles/pattern.css';
+@import './styles/animation.css';
 @import './styles/appose.css';
-@import './styles/prose.css';
-@import './styles/no-scrollbar.css';
 @import './styles/coarse-target.css';
-@import './styles/io-dimensions.css';
-@import './styles/io-nesting.css';
-@import './styles/io-themes.css';
-@import './styles/dialog.css';
-@import './styles/popover.css';
-@import './styles/badge.css';
-@import './styles/button.css';
-@import './styles/chip.css';
-@import './styles/separator.css';
-@import './styles/switch.css';
+@import './styles/glow.css';
 @import './styles/gradient-ease.css';
+@import './styles/no-scrollbar.css';
+@import './styles/prose.css';
 
-@custom-variant icon {
-  &:is(svg)[data-icon],
-  &:is(svg).lucide {
-    @slot;
-  }
-}
-
-@custom-variant dark {
-  &[data-theme='dark'],
-  [data-theme='dark'] &:not([data-theme]):not([data-theme]:not([data-theme='dark']) *) {
-    @slot;
-  }
-}
-
-@custom-variant light {
-  &[data-theme='light'],
-  [data-theme='light'] &:not([data-theme]):not([data-theme]:not([data-theme='light']) *) {
-    @slot;
-  }
-}
-
-@theme {
-  --font-main: 'Figtree Variable', sans-serif;
-  --font-misc: 'Instrument Serif', serif;
-  --font-mono: 'DM Mono', monospace;
-
-  --color-background: light-dark(oklch(0.84 0.018 247), oklch(0.18 0.002 70));
-  --color-surface: light-dark(oklch(0.8 0.02 246), oklch(0.21 0.002 50));
-  --color-primary: light-dark(#1e1e1e, oklch(0.58 0.21 276));
-  --color-secondary: light-dark(#1e1e1e, oklch(0.55 0.21 165));
-  --color-io: light-dark(#1e1e1e, buttonface);
-  --color-cta: var(--color-primary);
-  --color-overlay: light-dark(white, oklch(0.16 0.002 70));
-  --color-popover: light-dark();
-  --color-success: light-dark(green, green);
-  --color-warning: light-dark();
-  --color-error: light-dark(red, red);
-  --color-info: light-dark(blue, blue);
-
-  --color-text: light-dark(oklch(0.21 0.0059 64.02), oklch(0.77 0.01 82));
-  --color-highlight: light-dark(oklch(0.21 0.0059 64.02), oklch(0.92 0.01 80));
-  --color-on-primary: light-dark(white, white);
-  --color-on-secondary: light-dark(black, white);
-  --color-on-io: light-dark(#1e1e1e, oklch(0.75 0.01 90));
-  --color-on-cta: var(--color-on-primary);
-  --color-on-overlay: color-mix(in oklch, var(--color-overlay), light-dark(black, white) 85%);
-  --color-on-popover: color-mix(in oklch, var(--color-popover), light-dark(black, white) 85%);
-  --color-on-success: light-dark(darkgreen, lightgreen);
-  --color-on-warning: color-mix(in oklch, var(--color-warning), light-dark(black, white) 85%);
-  --color-on-error: color-mix(in oklch, var(--color-error), light-dark(black, white) 85%);
-  --color-on-info: color-mix(in oklch, var(--color-notice), light-dark(black, white) 85%);
-
-  --spacing: 0.25rem;
-  --spacing-io: 3em;
-  --spacing-io-icon: calc(var(--spacing-io) / 2.5);
-  --spacing-io-padding: calc(var(--spacing-io) / 3);
-  --spacing-io-gap: calc(var(--spacing-io-padding) / 2);
-  --spacing-io-nesting: calc(var(--spacing-io) / 8);
-  --spacing-io-background-inset: 0.25em;
-  --spacing-scroll-x: 0;
-  --spacing-scroll-y: 0;
-  --spacing-scroll-px-x: calc(var(--spacing-scroll-x) * 1px);
-  --spacing-scroll-px-y: calc(var(--spacing-scroll-y) * 1px);
-  --spacing-padding: 1.25rem;
-  --spacing-gap: 0.75rem;
-  --spacing-menu-padding: calc(2 * var(--outline-width-focus));
-  --spacing-menu-gap: var(--outline-width-focus);
-  --spacing-navbar-height: calc(var(--spacing-gap) + var(--spacing-io) + var(--spacing-padding));
-  --spacing-main-height: calc(100dvh - var(--spacing-navbar-height));
-  --spacing-main-width: 76rem;
-  --spacing-prose-width: 52rem;
-  --spacing-prose-padding: 2rem;
-
-  --radius-xs: calc(var(--spacing) * 1);
-  --radius-sm: calc(var(--spacing) * 1.75);
-  --radius-md: calc(var(--spacing) * 3);
-  --radius-lg: calc(var(--spacing) * 5.25);
-  --radius-xl: calc(var(--spacing) * 8.25);
-  --radius-section: var(--radius-xl);
-  --radius-card: var(--radius-lg);
-  --radius-io: var(--radius-md);
-
-  --breakpoint-lg: 48rem;
-
-  --font-family-main: 'Figtree', sans-serif;
-  --font-family-misc: 'Fraunces', serif;
-  --font-family-code: 'DM Mono', monospace;
-
-  --text-xs: 0.75rem;
-  --text-sm: 0.825rem;
-  --text-md: 1rem;
-  --text-lg: 1.25rem;
-  --text-xl: 1.75rem;
-  --text-2xl: 2.5rem;
-  --text-3xl: 3.5rem;
-  --text-4xl: 4.75rem;
-  --text-5xl: 6.25rem;
-
-  --text-xs--line-height: 1.65;
-  --text-sm--line-height: 1.625;
-  --text-md--line-height: 1.6;
-  --text-lg--line-height: 1.525;
-  --text-xl--line-height: 1.45;
-  --text-2xl--line-height: 1.375;
-  --text-3xl--line-height: 1.3;
-  --text-4xl--line-height: 1.225;
-  --text-5xl--line-height: 1.15;
-
-  --leading-none: 1;
-  --leading-xs: 1.25;
-  --leading-sm: 1.375;
-  --leading-md: 1.5;
-  --leading-lg: 1.625;
-  --leading-lg: 2;
-
-  --font-weight-thin: 250;
-  --font-weight-normal: 375;
-  --font-weight-semibold: 500;
-  --font-weight-bold: 625;
-  --font-weight-black: 750;
-
-  --blur-io: 6px;
-
-  --scale-press: 98%;
-
-  --z-index-frontmost: calc(infinity);
-
-  --opacity-prose-alt: 45%;
-  --opacity-overlay: 87.5%;
-  --opacity-io-background: 12.5%;
-  --opacity-io-background-alt: 20%;
-  --opacity-io-border: 25%;
-  --opacity-io-icon: 50%;
-
-  --border-width-sm: 0.5px;
-  --border-width-md: 1.5px;
-  --border-width-lg: 3px;
-  --border-width-io: 1px;
-
-  --stroke-width-io-icon: 1.75px;
-
-  --outline-width-focus: 5px;
-
-  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-
-  --transform-io-active: scale(var(--scale-press));
-
-  --ease-out: cubic-bezier(0, 0, 0.08, 1);
-  --ease-in: cubic-bezier(0.92, 0, 1, 1);
-  --ease: cubic-bezier(0.45, 0, 0.55, 1);
-  --ease-cubic: cubic-bezier(0.65, 0, 0.35, 1);
-  --ease-in-cubic: cubic-bezier(0.32, 0, 0.67, 0);
-  --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
-  --ease-exp: cubic-bezier(0.87, 0, 0.13, 1);
-  --ease-in-exp: cubic-bezier(0.7, 0, 0.84, 0);
-  --ease-out-exp: cubic-bezier(0.16, 1, 0.3, 1);
-
-  --default-font-family: var(--font-main);
-  --default-mono-font-family: var(--font-mono);
-  --default-border-width: var(--border-width-sm);
-  --default-outline-width: var(--outline-width-focus);
-  --default-transition-duration: 150ms;
-  --default-transition-timing-function: var(--ease-out);
-}
-
-* {
-  @variant dark {
-    color-scheme: dark;
-  }
-
-  @variant light {
-    color-scheme: light;
-  }
-}
-
-:root,
-:host {
-  @variant lg {
-    --spacing-padding: 2rem;
-    --spacing-gap: 1rem;
-    --spacing-prose-padding: 3rem;
-    --spacing-navbar-height: calc(var(--spacing-gap) + 0.825 * var(--spacing-io) + var(--spacing-padding));
-  }
-}
-
-@layer base {
-  :root,
-  :host {
-    scroll-padding-top: var(--spacing-navbar-height);
-    background: var(--color-background);
-    position: relative;
-    color: var(--color-text);
-    accent-color: var(--color-primary);
-    transform-origin: center calc(var(--spacing-scroll-px-y) + 50dvh);
-    transition: all calc(2 * var(--default-transition-duration)) var(--default-transition-timing-function);
-
-    &:has(:modal:open, [aria-modal='true']:open) {
-      overflow: hidden;
-      background: light-dark(white, black);
-    }
-  }
-
-  body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100svh;
-  }
-
-  body > div > main {
-    background: var(--color-background);
-    transform-origin: center calc(var(--spacing-scroll-px-y) + 50dvh);
-    transition: all var(--default-transition-duration) var(--default-transition-timing-function);
-
-    :has(:modal:open, [aria-modal='true']:open) & {
-      border-radius: var(--radius-xl);
-      scale: 0.94;
-    }
-  }
-
-  ::backdrop {
-    background-color: transparent;
-  }
-
-  ::-moz-selection {
-    color: var(--color-primary);
-    background: currentColor;
-    text-shadow:
-      0 -2px var(--color-text),
-      2px 0 var(--color-text),
-      0 2px var(--color-text),
-      -2px 0 var(--color-text);
-  }
-
-  ::selection {
-    color: var(--color-primary);
-    background: currentColor;
-    text-shadow:
-      0 -2px var(--color-text),
-      2px 0 var(--color-text),
-      0 2px var(--color-text),
-      -2px 0 var(--color-text);
-  }
-}
+/* @import './styles/io/theme.css';
+@import './styles/io/badge.css';
+@import './styles/io/button.css';
+@import './styles/io/chip.css';
+@import './styles/io/dialog.css';
+@import './styles/io/input.css';
+@import './styles/io/kbd.css';
+@import './styles/io/nesting.css';
+@import './styles/io/popover.css';
+@import './styles/io/proportions.css';
+@import './styles/io/switch.css';
+@import './styles/io/toggle.css'; */

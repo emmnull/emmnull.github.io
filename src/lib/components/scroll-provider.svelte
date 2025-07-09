@@ -21,8 +21,8 @@
   function onscroll() {
     x = document.documentElement.scrollLeft;
     y = document.documentElement.scrollTop;
-    document.documentElement.style.setProperty('--spacing-scroll-x', `${x}`);
-    document.documentElement.style.setProperty('--spacing-scroll-y', `${y}`);
+    document.documentElement.style.setProperty('--spacing-scroll-x', String(x));
+    document.documentElement.style.setProperty('--spacing-scroll-y', String(y));
   }
 
   browser && onscroll();

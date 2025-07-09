@@ -1,5 +1,6 @@
 import { PUBLIC_GITHUB_USERNAME } from '$env/static/public';
 import Github from '$lib/components/github.svelte';
+import Instagram from '$lib/components/instagram.svelte';
 import * as m from '$messages';
 import type { Component } from 'svelte';
 import type { Tag } from './meta';
@@ -76,14 +77,19 @@ export const education = [
 export const links = {
   github: {
     label: 'GitHub',
-    url: `https://github.com/${PUBLIC_GITHUB_USERNAME}`,
+    href: `https://github.com/${PUBLIC_GITHUB_USERNAME}`,
     icon: Github,
+  },
+  instagram: {
+    label: 'Instagram',
+    href: `https://www.instagram.com/itsemmanuelio/`,
+    icon: Instagram,
   },
 } satisfies Record<
   string,
   {
     label: string;
-    url: string;
+    href: string;
     icon?: Component;
   }
 >;

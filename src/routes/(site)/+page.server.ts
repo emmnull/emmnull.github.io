@@ -1,7 +1,7 @@
-import * as work from '$lib/api/work.server';
+import { all } from '$lib/data/works';
 
-export async function load() {
+export async function load(e) {
   return {
-    work: await work.all(),
+    works: all().map(({ metadata, slug }) => ({ metadata, slug })),
   };
 }

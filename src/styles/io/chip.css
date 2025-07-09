@@ -1,0 +1,123 @@
+@utility chip-icon {
+  transition-duration: inherit;
+  color: var(--chip-icon-color);
+  opacity: var(--chip-icon-opacity);
+  width: var(--spacing-io-icon);
+  height: var(--spacing-io-icon);
+  stroke-width: var(--stroke-width-io-icon);
+}
+
+@utility chip-content {
+  @apply io-nest;
+  max-height: var(--spacing-io-nested);
+}
+
+@utility chip-leading {
+  @apply chip-content;
+}
+
+@utility chip-trailing {
+  @apply chip-content;
+}
+
+@utility chip-base {
+  /* props */
+  --chip-color: ;
+  --chip-background: ;
+  --chip-border-color: ;
+  --chip-border-style: ;
+  --chip-icon-color: ;
+  --chip-icon-opacity: ;
+
+  /* base */
+  color: var(--chip-color);
+  background: var(--chip-background);
+  border-color: var(--chip-border-color);
+  border-style: var(--chip-border-style);
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  text-overflow: ellipsis;
+  align-items: center;
+  justify-content: center;
+  transition-property: all;
+  transition-timing-function: ease-out;
+  transition-duration: var(--default-transition-duration);
+  padding-inline: var(--spacing-io-padding);
+  border-radius: calc(infinity * 1px);
+  gap: var(--spacing-io-gap);
+  height: var(--spacing-io);
+  border-width: var(--border-width-io);
+
+  /* hover */
+  &:hover {
+    &:not(:active) {
+      transition-duration: 0s;
+    }
+  }
+
+  /* focused */
+  &:focus-visible {
+    outline-style: solid;
+    outline-width: var(--outline-width-focus);
+  }
+
+  /* active */
+  &:active {
+    transition-duration: calc(0.5 * var(--default-transition-duration));
+    transform: var(--transform-io-active);
+  }
+
+  /* with leading content */
+  &:has(> .chip-leading) {
+    padding-left: var(--spacing-io-nesting);
+  }
+
+  /* with trailing content */
+  &:has(> .chip-trailing) {
+    padding-right: var(--spacing-io-nesting);
+  }
+
+  /* auto-icon */
+  & > * {
+    @variant icon {
+      @apply chip-icon;
+    }
+  }
+}
+
+/* default chip */
+@utility chip {
+  @layer components {
+    @apply chip-base;
+    --chip-background: --alpha(var(--color-io) / var(--opacity-io-background));
+    --chip-color: var(--color-on-io);
+  }
+}
+
+@utility chip-bordered {
+  @layer components {
+    @apply chip-base;
+    --chip-border-style: solid;
+    --chip-border-color: --alpha(var(--color-io) / var(--opacity-io-border));
+    --chip-background: transparent;
+    --chip-color: var(--color-on-io);
+  }
+}
+
+@utility chip-dashed {
+  @layer components {
+    @apply chip-bordered;
+    --chip-border-style: dashed;
+  }
+}
+
+/* call-to-action chip */
+@utility chip-cta {
+  @layer components {
+    @apply chip-base;
+    --chip-background: var(--color-cta);
+    --chip-color: var(--color-on-cta);
+  }
+}

@@ -50,30 +50,35 @@
   --appose-distance: --value(--spacing- *, [length], [percentage]);
   @apply absolute top-1/2 right-(--appose-distance) translate-x-1/2 -translate-y-1/2;
 }
+
 @utility appose-bottom-right-* {
   --appose-distance: calc(var(--spacing) * --value(integer));
   --appose-distance: calc(100% * --value(ratio));
   --appose-distance: --value(--spacing- *, [length], [percentage]);
   @apply absolute right-(--appose-distance) bottom-(--appose-distance) translate-1/2;
 }
+
 @utility appose-bottom-* {
   --appose-distance: calc(var(--spacing) * --value(integer));
   --appose-distance: calc(100% * --value(ratio));
   --appose-distance: --value(--spacing- *, [length], [percentage]);
   @apply absolute bottom-(--appose-distance) left-1/2 -translate-x-1/2 translate-y-1/2;
 }
+
 @utility appose-bottom-left-* {
   --appose-distance: calc(var(--spacing) * --value(integer));
   --appose-distance: calc(100% * --value(ratio));
   --appose-distance: --value(--spacing- *, [length], [percentage]);
   @apply absolute bottom-(--appose-distance) left-(--appose-distance) -translate-x-1/2 translate-y-1/2;
 }
+
 @utility appose-left-* {
   --appose-distance: calc(var(--spacing) * --value(integer));
   --appose-distance: calc(100% * --value(ratio));
   --appose-distance: --value(--spacing- *, [length], [percentage]);
   @apply absolute top-1/2 left-(--appose-distance) -translate-1/2;
 }
+
 @utility appose-top-left-* {
   --appose-distance: calc(var(--spacing) * --value(integer));
   --appose-distance: calc(100% * --value(ratio));

@@ -1,0 +1,107 @@
+@layer base {
+  @keyframes intro {
+    from {
+      opacity: var(--intro-opacity, 0);
+      translate: var(--intro-translate-x, 0) var(--intro-translate-y, 0) var(--intro-translate-z,);
+      scale: var(--intro-scale);
+      transform: var(--intro-rotate-x,) var(--intro-rotate-y,) var(--intro-rotate-z,) var(--tw-skew-x,)
+        var(--tw-skew-y,);
+    }
+  }
+}
+
+@utility intro {
+  animation-name: intro;
+  animation-timing-function: var(--intro-ease, cubic-bezier(0, 0, 0.25, 1));
+  animation-duration: 500ms;
+  animation-fill-mode: both;
+}
+
+@utility intro-duration-* {
+  animation-duration: --value(--transition-duration- *, [time]);
+  animation-duration: calc(1ms * --value(integer));
+}
+
+@utility intro-delay-* {
+  --intro-delay: --value(--transition-delay- *, [time]);
+  --intro-delay: calc(1ms * --value(integer));
+  animation-delay: var(--intro-delay);
+  animation-delay: calc(var(--intro-delay) * --modifier(integer, [ *]));
+}
+
+@utility intro-ease {
+  animation-timing-function: --value(--ease- *, [ *]);
+}
+
+@utility intro-opacity-* {
+  --intro-opacity: --value(--opacity- *, number, percentage);
+  --intro-opacity: calc(1% * --value(integer));
+}
+
+@utility intro-translate-x-* {
+  --intro-translate-x: --value([length], percentage, [percentage]);
+  --intro-translate-x: calc(1px * --value(integer));
+}
+
+@utility intro-translate-y-* {
+  --intro-translate-y: --value([length], percentage, [percentage]);
+  --intro-translate-y: calc(1px * --value(integer));
+}
+
+@utility intro-translate-z-* {
+  --intro-translate-z: --value([length], percentage, [percentage]);
+  --intro-translate-z: calc(1px * --value(integer));
+}
+
+@utility -intro-translate-x-* {
+  --intro-translate-x: calc(-1 * --value([length], percentage, [percentage]));
+  --intro-translate-x: calc(-1px * --value(integer));
+}
+
+@utility -intro-translate-y-* {
+  --intro-translate-y: calc(-1 * --value([length], percentage, [percentage]));
+  --intro-translate-y: calc(-1px * --value(integer));
+}
+
+@utility -intro-translate-z-* {
+  --intro-translate-z: calc(-1 * --value([length], percentage, [percentage]));
+  --intro-translate-z: calc(-1px * --value(integer));
+}
+
+@utility intro-rotate-x-* {
+  --intro-rotate-x: --value([angle]);
+  --intro-rotate-x: calc(1deg * --value(integer, number));
+}
+
+@utility intro-rotate-y-* {
+  --intro-rotate-y: --value([angle]);
+  --intro-rotate-y: calc(1deg * --value(integer, number));
+}
+
+@utility intro-rotate-z-* {
+  --intro-rotate-z: --value([angle]);
+  --intro-rotate-z: calc(1deg * --value(integer, number));
+}
+
+@utility -intro-rotate-x-* {
+  --intro-rotate-x: calc(-1 * --value([angle]));
+  --intro-rotate-x: calc(-1deg * --value(integer, number));
+}
+
+@utility -intro-rotate-y-* {
+  --intro-rotate-y: calc(-1 * --value([angle]));
+  --intro-rotate-y: calc(-1deg * --value(integer, number));
+}
+
+@utility -intro-rotate-z-* {
+  --intro-rotate-z: calc(-1 * --value([angle]));
+  --intro-rotate-z: calc(-1deg * --value(integer, number));
+}
+
+@utility intro-scale-* {
+  --intro-scale: --value(integer, number, percentage);
+}
+
+@utility -intro-scale-* {
+  --intro-scale: calc(-1 * --value(integer, number, percentage));
+}

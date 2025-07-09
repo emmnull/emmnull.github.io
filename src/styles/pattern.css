@@ -29,15 +29,15 @@
 }
 
 @utility pattern-color-* {
-  --pattern-color: --value(--color- *, [color]);
-  --pattern-color: --alpha(--value(--color- *, [color]) / calc(1% * --modifier(integer)));
-  --pattern-color: --alpha(--value(--color- *, [color]) / --modifier(--opacity- *, [percentage]));
+  --pattern-color: --value(--color-*, --background-color-*, --text-color-*, [color]);
+  --pattern-color: --alpha(--value(--color-*, --background-color-*, [color]) / calc(1% * --modifier(integer)));
+  --pattern-color: --alpha(--value(--color-*, --background-color-*, [color]) / --modifier(--opacity-*, [percentage]));
 }
 
 @utility pattern-color2-* {
-  --pattern-color2: --value(--color- *, [color]);
-  --pattern-color2: --alpha(--value(--color- *, [color]) / calc(1% * --modifier(integer)));
-  --pattern-color2: --alpha(--value(--color- *, [color]) / --modifier(--opacity- *, [percentage]));
+  --pattern-color: --value(--color-*, --background-color-*, --text-color-*, [color]);
+  --pattern-color2: --alpha(--value(--color-*, --background-color-*, [color]) / calc(1% * --modifier(integer)));
+  --pattern-color2: --alpha(--value(--color-*, --background-color-*, [color]) / --modifier(--opacity-*, [percentage]));
 }
 
 @utility pattern-thickness-* {
@@ -48,7 +48,7 @@
 }
 
 @utility pattern-spacing-* {
-  --pattern-spacing: --value(--spacing- *, length, [length]);
+  --pattern-spacing: --value(--spacing-*, [length]);
 }
 
 @utility pattern-spread-* {

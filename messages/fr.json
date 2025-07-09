@@ -68,5 +68,20 @@
   ],
   "work": "Travail",
   "workshop": "Atelier",
-  "workshop_catchphrase": "Mes bricolages exploratoires"
+  "project": [
+    {
+      "declarations": [
+        "input count",
+        "local countPlural = count: plural"
+      ],
+      "selectors": [
+        "countPlural"
+      ],
+      "match": {
+        "countPlural=one": "Projet",
+        "countPlural=other": "Projets"
+      }
+    }
+  ],
+  "locale_name": "Français"
 }

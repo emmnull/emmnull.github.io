@@ -35,7 +35,6 @@ export default {
   ],
   jsdocDescriptionWithDot: true,
   jsdocPreferCodeFences: true,
-  // jsdocCommentLineStrategy: 'multiline',
   jsdocKeepUnParseAbleExampleIndent: true,
   jsdocTagsOrder: '{"this": 0, "example":100}',
   jsdocSeparateTagGroups: true,

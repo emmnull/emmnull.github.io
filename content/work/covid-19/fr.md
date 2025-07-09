@@ -1,3 +1,0 @@
----
-title: Paysage en confinement
----

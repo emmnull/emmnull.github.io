@@ -1,34 +1,39 @@
 import { browser } from '$app/environment';
 import { page } from '$app/state';
-import { deLocalizeUrl } from '$lib/i18n/generated/runtime';
+import { deLocalizeUrl, localizeHref } from '$lib/i18n/generated/runtime';
 import type { HTMLAnchorAttributes } from 'svelte/elements';
 
 const delocalized = $derived(
   browser ? deLocalizeUrl(page.url.pathname) : undefined,
 );
 
-export function linkAttributes<T extends string>(
-  href: T,
+export function getLinkAttributes(
+  href: string,
   {
     currentOnSubpath = false,
     currentOmitHash = true,
+    ...localizeOptions
   }: {
     currentOnSubpath?: boolean;
     currentOmitHash?: boolean;
-  } = {},
+  } & Parameters<typeof localizeHref>[1] = {},
 ) {
+  const localized = localizeHref(href, localizeOptions);
   const current = $derived.by(() => {
-    if (page && delocalized) {
+    if (delocalized) {
       if (
         href.startsWith('#') &&
-        decodeURIComponent(page.url.hash) === decodeURIComponent(href)
+        decodeURIComponent(delocalized.hash) === decodeURIComponent(href)
       ) {
         return 'step' as const;
       }
-      if (delocalized.href === (currentOmitHash ? href.split('#')[0] : href)) {
+      const pathWithHash = `${delocalized.pathname}${page.url.hash}`;
+      if (
+        (currentOmitHash && delocalized.pathname === href.split('#')[0]) ||
+        pathWithHash === href
+      ) {
         return 'page' as const;
       }
-      const pathWithHash = `${delocalized}${page.url.hash}`;
       if (
         (currentOnSubpath && pathWithHash.startsWith(href)) ||
         pathWithHash === href
@@ -40,7 +45,7 @@ export function linkAttributes<T extends string>(
   });
 
   return {
-    href: href as T,
+    href: localized,
     get 'aria-current'() {
       return current;
     },

@@ -1,3 +1,9 @@
+<script lang="ts">
+  import type { HTMLAttributes } from 'svelte/elements';
+
+  let { ...attributes }: HTMLAttributes<SVGSVGElement> = $props();
+</script>
+
 <svg
   role="img"
   viewBox="0 0 24 24"
@@ -5,6 +11,7 @@
   data-icon
   stroke="none"
   fill="currentColor"
+  {...attributes}
 >
   <title>GitHub</title>
   <path

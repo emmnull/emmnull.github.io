@@ -1,5 +1,12 @@
 import { crossfade, type TransitionConfig } from 'svelte/transition';
 
+export function viewTransition(node: HTMLElement, state: unknown) {
+  if (!document.startViewTransition) {
+    return;
+  }
+  document.startViewTransition();
+}
+
 export function createCrossfadePreset<T extends Parameters<typeof crossfade>>(
   ...params: T
 ) {

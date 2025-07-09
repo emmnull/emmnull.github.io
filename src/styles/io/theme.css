@@ -1,0 +1,129 @@
+@theme {
+  --color-io: light-dark(oklch(0.24 0.01 260), buttonface);
+  --color-cta: var(--color-primary);
+  --color-success: light-dark(oklch(0.52 0.35 132), oklch(0.48 0.25 148));
+  --color-warning: light-dark(darkorange, orange);
+  --color-error: light-dark(orangered, firebrick);
+
+  --color-on-io: light-dark(oklch(0.28 0.01 300), oklch(0.75 0.01 90));
+  --color-on-io-success: light-dark(oklch(0.28 0.05 110), oklch(0.78 0.06 140));
+  --color-on-io-warning: light-dark(oklch(0.28 0.05 54), oklch(0.75 0.05 54));
+  --color-on-io-error: light-dark(oklch(0.28 0.05 20), oklch(0.75 0.05 20));
+  --color-on-cta: var(--color-on-primary);
+  --color-on-success: light-dark(darkgreen, honeydew);
+  --color-on-warning: light-dark(wheat, lightyellow);
+  --color-on-error: light-dark(darkred, antiquewhite);
+
+  --opacity-io-face: 15%;
+  --opacity-io-face-soft: 10%;
+  --opacity-io-face-strong: 25%;
+  --opacity-io-border: 20%;
+  --opacity-io-border-soft: 10%;
+  --opacity-io-border-strong: 30%;
+  --opacity-io-icon: 60%;
+  --opacity-io-icon-soft: 40%;
+  --opacity-io-icon-strong: 80%;
+
+  --spacing-io: 3em;
+  --spacing-io-nesting: 0.35em;
+  --spacing-io-face-inset: 0.25em;
+  --spacing-io-icon: 1.15em;
+  --spacing-io-padding: 1.25em;
+  --spacing-io-gap: 0.75em;
+
+  --radius-io: var(--radius-md);
+
+  --blur-io-face: 8px;
+
+  --transform-io-press: scale(98%);
+
+  --border-width-io: 1px;
+  --outline-width-io: 3px;
+  --stroke-width-io-icon: 1.5px;
+
+  --transition-duration-io: 120ms;
+}
+
+:root {
+  --io-lightness-factor-soft: 1.15;
+  --io-lightness-factor-strong: 0.85;
+}
+
+@variant dark {
+  --io-lightness-factor-soft: 0.85;
+  --io-lightness-factor-strong: 1.15;
+}
+
+/* data-based & state-based theme presets */
+
+@layer base {
+  [data-success='true'],
+  [data-state='success'],
+  :user-valid {
+    --color-io: var(--color-success);
+    --color-on-io: var(--color-on-io-success);
+    --color-cta: var(--color-success);
+    --color-on-cta: var(--color-on-success);
+  }
+
+  [data-warning],
+  [data-state='warning'] {
+    --color-io: var(--color-warning);
+    --color-on-io: var(--color-on-io-warning);
+    --color-cta: var(--color-warning);
+    --color-on-cta: var(--color-on-warning);
+  }
+
+  [aria-invalid='true'],
+  [data-error='true'],
+  [data-state='error'],
+  :user-invalid {
+    --color-io: var(--color-error);
+    --color-on-io: var(--color-on-io-error);
+    --color-cta: var(--color-error);
+    --color-on-cta: var(--color-on-error);
+  }
+
+  [data-info],
+  [data-state='info'] {
+    --color-io: var(--color-info);
+    --color-on-io: var(--color-on-io-info);
+    --color-cta: var(--color-info);
+    --color-on-cta: var(--color-on-info);
+  }
+
+  [data-themed='language'] {
+    --color-io: ;
+    --color-on-io: ;
+    --color-cta: ;
+    --color-on-cta: ;
+  }
+
+  [data-themed='library'] {
+    --color-io: ;
+    --color-on-io: ;
+    --color-cta: ;
+    --color-on-cta: ;
+  }
+
+  [data-themed='framework'] {
+    --color-io: ;
+    --color-on-io: ;
+    --color-cta: ;
+    --color-on-cta: ;
+  }
+
+  [data-themed='software'] {
+    --color-io: ;
+    --color-on-io: ;
+    --color-cta: ;
+    --color-on-cta: ;
+  }
+
+  [data-themed='runtime'] {
+    --color-io: ;
+    --color-on-io: ;
+    --color-cta: ;
+    --color-on-cta: ;
+  }
+}

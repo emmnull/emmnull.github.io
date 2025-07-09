@@ -4,42 +4,29 @@
   class="absolute size-0 opacity-0"
 >
   <defs>
-    <!--
-		root grain texture and displacement
-		-->
-    <filter id="grain">
-      <feTurbulence
-        result="turb"
-        type="turbulence"
-        baseFrequency="1"
-        numOctaves="1"
-        seed="1010"
-      />
-      <feDisplacementMap
-        in="SourceGraphic"
-        in2="turb"
-        scale="123"
-        xChannelSelector="R"
-        yChannelSelector="B"
-      />
-      <feDisplacementMap
-        in2="turb"
-        scale="-123"
-        xChannelSelector="B"
-        yChannelSelector="G"
-      />
-      <!-- <feTurbulence
-        result="noise"
-        type="turbulence"
-        baseFrequency="0.75"
-        seed="808"
-      />
-      <feBlend in="disp" in2="noise" mode="multiply" /> -->
+    <!-- pixelate -->
+    <!-- <filter id="pixelate" patternUnits="userSpaceOnUse">
+      <feFlood x="1" y="1" height="0.1" width="0.1" />
+      <feComposite width="2" height="2" />
+      <feTile result="a" />
+      <feComposite in="SourceGraphic" operator="in" />
+      <feMorphology operator="dilate" radius="1" />
     </filter>
 
-    <!--
-		basic beveled glass
-		-->
+    <filter id="pixelate-lg" patternUnits="userSpaceOnUse">
+      <feFlood x="2" y="2" height="0.1" width="0.1" />
+      <feComposite width="4" height="4" />
+      <feTile result="a" />
+      <feComposite in="SourceGraphic" operator="in" />
+      <feMorphology operator="dilate" radius="2" />
+    </filter> -->
+
+    <!-- dithering effect -->
+    <filter id="dither">
+      <!-- todo -->
+    </filter>
+
+    <!-- beveled glass -->
     <filter id="beveled" patternUnits="userSpaceOnUse">
       <feFlood id="premask" flood-color="white" x="3" y="3" />
       <feOffset in="premask" result="mask" dx="-3" dy="-3" />
@@ -66,18 +53,21 @@
       />
     </filter>
 
-    <!--
-		reeded/ribbed glass
-		<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1" viewBox="0 0 1 1">
-			<linearGradient id="g" x2="0" y2="100%">
-    		<stop offset="0%" stop-color="#00f" />
-				<stop offset="75%" stop-color="#404" />
-				<stop offset="100%" stop-color="#f00" />
-  		</linearGradient>
-  		<rect fill="url(#g)" width="100%" height="100%" />
-		</svg>
-		-->
+    <!-- reeded glass -->
     <filter id="reeded" patternUnits="userSpaceOnUse">
+      <!-- <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="1"
+        height="1"
+        viewBox="0 0 1 1"
+      >
+        <linearGradient id="g" x2="0" y2="100%">
+          <stop offset="0%" stop-color="#00f" />
+          <stop offset="75%" stop-color="#404" />
+          <stop offset="100%" stop-color="#f00" />
+        </linearGradient>
+        <rect fill="url(#g)" width="100%" height="100%" />
+      </svg> -->
       <feImage
         id="reed"
         width="60"

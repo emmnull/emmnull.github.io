@@ -7,7 +7,7 @@
 
 <!-- <Blob /> -->
 <Navbar />
-<main class="flex grow-1 flex-col">
+<main>
   {@render children()}
 </main>
 <Footer />
