@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=../schema.json
 title: 'Image Labeling Platform'
 ---
 

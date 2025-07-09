@@ -2,4 +2,4 @@
   let { data } = $props();
 </script>
 
-Not found :O
+Not found 🤦

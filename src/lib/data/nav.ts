@@ -8,9 +8,9 @@ export const nav = {
     label: 'CV',
     icon: FileUser,
   },
-  works: {
-    label: 'Works',
-  },
+  // works: {
+  //   label: 'Works',
+  // },
   posts: {
     label: 'Posts',
   },

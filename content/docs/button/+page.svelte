@@ -1,7 +1,7 @@
 <script lang="ts">
   import { GitCompareArrows, UserPen } from 'lucide-svelte';
-  import StatesSwitch from '../states-switch.svelte';
-  import Variants from '../variants.svelte';
+  import StatesSwitch from '../../../src/routes/playgrounds/states-switch.svelte';
+  import Variants from '../../../src/routes/playgrounds/variants.svelte';
 
   const variants = {
     Default: 'button',
