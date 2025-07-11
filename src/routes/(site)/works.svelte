@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { random } from '$lib/common/number';
-  import { images } from '$lib/data/works';
   import { on } from 'svelte/events';
   import type { PageData } from './$types';
 
@@ -32,7 +30,8 @@
     class="my-padding px-gap gap-gap grid auto-rows-(--u) grid-cols-[repeat(auto-fit,minmax(var(--u),1fr))] [--scroll-y:max(0,calc(var(--spacing-scroll-y)-var(--top)))] [--top:2000] [--u:50px] transform-3d"
   >
     {#each works as w, i}
-      {#each w.metadata.covers as cover, ii}
+      <div>{w.slug}</div>
+      <!-- {#each w.metadata.covers as cover, ii}
         {@const src = images[`${w.slug}/${cover}`]}
         {#if src}
           {@const ratio = src.img.w / src.img.h}
@@ -49,15 +48,9 @@
               {src}
               class="block size-full overflow-hidden rounded-sm object-cover"
             />
-            <!-- <a {...getLinkAttributes(`/works/${w.slug}`)} class="">
-						<p class="">
-							{w.metadata.shortTitle ?? w.metadata.title}
-							</p>
-							<span class="font-mono">{w.metadata.year}</span>
-							</a> -->
           </li>
         {/if}
-      {/each}
+      {/each} -->
     {/each}
   </ul>
 </section>

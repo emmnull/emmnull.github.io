@@ -27,7 +27,7 @@ declare module 'virtual:works' {
 		? z.infer<Collection['schema']>
 		: Markdown['metadata'];
 
-	export const slugs: readonly ["covid-19","ai-edi","labdi","saint-constant"];
+	export const slugs: readonly ["ai-edi","covid-19","labdi","saint-constant"];
 	
 	export type Slug = (typeof slugs)[number];
 	

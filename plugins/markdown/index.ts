@@ -140,19 +140,20 @@ export default function markdown({
 
 						export const slugs = ${JSON.stringify([...vmod.slugs])};
 
-						const glob = import.meta.glob('./${collection.pattern}', {
+						const glob = import.meta.glob('/${collection.directory}${collection.pattern}', {
 							eager: true,
-							base: '/${collection.directory}'
 						});
 
 						export function all(locale) {
 							const _locale = locale ?? getLocale();
 							return Object.entries(glob)
-								.filter(([k, v]) => {})
+								.filter(([k, v]) => {
+									return _locale === k.substring(k.lastIndexOf('/') + 1, k.lastIndexOf('.'))
+								})
 								.map(([k,v]) => {
 									return {
 										...v,
-										slug: k.substring(0, k.lastIndexOf('/'))
+										slug: k.substring(0, k.lastIndexOf('/')).replace('/${collection.directory}', ''),
 									}
 								})
 						}
