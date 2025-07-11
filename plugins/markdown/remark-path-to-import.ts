@@ -124,3 +124,53 @@ export default function remarkPathToImport(this: Processor): Transformer {
     // to do
   };
 }
+
+function rehypePathToImport(): Transformer {
+  return function (tree, vfile) {
+    visit(tree, 'raw', (node) => {
+      console.log(node);
+      // if (!node.value.startsWith('<script context')) {
+      //   return;
+      // }
+      // const [, metadataString] = node.value
+      //   .split('\n')
+      //   .map((line) => {
+      //     return line.trim();
+      //   })
+      //   .find((line) => line.includes('export const metadata'))
+      //   .match(/.+({.+})/);
+      // const metadata = JSON.parse(metadataString);
+
+      // const isRelativePath = (str) => {
+      //   // really needs a better way to determine relative path
+      //   return str.startsWith('./') || str.startsWith('/');
+      // };
+
+      // const urls = Object.entries(metadata).filter((meta) =>
+      //   isRelativePath(meta[1]),
+      // );
+      // const others = Object.entries(metadata).filter(
+      //   (meta) => !isRelativePath(meta[1]),
+      // );
+      // const othersObject = Object.fromEntries(others);
+
+      // const importStatement = urls
+      //   .map((url) => {
+      //     return `import ${url[0]} from "${url[1]}"`;
+      //   })
+      //   .join('\n');
+      // const urlKeys = urls.map((url) => url[0]).join(', ');
+      // const otherKeys = others.map((other) => other[0]).join(', ');
+
+      // const replacementScript =
+      //   '<script module>\n' +
+      //   importStatement +
+      //   '\n' +
+      //   `export const metadata = {...${JSON.stringify(othersObject)}, ${urlKeys}}\n` +
+      //   `const { ${otherKeys} } = metadata\n` +
+      //   '</script>';
+
+      // node.value = replacementScript;
+    });
+  };
+}

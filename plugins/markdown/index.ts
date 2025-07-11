@@ -10,10 +10,11 @@ import remarkMetadataValidate from './remark-metadata-validate';
 import remarkPathToImport from './remark-path-to-import';
 
 type MarkdownOptions = {
-  extensions: string[];
   // schemas?: Record<string, ZodObject>;
+  extensions?: string[];
+  name?: string;
   types?: `${string}.d.ts`;
-  collections: Record<
+  collections?: Record<
     string,
     {
       name?: string;
@@ -31,6 +32,7 @@ type MarkdownOptions = {
  */
 export default function markdown({
   extensions = ['.md'],
+  name = 'virtual:markdown',
   types = './src/markdown.d.ts',
   collections,
 }: MarkdownOptions): Plugin {
@@ -49,6 +51,12 @@ export default function markdown({
     name: 'vite-plugin-markdown-svelte',
     enforce: 'pre',
     async buildStart() {
+      // try {
+      //   const config = await import(join(cwd(), 'markdown.config.ts'));
+      //   console.log(config);
+      // } catch (err) {
+      //   console.error(err);
+      // }
       contents.clear();
       vmods.clear();
       let dts = dedent`
@@ -63,6 +71,14 @@ export default function markdown({
 				}
 				\n
 				`;
+      if (name) {
+        dts += dedent`
+					declare module '${name}' {
+						interface Collections {}
+					}
+					\n
+				`;
+      }
       dts += extensions
         .map(
           (ext) => dedent`
@@ -95,13 +111,16 @@ export default function markdown({
           vmods.set(vname, { name: key, slugs });
           dts += dedent`
 						declare module '${vname}' {
+							import type { Collections } from '${name}';
 							import type { z } from 'zod/v4';
 
 							interface Collection {}
 
-							type Metadata = Collection['schema'] extends ZodObject
-								? z.infer<Collection['schema']>
-								: Markdown['metadata'];
+							type Metadata = Collections['${key}']['schema'] extends ZodObject
+								? z.infer<Collections['${key}']['schema']>
+								: Collection['schema'] extends ZodObject
+									? z.infer<Collection['schema']>
+									: Markdown['metadata'];
 
 							export const slugs: readonly ${JSON.stringify([...slugs])};
 							
@@ -116,7 +135,7 @@ export default function markdown({
 						}`;
         }
       }
-      await writeFile(types, dts, { encoding: 'utf-8' });
+      await writeFile(types, dts, { encoding: 'utf8' });
     },
     resolveId(source, _importer, _options) {
       if (vmods.has(source)) {
@@ -130,7 +149,7 @@ export default function markdown({
         if (!vmod) {
           return;
         }
-        const collection = collections[vmod.name];
+        const collection = collections?.[vmod.name];
         if (!collection) {
           return;
         }
@@ -171,7 +190,7 @@ export default function markdown({
         // const qindex = id.indexOf('&');
         // const q = qindex >= 0 && new URLSearchParams(id.substring(qindex));
         const collname = contents.get(id);
-        const collection = collname ? collections[collname] : undefined;
+        const collection = collname ? collections?.[collname] : undefined;
         return compile(code, {
           extensions,
           remarkPlugins: [
@@ -185,6 +204,10 @@ export default function markdown({
       }
     },
   };
+}
+
+export function defineConfig<T extends MarkdownOptions>(config: T) {
+  return config;
 }
 
 export function defineCollections<T extends MarkdownOptions['collections']>(

@@ -8,6 +8,10 @@ declare type Markdown<
 	metadata: T
 }
 
+declare module 'virtual:markdown' {
+	interface Collections {}
+}
+
 /**
  * See https://github.com/pngwn/MDsveX/blob/main/packages/mdsvex/globals.d.ts
  */
@@ -19,13 +23,16 @@ declare module '*.md' {
 }
 
 declare module 'virtual:works' {
+	import type { Collections } from 'virtual:markdown';
 	import type { z } from 'zod/v4';
 
 	interface Collection {}
 
-	type Metadata = Collection['schema'] extends ZodObject
-		? z.infer<Collection['schema']>
-		: Markdown['metadata'];
+	type Metadata = Collections['works']['schema'] extends ZodObject
+		? z.infer<Collections['works']['schema']>
+		: Collection['schema'] extends ZodObject
+			? z.infer<Collection['schema']>
+			: Markdown['metadata'];
 
 	export const slugs: readonly ["ai-edi","covid-19","labdi","saint-constant"];
 	

@@ -29,10 +29,10 @@ const collections = defineCollections({
   },
 });
 
-declare module 'virtual:works' {
-  interface Collection {
-    schema: (typeof collections)['works']['schema'];
-  }
+type C = typeof collections;
+
+declare module 'virtual:markdown' {
+  interface Collections extends C {}
 }
 
 export default defineConfig({
