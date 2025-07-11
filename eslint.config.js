@@ -34,7 +34,7 @@ export default ts.config(
         'error',
         { allowInterfaces: 'with-single-extends' },
       ],
-      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+      '@typescript-eslint/consistent-type-definitions': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {

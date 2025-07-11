@@ -12,7 +12,7 @@ import { extensions } from './svelte.config';
 
 const collections = defineCollections({
   works: {
-    directory: '/content/works/',
+    directory: 'content/works/',
     pattern: `*/{${locales.join(',')},}{${extensions.join(',')},}`,
     schema: z.object({
       year: z.number(),
@@ -28,6 +28,12 @@ const collections = defineCollections({
     }),
   },
 });
+
+declare module 'virtual:works' {
+  interface Collection {
+    schema: (typeof collections)['works']['schema'];
+  }
+}
 
 export default defineConfig({
   plugins: [
