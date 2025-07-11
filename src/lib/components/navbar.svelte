@@ -40,7 +40,7 @@
     class="max-w-body gap-gap px-padding py-gap flex w-full flex-row justify-between [--inset:3px] [--radius:var(--radius-io)] *:[--radius-io:calc(var(--radius)-var(--inset))]"
   >
     <nav
-      class="hover:bg-base/90 pointer-events-auto flex gap-(--inset) rounded-(--radius) p-(--inset) backdrop-blur-[16px] transition duration-100"
+      class="hover:bg-base/90 pointer-events-auto flex gap-(--inset) rounded-(--radius) p-(--inset) backdrop-filter-[blur(4px)_var(--pixelate-4)] transition duration-100"
     >
       <button
         class="px-io-padding h-io rounded-io hover:bg-io text-on-io hover:text-strong relative flex aspect-square items-center gap-[1em] transition duration-100 lg:hidden"

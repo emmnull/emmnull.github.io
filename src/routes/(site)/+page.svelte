@@ -1,14 +1,13 @@
 <script lang="ts">
   import Hero from './hero.svelte';
   import Skills from './skills.svelte';
-  import Works from './works.svelte';
 
   let { data } = $props();
 </script>
 
 <Hero />
 <Skills />
-<Works works={data.works} />
+<!-- <Works works={data.works} /> -->
 
 <!-- <section
   class="mt-gap rounded-section from-surface py-padding bg-gradient-to-b lg:bg-none"

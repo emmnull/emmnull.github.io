@@ -15,7 +15,6 @@ const config = {
     },
     adapter: adapter({ fallback: '404.html' }),
     alias: {
-      // $content: '.content',
       $messages: 'src/lib/i18n/generated/messages.js',
     },
     paths: {

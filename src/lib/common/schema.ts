@@ -42,6 +42,13 @@ export function maybeLightDarkSchema<T extends ZodType>(schema: T) {
   return z.union([schema, lightDarkSchema(schema)]);
 }
 
+// export const pathToImport = z.transform<ZodString>((path) => {
+// 	if (/\s*(\$\w+|\.{1,2})[/\\].*?\.\w+\s*(\?([^=&]+=[^=&]+)(&[^=&]+=[^=&]+)*)?/.test(path)) {
+
+// 	}
+// 	return path;
+// })
+
 export const workSchema = z.object({
   year: z.number(),
   title: z.string(),

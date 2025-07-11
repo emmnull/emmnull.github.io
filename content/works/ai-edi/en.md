@@ -1,4 +1,21 @@
 ---
+year: 2024
+link: 'https://aipithet.vercel.app'
+code: 'https://github.com/CUPUM/aipithet'
+disciplines:
+  - 'frontend'
+  - 'backend'
+  - 'ux'
+covers:
+  - '01.png'
+	- '02.png'
+	- '03.png'
+tags:
+  - 'react'
+  - 'nextjs'
+  - 'drizzle'
+  - 'postgres'
+  - 'tailwind'
 title: 'Image Labeling Platform'
 ---
 

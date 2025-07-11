@@ -1,5 +1,21 @@
 ---
-# yaml-language-server: $schema=../schema.json
+year: 2020
+link: 'https://covid19.unesco-paysage.umontreal.ca/'
+code: 'https://github.com/CUPUM/montreal-confinement'
+disciplines:
+  - 'design'
+  - 'research'
+  - 'frontend'
+tags:
+  - 'vue'
+  - 'd3'
+covers:
+  - '01-fr.png'
+  - '02.jpeg'
+  - '03.jpeg'
+  - '05.png'
+  - '06.png'
+  - '07.png'
 title: 'Montreal: Landscape Under Lockdown'
 ---
 
