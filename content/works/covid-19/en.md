@@ -10,12 +10,12 @@ tags:
   - 'vue'
   - 'd3'
 covers:
-  - '01-fr.png'
-  - '02.jpeg'
-  - '03.jpeg'
-  - '05.png'
-  - '06.png'
-  - '07.png'
+  - './01-fr.png'
+  - './02.jpeg'
+  - './03.jpeg'
+  - './05.png'
+  - './06.png'
+  - './07.png'
 title: 'Montreal: Landscape Under Lockdown'
 ---
 

@@ -1,6 +1,7 @@
-import type { Definition, Image, Root } from 'mdast';
+import type { Definition, Image, Root as MdastRoot } from 'mdast';
 import type { Processor, Transformer } from 'unified';
 import { visit } from 'unist-util-visit';
+import { FLAG_SKIP } from './remark-metadata-default';
 import { PATH_PATTERN, PROPS_PATTERN, SCRIPT_START_PATTERN } from './utils';
 import './vfile.d.ts';
 
@@ -13,8 +14,15 @@ import './vfile.d.ts';
  * @see https://github.com/mattjennings/mdsvex-relative-images/blob/main/index.js
  */
 export default function remarkPathToImport(this: Processor): Transformer {
+  this.use(rehypeSerializeMetadata);
+
   return function transformer(tree, vfile) {
-    const paths = new Map<string, string>();
+    if (FLAG_SKIP in vfile.data && vfile.data[FLAG_SKIP]) {
+      // skip transforms on base-locale defaulted metadata pass else generated invalid imports
+      return;
+    }
+    const imports = new Map<string, string>();
+    vfile.data.imports = imports;
     const name_counts = new Map<string, number>();
 
     function transformUrl(path: string, wrap?: boolean) {
@@ -35,14 +43,14 @@ export default function remarkPathToImport(this: Processor): Transformer {
           .join('')
           .replace(/^(\d)/, '_$1');
         const count = name_counts.get(name);
-        const dupe = paths.has(path);
+        const dupe = imports.has(path);
         if (count && !dupe) {
           name_counts.set(name, count + 1);
           name = `${name}_${count}`;
         } else if (!dupe) {
           name_counts.set(name, 1);
         }
-        paths.set(path, name);
+        imports.set(path, name);
         return wrap ? `{${name}}` : name;
       }
       return path;
@@ -95,13 +103,13 @@ export default function remarkPathToImport(this: Processor): Transformer {
     });
 
     let scripts = '';
-    paths.forEach(
+    imports.forEach(
       (name, path) => (scripts += `import ${name} from "${path}";\n`),
     );
 
     let is_script = false;
 
-    visit(tree as Root, 'html', (node) => {
+    visit(tree as MdastRoot, 'html', (node) => {
       if (SCRIPT_START_PATTERN.test(node.value)) {
         is_script = true;
         node.value = node.value.replace(
@@ -114,63 +122,50 @@ export default function remarkPathToImport(this: Processor): Transformer {
     });
 
     if (!is_script) {
-      (tree as Root).children.push({
+      (tree as MdastRoot).children.push({
         type: 'html',
         value: `<script>\n${scripts}</script>`,
       });
     }
-
-    // transform serialized meta
-    // to do
   };
 }
 
-function rehypePathToImport(): Transformer {
+/** Customize serialization of parsed front matter into metadata module export. */
+function rehypeSerializeMetadata(this: Processor): Transformer {
   return function (tree, vfile) {
-    visit(tree, 'raw', (node) => {
-      console.log(node);
-      // if (!node.value.startsWith('<script context')) {
-      //   return;
-      // }
-      // const [, metadataString] = node.value
-      //   .split('\n')
-      //   .map((line) => {
-      //     return line.trim();
-      //   })
-      //   .find((line) => line.includes('export const metadata'))
-      //   .match(/.+({.+})/);
-      // const metadata = JSON.parse(metadataString);
+    if (FLAG_SKIP in vfile.data && vfile.data[FLAG_SKIP]) {
+      // skip transforms on base-locale defaulted metadata pass else generated invalid imports
+      return;
+    }
+    const imports = vfile.data.imports as Map<string, string> | undefined;
+    const names = new Set(imports?.values());
 
-      // const isRelativePath = (str) => {
-      //   // really needs a better way to determine relative path
-      //   return str.startsWith('./') || str.startsWith('/');
-      // };
+    function wrap(key: string, value: string) {
+      if (typeof value === 'string' && names.has(value)) {
+        return `%import%${value}%import%`;
+      }
+      return value;
+    }
 
-      // const urls = Object.entries(metadata).filter((meta) =>
-      //   isRelativePath(meta[1]),
-      // );
-      // const others = Object.entries(metadata).filter(
-      //   (meta) => !isRelativePath(meta[1]),
-      // );
-      // const othersObject = Object.fromEntries(others);
+    visit(tree, 'raw', (_node) => {
+      const node = _node as { type: 'raw'; value: string };
+      if (!/^<script\s+(?:context="module"|module)/.test(node.value)) {
+        return;
+      }
 
-      // const importStatement = urls
-      //   .map((url) => {
-      //     return `import ${url[0]} from "${url[1]}"`;
-      //   })
-      //   .join('\n');
-      // const urlKeys = urls.map((url) => url[0]).join(', ');
-      // const otherKeys = others.map((other) => other[0]).join(', ');
-
-      // const replacementScript =
-      //   '<script module>\n' +
-      //   importStatement +
-      //   '\n' +
-      //   `export const metadata = {...${JSON.stringify(othersObject)}, ${urlKeys}}\n` +
-      //   `const { ${otherKeys} } = metadata\n` +
-      //   '</script>';
-
-      // node.value = replacementScript;
+      node.value = node.value
+        .split('\n')
+        .map((line) => {
+          if (!/^\s*export const metadata =/.test(line)) {
+            return line;
+          }
+          const replaced = JSON.stringify(vfile.data.fm, wrap).replace(
+            /"%import%(.+?)%import%"/g,
+            (_, name) => name,
+          );
+          return `export const metadata = ${replaced};`;
+        })
+        .join('\n');
     });
   };
 }

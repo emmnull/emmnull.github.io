@@ -2,6 +2,7 @@ import dedent from 'dedent';
 import { writeFile } from 'fs/promises';
 import { compile } from 'mdsvex';
 import { dirname } from 'path';
+import { cwd } from 'process';
 import { glob } from 'tinyglobby';
 import type { Plugin } from 'vite';
 import type { ZodObject } from 'zod/v4';
@@ -189,9 +190,10 @@ export default function markdown({
         // to do: get schema where q.schema matches a collection name.
         // const qindex = id.indexOf('&');
         // const q = qindex >= 0 && new URLSearchParams(id.substring(qindex));
-        const collname = contents.get(id);
+        const filepath = id.replace(cwd() + '/', '');
+        const collname = contents.get(filepath);
         const collection = collname ? collections?.[collname] : undefined;
-        return compile(code, {
+        const c = compile(code, {
           extensions,
           remarkPlugins: [
             // @ts-expect-error mdsvex types are shite
@@ -201,6 +203,8 @@ export default function markdown({
             remarkPathToImport,
           ],
         });
+        // console.log(await c);
+        return c;
       }
     },
   };

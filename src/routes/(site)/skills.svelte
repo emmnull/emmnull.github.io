@@ -5,10 +5,10 @@
   import { Check, Copy, Send } from 'lucide-svelte';
 
   const phrases = [
-    'Push your projects forward,',
-    'Get happy clients,',
-    'Ship sweet experiences,',
-    'Give me a nice smile,',
+    'push your projects forward,',
+    'get happy clients,',
+    'ship sweet experiences,',
+    'give me a nice smile,',
   ];
 
   const longest = phrases.reduce((a, b, i, arr) => {
@@ -75,7 +75,7 @@
     <p>hire me to work with</p>
   </h2>
   <ul
-    class="group/skills max-w-prose-body gap-gap pointer-events-none z-1 flex flex-row flex-wrap justify-end self-end font-mono text-sm"
+    class="group/skills max-w-prose-body gap-gap pointer-events-none z-1 flex flex-row flex-wrap font-mono text-sm"
   >
     {#each skills as skill, i}
       {@const details = tags_details[skill]}

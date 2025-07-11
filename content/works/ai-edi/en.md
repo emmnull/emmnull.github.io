@@ -7,9 +7,9 @@ disciplines:
   - 'backend'
   - 'ux'
 covers:
-  - '01.png'
-	- '02.png'
-	- '03.png'
+  - './01.png'
+  - './02.png'
+  - './03.png'
 tags:
   - 'react'
   - 'nextjs'

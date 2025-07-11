@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { random } from '$lib/common/number';
   import { on } from 'svelte/events';
   import type { PageData } from './$types';
 
@@ -31,9 +32,8 @@
   >
     {#each works as w, i}
       <div>{w.slug}</div>
-      <!-- {#each w.metadata.covers as cover, ii}
-        {@const src = images[`${w.slug}/${cover}`]}
-        {#if src}
+      {#if w.metadata.covers}
+        {#each w.metadata.covers as src, ii}
           {@const ratio = src.img.w / src.img.h}
           {@const scale = Math.round(random(4, 10))}
           <li
@@ -46,11 +46,13 @@
           >
             <enhanced:img
               {src}
+              width="20px"
+              height="20px"
               class="block size-full overflow-hidden rounded-sm object-cover"
             />
           </li>
-        {/if}
-      {/each} -->
+        {/each}
+      {/if}
     {/each}
   </ul>
 </section>
