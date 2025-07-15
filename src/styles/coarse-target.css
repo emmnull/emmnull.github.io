@@ -1,8 +1,0 @@
-@utility coarse-target {
-  @apply absolute top-1/2 left-1/2 size-full min-h-[48px] min-w-[48px] -translate-1/2 rounded-[inherit] opacity-0 pointer-fine:hidden;
-}
-
-@utility coarse-target-* {
-  --coarse-target-size: --value(--spacing- *, [length]);
-  @apply absolute top-1/2 left-1/2 size-full min-h-(--coarse-target-size) min-w-(--coarse-target-size) -translate-1/2 rounded-[inherit] opacity-0 pointer-fine:hidden;
-}

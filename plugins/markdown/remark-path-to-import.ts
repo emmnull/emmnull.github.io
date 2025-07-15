@@ -161,7 +161,7 @@ function rehypeSerializeMetadata(this: Processor): Transformer {
           }
           const replaced = JSON.stringify(vfile.data.fm, wrap).replace(
             /"%import%(.+?)%import%"/g,
-            (_, name) => name,
+            (match, name) => (names.has(name) ? name : match),
           );
           return `export const metadata = ${replaced};`;
         })

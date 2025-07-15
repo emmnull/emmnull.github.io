@@ -4,16 +4,19 @@
 @import 'tailwindcss/utilities.css' layer(utilities);
 
 @import './styles/theme.css';
-
 @import './styles/base.css' layer(base);
 @import './styles/pattern.css';
 @import './styles/animation.css';
 @import './styles/appose.css';
-@import './styles/coarse-target.css';
-@import './styles/glow.css';
-@import './styles/gradient-ease.css';
+@import './styles/swell-target.css';
+@import './styles/via-ease.css';
 @import './styles/no-scrollbar.css';
 @import './styles/prose.css';
+@import './styles/badge.css';
+@import './styles/button.css';
+@import './styles/chip.css';
+@import './styles/popover.css';
+@import './styles/switch.css';
 
 /* @import './styles/io/theme.css';
 @import './styles/io/badge.css';

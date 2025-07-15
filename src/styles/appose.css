@@ -1,3 +1,8 @@
+/*
+Absolutely position an element on-center.
+Useful for overlayed badges, notification indicators, and such.
+*/
+
 @utility appose-top {
   @apply absolute top-0 left-1/2 -translate-1/2;
 }
@@ -33,55 +38,55 @@
 @utility appose-top-* {
   --appose-distance: calc(var(--spacing) * --value(integer));
   --appose-distance: calc(100% * --value(ratio));
-  --appose-distance: --value(--spacing- *, [length], [percentage]);
+  --appose-distance: --value(--spacing-*, [length], [percentage]);
   @apply absolute top-(--appose-distance) left-1/2 -translate-(--value(--spacing-*));
 }
 
 @utility appose-top-right-* {
   --appose-distance: calc(var(--spacing) * --value(integer));
   --appose-distance: calc(100% * --value(ratio));
-  --appose-distance: --value(--spacing- *, [length], [percentage]);
+  --appose-distance: --value(--spacing-*, [length], [percentage]);
   @apply absolute top-(--appose-distance) right-(--appose-distance) translate-x-1/2 -translate-y-1/2;
 }
 
 @utility appose-right-* {
   --appose-distance: calc(var(--spacing) * --value(integer));
   --appose-distance: calc(100% * --value(ratio));
-  --appose-distance: --value(--spacing- *, [length], [percentage]);
+  --appose-distance: --value(--spacing-*, [length], [percentage]);
   @apply absolute top-1/2 right-(--appose-distance) translate-x-1/2 -translate-y-1/2;
 }
 
 @utility appose-bottom-right-* {
   --appose-distance: calc(var(--spacing) * --value(integer));
   --appose-distance: calc(100% * --value(ratio));
-  --appose-distance: --value(--spacing- *, [length], [percentage]);
+  --appose-distance: --value(--spacing-*, [length], [percentage]);
   @apply absolute right-(--appose-distance) bottom-(--appose-distance) translate-1/2;
 }
 
 @utility appose-bottom-* {
   --appose-distance: calc(var(--spacing) * --value(integer));
   --appose-distance: calc(100% * --value(ratio));
-  --appose-distance: --value(--spacing- *, [length], [percentage]);
+  --appose-distance: --value(--spacing-*, [length], [percentage]);
   @apply absolute bottom-(--appose-distance) left-1/2 -translate-x-1/2 translate-y-1/2;
 }
 
 @utility appose-bottom-left-* {
   --appose-distance: calc(var(--spacing) * --value(integer));
   --appose-distance: calc(100% * --value(ratio));
-  --appose-distance: --value(--spacing- *, [length], [percentage]);
+  --appose-distance: --value(--spacing-*, [length], [percentage]);
   @apply absolute bottom-(--appose-distance) left-(--appose-distance) -translate-x-1/2 translate-y-1/2;
 }
 
 @utility appose-left-* {
   --appose-distance: calc(var(--spacing) * --value(integer));
   --appose-distance: calc(100% * --value(ratio));
-  --appose-distance: --value(--spacing- *, [length], [percentage]);
+  --appose-distance: --value(--spacing-*, [length], [percentage]);
   @apply absolute top-1/2 left-(--appose-distance) -translate-1/2;
 }
 
 @utility appose-top-left-* {
   --appose-distance: calc(var(--spacing) * --value(integer));
   --appose-distance: calc(100% * --value(ratio));
-  --appose-distance: --value(--spacing- *, [length], [percentage]);
+  --appose-distance: --value(--spacing-*, [length], [percentage]);
   @apply absolute top-(--appose-distance) left-(--appose-distance) -translate-1/2;
 }

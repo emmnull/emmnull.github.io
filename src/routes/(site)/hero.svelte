@@ -1,6 +1,5 @@
 <script lang="ts">
   import { links } from '$lib/data/profile';
-  // import Chefkiss from '$lib/assets/chefkiss.png'
 
   const phrases = [
     'love cooking up succulent interfaces', // <enhanced:img src={Chefkiss} />
@@ -15,10 +14,10 @@
 </script>
 
 <section
-  class="max-w-body w-full self-center text-3xl leading-(--leading) font-medium [--leading:1.2]"
+  class="max-w-body w-full self-center text-3xl leading-(--leading) font-medium transition-[opacity,translate] duration-750 [--leading:1.2] starting:-translate-y-[.1em] starting:opacity-0"
 >
-  <hgroup class="p-padding sticky top-0 flex min-h-dvh flex-col justify-center">
-    <h1>
+  <h1 class="p-padding sticky top-0 flex min-h-dvh flex-col justify-center">
+    <span>
       <span class="inline-flex items-center text-[.75em] filter-(--pixelate)">
         👋
       </span>
@@ -26,7 +25,7 @@
       i'm
       <a
         href={links.github.href}
-        class="text-primary group relative inline-flex items-center gap-[.2em] transition-colors duration-400 [--accent:oklch(from_var(--color-primary)_calc(1.4*l)_calc(1.3*c)_h)] hover:text-(--accent)"
+        class="text-primary group hover:text-secondary hover:bg-secondary/10 relative -mx-(--padding) inline-flex items-center gap-[.2em] rounded-md px-(--padding) transition-colors duration-200 [--padding:.2em]"
       >
         emmanuel
         <span class="filter-(--pixelate)">
@@ -61,13 +60,13 @@
         style:--before="'and i '"
         style:--l={phrases.length}
       >
-        {#each phrases as phrase, i}
+        {#each phrases as phrase, i (i)}
           <span
             style:--i={i}
             data-longest={i === longest || undefined}
             class="absolute top-0 left-0 before:invisible not-data-longest:before:[content:var(--before)] data-longest:relative"
           >
-            {#each phrase.split(/(\W)/) as w, ii}
+            {#each phrase.split(/(\W)/) as w, ii (ii)}
               <span class="relative [clip-path:inset(0_0_0_0)]">
                 <span
                   style:--ii={ii}
@@ -81,9 +80,9 @@
           </span>
         {/each}
       </p>
-    </h1>
-  </hgroup>
-  {#each { length: phrases.length - 1 } as _}
+    </span>
+  </h1>
+  {#each { length: phrases.length - 1 } as _, i (i)}
     <br />
   {/each}
 </section>

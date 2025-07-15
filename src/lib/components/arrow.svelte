@@ -25,7 +25,7 @@
 >
   <path
     fill="inherit"
-    d="M 0,0 C {roundness},0 {50 - roundness},75 50,75 C {50 + roundness},75 {100 -
-      roundness},0 100,-0 Z"
+    d="M 0,0 C {roundness},0 {50 - roundness},75 50,75 C {50 +
+      roundness},75 {100 - roundness},0 100,-0 Z"
   />
 </svg>

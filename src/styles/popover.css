@@ -1,0 +1,45 @@
+@custom-variant popover-arrow {
+  &[data-arrow],
+  &[data-popover-arrow] {
+    @slot;
+  }
+}
+
+@utility popover {
+  @layer components {
+    padding: calc(0.5 * var(--spacing-io));
+    background: var(--background-color-surface);
+    border-radius: calc(var(--radius-io) + 0.125 * var(--spacing-io));
+    transition-duration: var(--default-transition-duration), 0s, 0s;
+    transition-timing-function: var(--default-transition-timing-function);
+    transition-behavior: allow-discrete;
+    transition-property: all, left, top;
+    &::backdrop {
+      transition-timing-function: inherit;
+      transition-duration: 0.35s;
+      transition-behavior: inherit;
+
+      @starting-style {
+        opacity: 0%;
+      }
+    }
+    @starting-style {
+      opacity: 0%;
+    }
+    &:not(*:is([open], :popover-open, :open)) {
+      opacity: 0;
+      &::backdrop {
+        opacity: 0%;
+      }
+    }
+    @variant popover-arrow {
+      @apply popover-arrow;
+    }
+  }
+}
+
+@utility popover-arrow {
+  @layer components {
+    fill: var(--background-color-surface);
+  }
+}

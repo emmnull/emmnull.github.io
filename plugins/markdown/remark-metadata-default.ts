@@ -21,6 +21,7 @@ export default function remarkMetadataDefault(
   const self = this;
   return async function transformer(tree, vfile) {
     if (FLAG_SKIP in vfile.data && vfile.data[FLAG_SKIP]) {
+      // prevent running into infinite loop
       return;
     }
     const name = basename(options.id, extname(options.id));

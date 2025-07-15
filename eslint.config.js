@@ -1,6 +1,7 @@
 import { includeIgnoreFile } from '@eslint/compat';
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier';
+import eslintPluginBetterTailwindcss from 'eslint-plugin-better-tailwindcss';
 import importPlugin from 'eslint-plugin-import';
 import svelte from 'eslint-plugin-svelte';
 import globals from 'globals';
@@ -27,8 +28,16 @@ export default ts.config(
     },
     plugins: {
       import: importPlugin,
+      tailwindcss: eslintPluginBetterTailwindcss,
+    },
+    settings: {
+      tailwindcss: {
+        entryPoint: 'src/app.css',
+      },
     },
     rules: {
+      ...eslintPluginBetterTailwindcss.configs['recommended-warn'].rules,
+      ...eslintPluginBetterTailwindcss.configs['recommended-error'].rules,
       curly: ['error', 'all'],
       '@typescript-eslint/no-empty-object-type': [
         'error',

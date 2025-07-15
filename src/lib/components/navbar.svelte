@@ -22,7 +22,6 @@
   let mobileDialog: HTMLDialogElement;
   let themePopover: HTMLDialogElement;
   let langPopover: HTMLDialogElement;
-  let i = 0;
 
   $effect(() => {
     if (lg.current) {
@@ -36,16 +35,16 @@
 <header
   class="has-[:hover,:open,:focus-visible]:from-base z-infinity via-ease-out ease pointer-events-none fixed top-0 flex min-h-1/2 w-full items-start justify-center bg-none to-transparent text-sm transition lg:bg-linear-to-b"
 >
-  <nav
-    class="max-w-body gap-gap px-padding py-gap flex w-full flex-row justify-between [--inset:3px] [--radius:var(--radius-io)] *:[--radius-io:calc(var(--radius)-var(--inset))]"
+  <div
+    class="max-w-body gap-gap px-padding py-gap flex w-full flex-row justify-between [--inset:5px] [--radius:calc(var(--radius-io)+var(--inset))]"
   >
     <nav
-      class="hover:bg-base/90 pointer-events-auto flex gap-(--inset) rounded-(--radius) p-(--inset) backdrop-filter-[blur(4px)_var(--pixelate-4)] transition duration-100"
+      class="bg-base pointer-events-auto flex gap-(--inset) rounded-(--radius) p-(--inset) transition duration-100"
     >
       <button
-        class="px-io-padding h-io rounded-io hover:bg-io text-on-io hover:text-strong relative flex aspect-square items-center gap-[1em] transition duration-100 lg:hidden"
+        class="button-nav aspect-square lg:hidden"
         style:--i="0"
-        onclick={(e) => {
+        onclick={() => {
           mobileDialog.showModal();
         }}
       >
@@ -61,9 +60,9 @@
         {@render themeMenu()}
         <nav>Other sections</nav>
       </dialog>
-      {#each Object.entries(nav) as [slug, link]}
+      {#each Object.entries(nav) as [slug, link] (link)}
         <a
-          class="px-io-padding h-io rounded-io hover:bg-io text-on-io hover:text-strong relative flex items-center gap-[1em] transition duration-100"
+          class="button-nav not-lg:hidden"
           {...getLinkAttributes(`/${slug}`, { currentOnSubpath: slug !== '' })}
         >
           <Ripple />
@@ -72,7 +71,7 @@
       {/each}
     </nav>
     <menu
-      class="hover:bg-base/90 pointer-events-auto flex gap-(--inset) rounded-(--radius) p-(--inset) backdrop-blur-[16px] transition duration-100"
+      class="bg-base pointer-events-auto flex gap-(--inset) rounded-(--radius) p-(--inset) transition duration-100 not-lg:hidden"
     >
       <Popover
         placement="bottom-end"
@@ -86,25 +85,26 @@
         {#snippet children(popover)}
           {@const current = Theme.options[theme.current]}
           <button
-            {...popover.anchorAttributes()}
-            class="px-io-padding h-io rounded-io hover:bg-io text-on-io hover:text-strong relative flex aspect-square items-center gap-[1em] transition duration-100"
+            {...popover.getAnchorAttributes()}
+            class="button-nav aspect-square"
             style:--i="3"
           >
             <Ripple />
             {#if browser}
               {#key current.name}
                 <current.icon
-                  class="size-[1.2em] transition-all starting:scale-90 starting:-rotate-45"
+                  class="transition-all starting:scale-90 starting:-rotate-45"
                 />
               {/key}
             {/if}
           </button>
           <dialog
             bind:this={themePopover}
-            {...popover.targetAttributes()}
+            {...popover.getTargetAttributes()}
             closedby="any"
             class="popover not-open:scale-95 starting:-translate-y-1/4 starting:scale-95"
           >
+            <!-- <Arrow {...popover.getArrowAttributes()} /> -->
             {@render themeMenu()}
           </dialog>
         {/snippet}
@@ -116,34 +116,35 @@
       >
         {#snippet children(popover)}
           <button
-            {...popover.anchorAttributes()}
-            class="px-io-padding h-io rounded-io hover:bg-io text-on-io hover:text-strong relative flex items-center gap-[1em] transition duration-100"
+            {...popover.getAnchorAttributes()}
+            class="button-nav"
             style:--i="4"
           >
             <Ripple />
-            <Languages class="size-[1.2em]" />
-            <span class="button-trailing badge font-mono text-xs capitalize">
+            <Languages />
+            <span class="button-trailing badge font-mono italic">
               {getLocale()}
             </span>
           </button>
           <dialog
             bind:this={langPopover}
-            {...popover.targetAttributes()}
+            {...popover.getTargetAttributes()}
             closedby="any"
             class="popover not-open:scale-95 starting:-translate-y-1/4 starting:scale-95"
           >
+            <!-- <Arrow {...popover.getArrowAttributes()} /> -->
             {@render langMenu()}
           </dialog>
         {/snippet}
       </Popover>
     </menu>
-  </nav>
+  </div>
 </header>
 
 {#snippet themeMenu()}
   {@const key = {}}
   <menu class="switch-ghost flex-col">
-    {#each <(keyof typeof Theme.options)[]>Object.keys(Theme.options) as option}
+    {#each Object.keys(Theme.options) as (keyof typeof Theme.options)[] as option (option)}
       {@const details = Theme.options[option]}
       {@const current = theme.current === option}
       <button
@@ -156,8 +157,8 @@
       >
         <SwitchItemThumb {key} {current} />
         <Ripple />
-        {details.name}
         <details.icon />
+        {details.name}
       </button>
     {/each}
   </menu>
@@ -166,7 +167,7 @@
 {#snippet langMenu()}
   {@const key = {}}
   <menu class="switch-ghost flex-col">
-    {#each locales as locale}
+    {#each locales as locale (locale)}
       {@const current = getLocale() === locale}
       <a
         class="switch-item"
@@ -176,6 +177,7 @@
         aria-current={current || undefined}
       >
         <SwitchItemThumb {key} {current} />
+        <Ripple />
         {m.locale_name(undefined, { locale })}
       </a>
     {/each}

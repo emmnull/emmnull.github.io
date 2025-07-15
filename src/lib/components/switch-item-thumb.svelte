@@ -3,7 +3,7 @@
   import { crossfade, scale } from 'svelte/transition';
 
   const [send, receive] = crossfade({
-    fallback(node, params, intro) {
+    fallback(node, _params, _intro) {
       return scale(node, {
         easing: bounceOut,
         start: 0.75,

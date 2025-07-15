@@ -1,0 +1,337 @@
+/* overrides */
+
+@utility aspect-square {
+  --switch-item-padding: var(--spacing-io-nesting);
+}
+
+/* states */
+
+@custom-variant switch-hover {
+  &:hover {
+    @slot;
+  }
+}
+
+@custom-variant switch-focus {
+  &:focus-visible,
+  &:has(:focus-visible) {
+    @slot;
+  }
+}
+
+@custom-variant switch-press {
+  &:active,
+  &:has(:active) {
+    @slot;
+  }
+}
+
+@custom-variant switch-disabled {
+  &[aria-disabled='true'],
+  &:disabled {
+    @slot;
+  }
+}
+
+@custom-variant switch-item-hover {
+  &:hover:not(:active) {
+    @slot;
+  }
+}
+
+@custom-variant switch-item-focus {
+  &:focus-visible {
+    @slot;
+  }
+}
+
+@custom-variant switch-item-press {
+  &:active {
+    @slot;
+  }
+}
+
+@custom-variant switch-item-current {
+  &:is([aria-current]:where(:not([aria-current='false'])), [aria-checked='true'], [aria-pressed='true'], :checked),
+  &:has(
+    > :is([aria-current]:where(:not([aria-current='false'])), [aria-checked='true'], [aria-pressed='true'], :checked)
+  ),
+  &:has(
+    .switch-input:is(
+      [aria-current]:where(:not([aria-current='false'])),
+      [aria-checked='true'],
+      [aria-pressed='true'],
+      :checked
+    )
+  ) {
+    @slot;
+  }
+}
+
+@custom-variant switch-item-disabled {
+  &:is([aria-disabled='true'], :disabled),
+  &:has(> :is([aria-disabled='true'], :disabled)),
+  &:has(.switch-input:is([aria-disabled='true'], :disabled)) {
+    @slot;
+  }
+}
+
+/* parts */
+
+@utility switch-base {
+  --spacing-io-nested: calc(var(--spacing-io) - 2 * var(--spacing-io-nesting));
+  --radius-io-nested: calc(var(--radius-io) - var(--spacing-io-nesting));
+  --switch-background: ;
+  --switch-border-color: ;
+  --switch-border-style: ;
+  --switch-item-padding: var(--spacing-io-padding);
+  --switch-item-background: ;
+  --switch-item-color: ;
+  --switch-item-border-color: ;
+  --switch-item-border-style: ;
+  --switch-item-icon-color: ;
+  --switch-item-icon-opacity: ;
+  --switch-item-thumb-background: ;
+  --switch-item-thumb-border-color: ;
+  --switch-item-thumb-border-style: ;
+  background: var(--switch-background);
+  border-color: var(--switch-border-color);
+  border-style: var(--switch-border-style);
+  gap: var(--outline-width-io);
+  border-radius: var(--radius-io);
+  min-width: var(--spacing-io);
+  border-width: var(--border-width-io);
+  outline-color: oklch(from var(--color-io-cta) calc(l* 1.25) c h);
+  transition-timing-function: var(--default-transition-timing-function);
+  transition-duration: var(--default-transition-duration);
+  padding: var(--spacing-io-nesting);
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  transition-property: all;
+  @variant switch-focus {
+    outline-style: solid;
+    outline-width: var(--outline-width-io);
+  }
+}
+
+@utility switch-item {
+  --spacing-io-nested2: calc(var(--spacing-io) - 2 * var(--spacing-io-nesting));
+  --radius-io-nested2: calc(var(--radius-io) - var(--spacing-io-nesting));
+  --spacing-io: var(--spacing-io-nested);
+  --radius-io: var(--radius-io-nested);
+  color: var(--switch-item-color);
+  background: var(--switch-item-background);
+  border-style: var(--switch-item-border-style);
+  border-color: var(--switch-item-border-color);
+  padding-inline: calc(0.35 * var(--spacing-io));
+  height: var(--spacing-io);
+  gap: calc(0.25 * var(--spacing-io));
+  border-radius: var(--radius-io);
+  border-width: var(--border-width-io);
+  transition-timing-function: var(--default-transition-timing-function);
+  transition-duration: var(--transition-duration-io);
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  z-index: 0;
+  transition-property: all;
+  @variant switch-item-hover {
+    transition-duration: 0s;
+  }
+  @variant switch-item-focus {
+    outline-style: solid;
+    outline-width: var(--outline-width-io);
+  }
+  @variant switch-item-press {
+    transition-duration: calc(0.5 * var(--default-transition-duration));
+    transform: scale(98%);
+  }
+  @variant switch-item-current {
+    &:not(:has(.switch-item-thumb)) {
+      &::after {
+        @apply switch-item-thumb;
+        content: '';
+        transition: inherit;
+        @starting-style {
+          opacity: 0;
+          inset: calc(0.2 * var(--spacing-io));
+        }
+      }
+    }
+  }
+  /* with leading content */
+  &:has(> .switch-item-leading) {
+    padding-left: var(--spacing-io-nesting);
+  }
+  /* with trailing content */
+  &:has(> .switch-item-trailing) {
+    padding-right: var(--spacing-io-nesting);
+  }
+  /* auto-icon */
+  & > * {
+    @variant icon {
+      @apply switch-item-icon;
+    }
+  }
+}
+
+@utility switch-item-pseudo-face {
+  &:not(input, select, textarea) {
+    background: none;
+    &::before {
+      content: '';
+      background: var(--switch-item-background);
+      inset: calc(0.1 * var(--spacing-io));
+      pointer-events: none;
+      z-index: -1;
+      position: absolute;
+      border-radius: inherit;
+      transition: inherit;
+    }
+    @variant switch-item-hover {
+      &::before {
+        transition-property: inset;
+        transition-duration: calc(0.5 * var(--default-transition-duration));
+        inset: 0;
+      }
+    }
+    @variant switch-item-press {
+      &::before {
+        inset: 0;
+      }
+    }
+    @variant switch-item-current {
+      &::before {
+        inset: 0;
+      }
+    }
+  }
+}
+
+@utility switch-item-thumb {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  flex: none;
+  pointer-events: none;
+  z-index: -1;
+  background: var(--switch-item-thumb-background);
+  border-style: var(--switch-item-thumb-border-style);
+  border-color: var(--switch-item-thumb-border-color);
+  border-width: var(--border-width-io);
+}
+
+@utility switch-item-icon {
+  transition-duration: inherit;
+  color: var(--switch-item-icon-color);
+  opacity: var(--switch-item-icon-opacity);
+  stroke-width: var(--stroke-width-io-icon);
+  width: 1.125em;
+  height: 1.125em;
+}
+
+@utility switch-item-content {
+  --spacing-io: var(--spacing-io-nested2);
+  --radius-io: var(--radius-io-nested2);
+}
+
+@utility switch-item-leading {
+  @apply switch-item-content;
+}
+
+@utility switch-item-trailing {
+  @apply switch-item-content;
+}
+
+/* variants */
+
+@utility switch {
+  @layer components {
+    @apply switch-base;
+    --switch-background: --alpha(var(--color-io) / var(--opacity-io-face));
+    --switch-item-color: var(--color-on-io);
+    --switch-item-thumb-background: --alpha(var(--color-io) / var(--opacity-io-face-strong));
+    @variant switch-hover {
+      --switch-background: --alpha(var(--color-io) / var(--opacity-io-face-soft));
+      --switch-item-color: oklch(from var(--color-on-io) calc(l * var(--io-lightness-factor-soft)) c h);
+    }
+    .switch-item {
+      @apply switch-item-pseudo-face;
+      @variant switch-item-hover {
+        --switch-item-color: var(--color-on-io);
+        --switch-item-background: --alpha(var(--color-io) / var(--opacity-io-face));
+      }
+      @variant switch-item-current {
+        --switch-item-background: transparent;
+        --switch-item-color: oklch(from var(--color-on-io) calc(l * var(--io-lightness-factor-strong)) c h);
+      }
+      @variant switch-item-press {
+        --switch-item-background: --alpha(var(--color-io) / var(--opacity-io-face-soft));
+      }
+    }
+  }
+}
+
+@utility switch-bordered {
+  @layer components {
+    @apply switch-base;
+    --switch-border-style: solid;
+    --switch-border-color: --alpha(var(--color-io) / var(--opacity-io-border));
+    --switch-item-background-transparent: var(--color-on-io);
+    --switch-item-color: var(--color-on-io);
+    --switch-item-thumb-border-style: solid;
+    --switch-item-thumb-border-color: --alpha(var(--color-io) / var(--opacity-io-face-strong));
+    @variant switch-hover {
+      --switch-border-color: --alpha(var(--color-io) / var(--opacity-io-border-strong));
+      --switch-item-color: oklch(from var(--color-on-io) calc(l * var(--io-lightness-factor-soft)) c h);
+    }
+    .switch-item {
+      @apply switch-item-pseudo-face;
+      @variant switch-item-hover {
+        --switch-item-color: var(--color-on-io);
+        --switch-item-background: --alpha(var(--color-io) / var(--opacity-io-face));
+      }
+      @variant switch-item-current {
+        --switch-item-background: transparent;
+        --switch-item-color: oklch(from var(--color-on-io) calc(l * var(--io-lightness-factor-strong)) c h);
+      }
+      @variant switch-item-press {
+        --switch-item-background: --alpha(var(--color-io) / var(--opacity-io-face-soft));
+      }
+    }
+  }
+}
+
+@utility switch-dashed {
+  @apply switch-bordered;
+  @layer components {
+    --switch-border-style: dashed;
+  }
+}
+
+@utility switch-ghost {
+  @layer components {
+    @apply switch-base;
+    --switch-item-icon-opacity: 50%;
+    --switch-item-color: var(--color-on-io);
+    --switch-item-thumb-background: var(--color-io);
+    @variant switch-hover {
+      /* --switch-background: --alpha(var(--color-io) / var(--opacity-io-face-soft)); */
+      /* --switch-item-color: oklch(from var(--color-on-io) calc(l * 1.1) c h); */
+    }
+    .switch-item {
+      @variant switch-item-hover {
+        --switch-item-background: oklch(from var(--color-io) l c h / calc(alpha * 0.8));
+      }
+      @variant switch-item-current {
+        --switch-item-icon-opacity: 100%;
+        --switch-item-color: var(--color-io-cta);
+        --switch-item-background: oklch(from var(--color-io-cta) calc(0.8 * l) c h / 10%);
+      }
+    }
+  }
+}

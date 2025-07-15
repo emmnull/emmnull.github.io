@@ -1,23 +1,19 @@
 <script lang="ts">
   import { random } from '$lib/common/number';
+  import { getLinkAttributes } from '$lib/rigs/link.svelte';
   import { on } from 'svelte/events';
   import type { PageData } from './$types';
 
   let { works }: { works: PageData['works'] } = $props();
 </script>
 
-<section class="mt-padding flex flex-col transform-3d">
-  <!-- <hgroup class="max-w-body px-padding w-full self-center">
-    <h2
-      class="py-padding pattern-crosses pattern-color-surface pattern-spacing-[1.5rem] pattern-spread-30% bg-[center] text-lg lg:text-2xl"
-    >
-      Projects
-    </h2>
-  </hgroup> -->
+<section class="mt-gap rounded-section mx-gap flex flex-col transform-3d">
+  <hgroup class="max-w-body px-padding w-full self-center">
+    <h2 class="py-padding text-lg lg:text-2xl">some works</h2>
+  </hgroup>
   <ul
     {@attach (node) => {
       function settop() {
-        console.log('settop!');
         const r1 = node.getBoundingClientRect();
         const r2 = document.documentElement.getBoundingClientRect();
         node.style.setProperty(
@@ -28,28 +24,38 @@
       settop();
       on(window, 'resize', () => settop);
     }}
-    class="my-padding px-gap gap-gap grid auto-rows-(--u) grid-cols-[repeat(auto-fit,minmax(var(--u),1fr))] [--scroll-y:max(0,calc(var(--spacing-scroll-y)-var(--top)))] [--top:2000] [--u:50px] transform-3d"
+    class="group/works my-padding px-gap gap-gap grid auto-rows-(--u) grid-cols-[repeat(auto-fit,minmax(var(--u),1fr))] [--scroll-y:max(0,calc(var(--spacing-scroll-y)-var(--top)))] [--top:2000] [--u:50px] transform-3d"
   >
-    {#each works as w, i}
-      <div>{w.slug}</div>
+    {#each works as w, i (w)}
       {#if w.metadata.covers}
-        {#each w.metadata.covers as src, ii}
+        {#each w.metadata.covers as src, ii (src)}
           {@const ratio = src.img.w / src.img.h}
           {@const scale = Math.round(random(4, 10))}
           <li
             style:--i={i}
             style:--ii={ii}
-            class="ease-exp-out _opacity-[min(100%,0.3%*(var(--scroll-y)+100*var(--ii)))] relative col-span-(--col) row-span-(--row) translate-z-[calc(var(--z)-var(--z)*min(1,.001*(var(--scroll-y)-100*var(--i))))] transition duration-200 transform-3d"
+            class="ease-exp-out bg-surface group relative col-span-(--col) row-span-(--row) translate-z-[calc(var(--z)-var(--z)*min(1,.001*(var(--scroll-y)-100*var(--i))))] rounded-(--radius) shadow-sm transition duration-250 will-change-transform [--radius:var(--radius-sm)] transform-3d"
             style:--col={scale}
             style:--row={Math.round(scale / ratio)}
             style:--z="{Math.round(random(10, 100))}px"
           >
             <enhanced:img
+              alt="Cover image for {w.metadata.title}"
               {src}
-              width="20px"
-              height="20px"
-              class="block size-full overflow-hidden rounded-sm object-cover"
+              class="block size-full overflow-hidden rounded-(--radius) object-cover opacity-[min(100%,0.1%*(var(--scroll-y)+100*var(--ii)))] will-change-[opacity]"
             />
+            <div
+              class="p-gap absolute inset-0 flex items-center justify-center text-xs"
+            >
+              <a
+                {...getLinkAttributes(`/works/${w.slug}`)}
+                class="bg-overlay badge-base scale-105 opacity-0 shadow-md backdrop-blur-[6px] transition-all duration-150 group-hover:scale-100 group-hover:opacity-100"
+              >
+                <span class="overflow-hidden text-ellipsis">
+                  {w.metadata.title}
+                </span>
+              </a>
+            </div>
           </li>
         {/each}
       {/if}

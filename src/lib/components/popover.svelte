@@ -4,9 +4,6 @@
   with internal Floating mechanics.
 -->
 <script lang="ts" module>
-  import type { HTMLAttributes } from 'svelte/elements';
-  import { Floating } from './floating.svelte';
-
   /**
    * Basic handling of events and element references to manage internal Floating
    * states and computations.
@@ -40,23 +37,23 @@
       this.#floating.active = value;
     }
 
-    anchorAttributes({
+    getAnchorAttributes({
       mode = 'toggle',
     }: { mode?: 'toggle' | 'open' | 'close' } = {}) {
       return {
-        ...this.#floating.referenceAttributes(),
+        ...this.#floating.getReferenceAttributes(),
         [Popover.attributes.anchor]: '',
         'data-state': this.open ? 'open' : undefined,
-        onclick: (e) => {
+        onclick: () => {
           this.open =
             mode === 'toggle' ? !this.open : mode === 'open' ? true : false;
         },
       } satisfies HTMLAttributes<HTMLElement>;
     }
 
-    targetAttributes({ modal = false }: { modal?: boolean } = {}) {
+    getTargetAttributes({ modal = false }: { modal?: boolean } = {}) {
       return {
-        ...this.#floating.floatingAttributes(),
+        ...this.#floating.getFloatingAttributes(),
         [Popover.attributes.target]: '',
         onclose: (e) => {
           if (!e.defaultPrevented) {
@@ -66,7 +63,11 @@
         [createAttachmentKey()]: (node) => {
           if (this.open) {
             if (node instanceof HTMLDialogElement) {
-              modal ? node.showModal() : node.show();
+              if (modal) {
+                node.showModal();
+              } else {
+                node.show();
+              }
             } else {
               node.showPopover();
             }
@@ -81,9 +82,9 @@
       } satisfies HTMLAttributes<HTMLElement>;
     }
 
-    arrowAttributes() {
+    getArrowAttributes() {
       return {
-        ...this.#floating.arrowAttributes(),
+        ...this.#floating.getArrowAttributes(),
         [Popover.attributes.arrow]: '',
       } satisfies HTMLAttributes<HTMLElement | SVGSVGElement>;
     }
@@ -91,8 +92,10 @@
 </script>
 
 <script lang="ts" generics="T extends ConstructorParameters<typeof Popover>[0]">
-  import { type Snippet } from 'svelte';
+  import type { Snippet } from 'svelte';
   import { createAttachmentKey } from 'svelte/attachments';
+  import type { HTMLAttributes } from 'svelte/elements';
+  import { Floating } from './floating.svelte';
 
   let {
     children,

@@ -1,0 +1,25 @@
+/*
+Quickly and easily create a coarser target for (statically positioned) interactive elements.
+
+```
+<a ...>
+  <span class="pointer-fine:swell-target"></span>
+</a>
+```
+*/
+
+@utility swell-target {
+  --swell-target-min: 48px;
+  --swell-target-padding: 0px;
+  @apply absolute top-1/2 left-1/2 size-[max(100%,calc(100%+2*var(--swell-target-padding)))] min-h-(--swell-target-min) min-w-(--swell-target-min) -translate-1/2 rounded-[inherit] opacity-0;
+}
+
+@utility swell-target-padding-* {
+  --swell-target-padding: --value(--spacing-*, [length], percentage);
+  --swell-target-padding: --spacing(--value(number));
+}
+
+@utility swell-target-min-* {
+  --swell-target-min: --modifier(--spacing-*, [length], [percentage]);
+  --swell-target-min: --spacing(--modifier(number));
+}

@@ -16,14 +16,6 @@ export default {
       files: '*.css',
       options: {
         printWidth: 120,
-        proseWrap: 'preserve',
-      },
-    },
-    {
-      files: 'LICENSE',
-      options: {
-        printWidth: 80,
-        proseWrap: 'always',
       },
     },
     {

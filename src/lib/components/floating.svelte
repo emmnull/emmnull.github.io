@@ -161,7 +161,7 @@
       return this.#options;
     }
 
-    referenceAttributes() {
+    getReferenceAttributes() {
       return {
         [Floating.attributes.reference]: '',
         [createAttachmentKey()]: (node) => {
@@ -178,7 +178,7 @@
       } satisfies HTMLAttributes<HTMLElement>;
     }
 
-    floatingAttributes() {
+    getFloatingAttributes() {
       let cleanup: ReturnType<typeof autoUpdate> | undefined;
       return {
         [Floating.attributes.floating]: '',
@@ -209,11 +209,16 @@
       } satisfies HTMLAttributes<HTMLElement>;
     }
 
-    arrowAttributes() {
+    getArrowAttributes() {
       return {
         [Floating.attributes.arrow]: '',
         [createAttachmentKey()]: (node) => {
           this.#arrowElement = node;
+          this.#computed?.middlewareData.arrow;
+          // 			Object.assign(node.style, {
+          //   left: x != null ? `${x}px` : '',
+          //   top: y != null ? `${y}px` : '',
+          // });
           return () => {
             this.#arrowElement = undefined;
           };
@@ -228,7 +233,7 @@
   generics="T extends ConstructorParameters<typeof Floating>[0]"
 >
   import { calc, multiply } from '$lib/common/css';
-  import { type Snippet } from 'svelte';
+  import type { Snippet } from 'svelte';
 
   let {
     children,

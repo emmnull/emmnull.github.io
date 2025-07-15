@@ -1,0 +1,149 @@
+/* overrides */
+
+@utility aspect-square {
+  --chip-padding: var(--spacing-io-nesting);
+}
+
+/* states */
+
+@custom-variant chip-hover {
+  &:hover:not(:active) {
+    @slot;
+  }
+}
+
+@custom-variant chip-focus {
+  &:focus-visible {
+    @slot;
+  }
+}
+
+@custom-variant chip-press {
+  &:active {
+    @slot;
+  }
+}
+
+@custom-variant chip-checked {
+  &:focus-visible {
+    @slot;
+  }
+}
+
+/* parts */
+
+@utility chip-base {
+  --spacing-io-nested: calc(var(--spacing-io) - 2 * var(--spacing-io-nesting));
+  --radius-io-nested: calc(var(--radius-io) - var(--spacing-io-nesting));
+  --chip-padding: calc(0.5 * var(--spacing-io));
+  --chip-color: ;
+  --chip-background: ;
+  --chip-border-color: ;
+  --chip-border-style: ;
+  --chip-icon-color: ;
+  --chip-icon-opacity: ;
+  color: var(--chip-color);
+  background: var(--chip-background);
+  border-color: var(--chip-border-color);
+  border-style: var(--chip-border-style);
+  padding-inline: var(--chip-padding);
+  height: var(--spacing-io);
+  gap: calc(var(--spacing-io) / 3);
+  padding-block: var(--spacing-io-nesting);
+  border-radius: var(--radius-io);
+  /* border-radius: calc(infinity* 1px); */
+  border-width: var(--border-width-io);
+  outline-color: oklch(from var(--color-io-cta) calc(l* 1.25) c h);
+  transition-duration: var(--default-transition-duration);
+  transition-timing-function: var(--default-transition-timing-function);
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  text-overflow: ellipsis;
+  align-items: center;
+  justify-content: center;
+  transition-property: all;
+  @variant chip-hover {
+    transition-duration: 0s;
+  }
+  @variant chip-focus {
+    outline-style: solid;
+    outline-width: var(--outline-width-focus);
+  }
+  @variant chip-press {
+    transition-duration: calc(0.5 * var(--default-transition-duration));
+    transform: var(--transform-io-active);
+  }
+  /* with leading content */
+  &:has(> .chip-leading) {
+    padding-left: var(--spacing-io-nesting);
+  }
+  /* with trailing content */
+  &:has(> .chip-trailing) {
+    padding-right: var(--spacing-io-nesting);
+  }
+  /* auto-icon */
+  & > * {
+    @variant icon {
+      @apply chip-icon;
+    }
+  }
+}
+
+@utility chip-icon {
+  transition-duration: inherit;
+  color: var(--chip-icon-color);
+  opacity: var(--chip-icon-opacity);
+  width: var(--spacing-io-icon);
+  height: var(--spacing-io-icon);
+  stroke-width: var(--stroke-width-io-icon);
+}
+
+@utility chip-content {
+  --radius-io: var(--radius-io-nested);
+  --spacing-io: var(--spacing-io-nested);
+}
+
+@utility chip-leading {
+  @apply chip-content;
+}
+
+@utility chip-trailing {
+  @apply chip-content;
+}
+
+/* variants */
+
+@utility chip {
+  @layer components {
+    @apply chip-base;
+    --chip-background: var(--color-io);
+    --chip-color: var(--color-on-io);
+  }
+}
+
+@utility chip-bordered {
+  @layer components {
+    @apply chip-base;
+    --chip-border-style: solid;
+    --chip-border-color: --alpha(var(--color-io) / var(--opacity-io-border));
+    --chip-background: transparent;
+    --chip-color: var(--color-on-io);
+  }
+}
+
+@utility chip-dashed {
+  @apply chip-bordered;
+  @layer components {
+    --chip-border-style: dashed;
+  }
+}
+
+@utility chip-cta {
+  @layer components {
+    @apply chip-base;
+    --chip-background: var(--color-cta);
+    --chip-color: var(--color-on-cta);
+  }
+}

@@ -25,7 +25,9 @@
     document.documentElement.style.setProperty('--spacing-scroll-y', String(y));
   }
 
-  browser && onscroll();
+  if (browser) {
+    onscroll();
+  }
 </script>
 
 <svelte:window {onscroll} />

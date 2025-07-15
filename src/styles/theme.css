@@ -3,16 +3,18 @@
   --font-misc: 'Instrument Serif', serif;
   --font-mono: 'DM Mono', monospace;
 
-  --color-primary: light-dark(oklch(0.5 0.5 258), oklch(0.62 0.4 258));
+  --color-primary: light-dark(oklch(0.5 0.5 258), oklch(0.74 0.12 72));
   --color-on-primary: light-dark(white, white);
-  --color-secondary: light-dark(oklch(0.72 0.18 33), oklch(0.7 0.2 151));
+  --color-secondary: light-dark(oklch(0.62 0.42 98), oklch(0.7 0.22 148));
   --color-on-secondary: light-dark(black, white);
-  --color-io: light-dark(oklch(0.6 0.01 90 / 10%), oklch(0.45 0.02 290 / 15%));
+  --color-io: light-dark(oklch(0.6 0.01 90 / 10%), oklch(0.7 0.02 290 / 15%));
   --color-on-io: light-dark(oklch(0.28 0.01 300), oklch(0.75 0.01 90));
+  --color-io-cta: var(--color-primary);
+  --color-on-io-cta: var(--color-on-primary);
 
   --background-color-base: light-dark(oklch(0.94 0.008 72), oklch(0.17 0.004 70));
-  --background-color-surface: light-dark(oklch(0.98 0.006 74), oklch(0.21 0.002 80));
-  --background-color-overlay: light-dark(oklch(0.94 0.018 242 / 90%), oklch(0.19 0.003 70 / 96%));
+  --background-color-surface: light-dark(oklch(0.96 0.005 74), oklch(0.21 0.002 80));
+  --background-color-overlay: light-dark(oklch(0.98 0.002 76 / 90%), oklch(0.19 0.003 70 / 96%));
 
   --text-color-base: light-dark(oklch(0.21 0.0059 64.02), oklch(0.78 0.01 82));
   --text-color-soft: light-dark(oklch(0.21 0.0059 64.02), oklch(0.42 0.01 84));
@@ -22,9 +24,9 @@
   --spacing-body: 76rem;
   --spacing-prose-body: 52rem;
   --spacing-padding: --spacing(8);
-  --spacing-gap: --spacing(4);
+  --spacing-gap: --spacing(2);
   --spacing-io: 3em;
-  --spacing-io-padding: 1.5em;
+  --spacing-io-nesting: 5px;
   --spacing-scroll-x: 0;
   --spacing-scroll-y: 0;
   --spacing-navbar-height: calc(var(--spacing-gap) + var(--spacing-io) + var(--spacing-padding));
@@ -68,6 +70,15 @@
   --border-width-sm: 0.5px;
   --border-width-md: 1.5px;
   --border-width-lg: 3px;
+  --border-width-io: var(--border-width-md);
+  --outline-width-sm: var(--border-width-sm);
+  --outline-width-md: var(--border-width-md);
+  --outline-width-lg: var(--border-width-lg);
+  --outline-width-io: var(--outline-width-lg);
+  --stroke-width-sm: var(--border-width-sm);
+  --stroke-width-md: var(--border-width-md);
+  --stroke-width-lg: var(--border-width-lg);
+  --stroke-width-io-icon: 2.5px;
 
   --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -91,9 +102,14 @@
   --default-font-family: var(--font-main);
   --default-mono-font-family: var(--font-mono);
   --default-border-width: var(--border-width-md);
-  --default-outline-width: var(--outline-width-focus);
+  --default-outline-width: var(--outline-width-lg);
   --default-transition-duration: 150ms;
   --default-transition-timing-function: var(--ease-out);
+
+  --pixelate-2: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><filter id="pixelate" patternUnits="userSpaceOnUse"><feFlood x="1" y="1" height="0.1" width="0.1" /><feComposite width="2" height="2" /><feTile result="a" /><feComposite in="SourceGraphic" operator="in" /><feMorphology operator="dilate" radius="1" /></filter></svg>#pixelate');
+  --pixelate-3: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><filter id="pixelate" patternUnits="userSpaceOnUse"><feFlood x="1.5" y="1.5" height="0.1" width="0.1" /><feComposite width="3" height="3" /><feTile result="a" /><feComposite in="SourceGraphic" operator="in" /><feMorphology operator="dilate" radius="1.5" /></filter></svg>#pixelate');
+  --pixelate-4: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><filter id="pixelate" patternUnits="userSpaceOnUse"><feFlood x="2" y="2" height="0.1" width="0.1" /><feComposite width="4" height="4" /><feTile result="a" /><feComposite in="SourceGraphic" operator="in" /><feMorphology operator="dilate" radius="2" /></filter></svg>#pixelate');
+  --pixelate: var(--pixelate-2);
 
   @keyframes spin-y {
     from {
@@ -119,18 +135,11 @@
       translate: 0 -12.5%;
     }
   }
-
-  --pixelate-2: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><filter id="pixelate" patternUnits="userSpaceOnUse"><feFlood x="1" y="1" height="0.1" width="0.1" /><feComposite width="2" height="2" /><feTile result="a" /><feComposite in="SourceGraphic" operator="in" /><feMorphology operator="dilate" radius="1" /></filter></svg>#pixelate');
-  --pixelate-3: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><filter id="pixelate" patternUnits="userSpaceOnUse"><feFlood x="1.5" y="1.5" height="0.1" width="0.1" /><feComposite width="3" height="3" /><feTile result="a" /><feComposite in="SourceGraphic" operator="in" /><feMorphology operator="dilate" radius="1.5" /></filter></svg>#pixelate');
-  --pixelate-4: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><filter id="pixelate" patternUnits="userSpaceOnUse"><feFlood x="2" y="2" height="0.1" width="0.1" /><feComposite width="4" height="4" /><feTile result="a" /><feComposite in="SourceGraphic" operator="in" /><feMorphology operator="dilate" radius="2" /></filter></svg>#pixelate');
-
-  --pixelate: var(--pixelate-2);
 }
 
 @variant lg {
   :root {
     --spacing-padding: --spacing(12);
-    --spacing-gap: --spacing(2);
     --spacing-navbar-height: calc(var(--spacing-gap) + 0.825 * var(--spacing-io) + var(--spacing-padding));
 
     --text-lg: 1.5rem;

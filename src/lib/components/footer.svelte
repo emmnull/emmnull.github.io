@@ -3,43 +3,43 @@
   import { links } from '$lib/data/profile';
   import { getLinkAttributes } from '$lib/rigs/link.svelte';
   import { ArrowUp, Mail } from 'lucide-svelte';
-
-  function backToTop() {
-    document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
-  }
 </script>
 
 <footer
-  class="max-w-body p-padding gap-padding flex min-h-[50vh] w-full flex-col items-stretch self-center text-sm"
+  class="gap-padding py-padding mx-gap flex min-h-dvh flex-col items-center justify-end self-stretch text-sm"
 >
-  <div class="grid flex-1 grid-cols-3">
-    <nav class="flex flex-col">
-      {#each Object.entries(nav) as [slug, link]}
-        <a {...getLinkAttributes(`/${slug}`)}>{link.label}</a>
-      {/each}
-    </nav>
-    <nav class="flex justify-center">
-      {#each Object.values(links) as link}
-        <a
-          href={link.href}
-          class="h-io rounded-io hover:bg-io text-on-io flex aspect-square items-center justify-center"
-        >
-          <link.icon class="size-[1em]" />
+  <div
+    class="max-w-body p-padding rounded-section bg-surface grid w-full grid-cols-3"
+  >
+    <nav class="flex flex-col items-start gap-(--outline-width-io)">
+      {#each Object.entries(nav) as [slug, link] (link)}
+        <a {...getLinkAttributes(`/${slug}`)} class="button-ghost">
+          {link.label}
         </a>
       {/each}
-      <button
-        class="h-io rounded-io hover:bg-io text-on-io flex aspect-square items-center justify-center"
-      >
-        <Mail class="size-[1em]" />
+    </nav>
+    <nav class="flex justify-center gap-(--outline-width-io)">
+      {#each Object.values(links) as link (link)}
+        <a href={link.href} class="button-ghost aspect-square">
+          <link.icon />
+        </a>
+      {/each}
+      <button class="button-ghost aspect-square">
+        <Mail />
       </button>
     </nav>
     <nav class="flex justify-end">
       <button
-        class="h-io rounded-io flex aspect-square items-center justify-center"
+        class="button aspect-square"
+        onclick={() => {
+          document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
       >
-        <ArrowUp class="size-[1em]" />
+        <ArrowUp />
       </button>
     </nav>
   </div>
-  <p class="text-center font-mono">© 2025 emmanuel beaudry marchand</p>
+  <p class="text-soft text-center font-mono">
+    © 2025 emmanuel beaudry marchand
+  </p>
 </footer>

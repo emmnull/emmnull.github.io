@@ -47,8 +47,8 @@
   }
 </script>
 
-<script lang="ts" generics="T">
-  import { type Snippet } from 'svelte';
+<script lang="ts">
+  import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
 
   let { children }: { children: Snippet } = $props();

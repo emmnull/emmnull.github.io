@@ -1,0 +1,296 @@
+/* overrides */
+
+@utility aspect-square {
+  --button-padding: var(--spacing-io-nesting);
+}
+
+/* states */
+
+@custom-variant button-hover {
+  &:hover:not([aria-current]:where(:not([aria-current='false'])), :target) {
+    @slot;
+  }
+}
+
+@custom-variant button-focus {
+  &:focus-visible {
+    @slot;
+  }
+}
+
+@custom-variant button-press {
+  &:active {
+    @slot;
+  }
+}
+
+@custom-variant button-current {
+  &:is([aria-current]:where(:not([aria-current='false'])), [aria-checked='true'], [aria-pressed='true'], :checked),
+  &:has(
+    > :is([aria-current]:where(:not([aria-current='false'])), [aria-checked='true'], [aria-pressed='true'], :checked)
+  ) {
+    @slot;
+  }
+}
+
+@custom-variant button-open {
+  &[aria-expanded='true'],
+  &:open,
+  &[data-open],
+  &[data-state='open'] {
+    @slot;
+  }
+}
+
+@custom-variant button-disabled {
+  &:is([aria-disabled='true'], :disabled),
+  &:has(> :is([aria-disabled='true'], :disabled)) {
+    @slot;
+  }
+}
+
+/* parts */
+
+@utility button-base {
+  --spacing-io-nested: calc(var(--spacing-io) - 2 * var(--spacing-io-nesting));
+  --radius-io-nested: calc(var(--radius-io) - var(--spacing-io-nesting));
+  --button-padding: calc(0.5 * var(--spacing-io));
+  --button-color: ;
+  --button-background: ;
+  --button-border-color: ;
+  --button-border-style: ;
+  --button-icon-color: ;
+  --button-icon-opacity: ;
+  color: var(--button-color);
+  background: var(--button-background);
+  border-color: var(--button-border-color);
+  border-style: var(--button-border-style);
+  padding-inline: var(--button-padding);
+  height: var(--spacing-io);
+  gap: calc(0.25 * var(--spacing-io));
+  padding-block: var(--spacing-io-nesting);
+  border-radius: var(--radius-io);
+  border-width: var(--border-width-io);
+  outline-color: oklch(from var(--color-io-cta) calc(l* 1.25) c h);
+  transition-duration: var(--default-transition-duration);
+  transition-timing-function: var(--default-transition-timing-function);
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  text-overflow: ellipsis;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+  min-width: fit-content;
+  transition-property: all;
+  @variant button-hover {
+    transition-duration: 0s;
+  }
+  @variant button-focus {
+    outline-style: solid;
+    outline-width: var(--outline-width-io);
+  }
+  @variant button-press {
+    transition-duration: calc(0.5 * var(--transition-duration-io));
+    transform: scale(98%);
+  }
+  /* with leading content */
+  &:has(> .button-leading) {
+    padding-left: var(--spacing-io-nesting);
+  }
+  /* with trailing content */
+  &:has(> .button-trailing) {
+    padding-right: var(--spacing-io-nesting);
+  }
+  /* auto-icon */
+  & > * {
+    @variant icon {
+      @apply button-icon;
+    }
+  }
+}
+
+@utility button-pseudo-face {
+  &:not(input, select, textarea) {
+    background: none;
+    &::before {
+      content: '';
+      background: var(--button-background);
+      inset: calc(0.1 * var(--spacing-io));
+      pointer-events: none;
+      z-index: -1;
+      position: absolute;
+      border-radius: inherit;
+      transition: inherit;
+    }
+    @variant button-hover {
+      &::before {
+        transition-property: inset;
+        transition-duration: calc(0.5 * var(--default-transition-duration));
+        inset: 0;
+      }
+    }
+    @variant button-press {
+      &::before {
+        inset: 0;
+      }
+    }
+    @variant button-current {
+      &::before {
+        inset: 0;
+      }
+    }
+    @variant button-open {
+      &::before {
+        inset: 0;
+      }
+    }
+  }
+}
+
+@utility button-pseudo-border {
+  &:not(input, select, textarea) {
+    border-style: none;
+    &::after {
+      content: '';
+      border-color: var(--button-border-color);
+      border-style: var(--button-border-style);
+      border-width: var(--border-width-io);
+      pointer-events: none;
+      z-index: 1;
+      position: absolute;
+      border-radius: inherit;
+      inset: 0;
+      transition-property: all;
+      transition-duration: inherit;
+      transition-timing-function: inherit;
+    }
+  }
+}
+
+@utility button-icon {
+  transition-duration: inherit;
+  color: var(--button-icon-color);
+  opacity: var(--button-icon-opacity);
+  stroke-width: var(--stroke-width-io-icon);
+  width: 1.25em;
+  height: 1.25em;
+}
+
+@utility button-content {
+  --spacing-io: var(--spacing-io-nested);
+  --radius-io: var(--radius-io-nested);
+}
+
+@utility button-leading {
+  @apply button-content;
+}
+
+@utility button-trailing {
+  @apply button-content;
+}
+
+/* variants */
+
+@utility button {
+  @layer components {
+    @apply button-base;
+    --button-background: var(--color-io);
+    --button-color: var(--color-on-io);
+    --button-icon-opacity: var(--opacity-io-icon);
+    @variant button-hover {
+      --button-background: oklch(from var(--color-io) calc(l * 1.2) c h / calc(alpha * 1.2));
+      --button-color: oklch(from var(--color-on-io) calc(l * 1.2) c h);
+      --button-icon-opacity: var(--opacity-io-icon-strong);
+    }
+  }
+}
+
+@utility button-bordered {
+  @layer components {
+    @apply button-base button-pseudo-border button-pseudo-face;
+    --button-background: transparent;
+    --button-color: var(--color-on-io);
+    --button-icon-opacity: var(--opacity-io-icon);
+    --button-border-style: solid;
+    --button-border-color: var(--color-io);
+    @variant button-hover {
+      --button-background: var(--color-io);
+      --button-color: oklch(from var(--color-on-io) calc(l * var(--io-lightness-factor-strong)) c h);
+      --button-icon-opacity: var(--opacity-io-icon-strong);
+      --button-border-color: --alpha(var(--color-io) / var(--opacity-io-border-soft));
+    }
+    @variant button-press {
+      --button-border-color: transparent;
+      --button-background: --alpha(var(--color-io) / var(--opacity-io-face-soft));
+    }
+    @variant button-current {
+      --button-border-color: --alpha(var(--color-io) / var(--opacity-io-border-strong));
+    }
+  }
+}
+
+@utility button-dashed {
+  @apply button-bordered;
+  @layer components {
+    --button-border-style: dashed;
+  }
+}
+
+@utility button-ghost {
+  @layer components {
+    @apply button-base button-pseudo-face;
+    --button-background: transparent;
+    --button-color: var(--color-on-io);
+    --button-icon-opacity: 50%;
+    @variant button-hover {
+      --button-background: var(--color-io);
+      --button-color: oklch(from var(--color-on-io) calc(l * 1.2) c h);
+      --button-icon-opacity: 80%;
+    }
+    @variant button-press {
+    }
+    @variant button-current {
+      --button-color: var(--color-io-cta);
+      --button-background: oklch(from var(--color-io-cta) calc(0.8 * l) c h / 10%);
+    }
+  }
+}
+
+@utility button-cta {
+  @layer components {
+    @apply button-base;
+    --button-background: var(--color-io-cta);
+    --button-color: var(--color-on-io-cta);
+    --button-icon-opacity: 50%;
+    @variant button-hover {
+      --button-background: oklch(from var(--color-io-cta) calc(l * 0.8) c h);
+      --button-color: oklch(from var(--color-on-io-cta) calc(l * 1.1) c h);
+      --button-icon-opacity: 100%;
+    }
+    @variant button-press {
+    }
+  }
+}
+
+@utility button-nav {
+  @layer components {
+    @apply button-base button-pseudo-face;
+    font-weight: var(--font-weight-semibold);
+    --button-background: transparent;
+    --button-color: var(--color-on-io);
+    --button-icon-opacity: 100%;
+    @variant button-hover {
+      --button-color: oklch(from var(--color-io-cta) l c h);
+      --button-background: oklch(from var(--color-io-cta) l calc(c * 0.8) h / 10%);
+    }
+    @variant button-current {
+      --button-color: var(--color-io-cta);
+    }
+    @variant button-open {
+      --button-color: var(--color-io-cta);
+      --button-background: var(--background-color-surface);
+    }
+  }
+}

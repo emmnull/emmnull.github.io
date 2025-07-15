@@ -1,3 +1,11 @@
+/*
+Create pattern using preset shapes.
+
+to do:
+- rename `pattern-size` prop and util to `pattern-size`
+- do calc(s) to make `pattern-spacing` aware of `pattern-size`.
+*/
+
 @property --pattern-color {
   syntax: '<color>';
   inherits: false;
@@ -16,7 +24,7 @@
   initial-value: 20px;
 }
 
-@property --pattern-spread {
+@property --pattern-size {
   syntax: '<percentage>';
   inherits: false;
   initial-value: 35%;
@@ -41,9 +49,9 @@
 }
 
 @utility pattern-thickness-* {
-  --pattern-thickness: --value([length]);
+  --pattern-thickness: --value([*]);
   --pattern-thickness: calc(1px * --value(integer));
-  --pattern-thickness2: --modifier([length]);
+  --pattern-thickness2: --modifier([*]);
   --pattern-thickness2: calc(1px * --modifier(integer));
 }
 
@@ -51,8 +59,8 @@
   --pattern-spacing: --value(--spacing-*, [length]);
 }
 
-@utility pattern-spread-* {
-  --pattern-spread: --value(percentage, [percentage]);
+@utility pattern-size-* {
+  --pattern-size: --value(percentage, [percentage]);
 }
 
 @utility pattern-angle-* {
@@ -130,28 +138,28 @@
 }
 
 @utility pattern-crosses {
-  --pattern-spread-half: calc(0.5 * var(--pattern-spread));
+  --pattern-size-half: calc(0.5 * var(--pattern-size));
   background-image:
     conic-gradient(
-      from -90deg at var(--pattern-thickness) var(--pattern-spread-half),
+      from -90deg at var(--pattern-thickness) var(--pattern-size-half),
       var(--pattern-color) 90deg,
       0%,
       transparent
     ),
     conic-gradient(
-      from -90deg at var(--pattern-spread-half) var(--pattern-thickness),
+      from -90deg at var(--pattern-size-half) var(--pattern-thickness),
       var(--pattern-color) 90deg,
       0%,
       transparent
     ),
     conic-gradient(
-      from 0deg at calc(100% - var(--pattern-spread-half) + var(--pattern-thickness)) var(--pattern-thickness),
+      from 0deg at calc(100% - var(--pattern-size-half) + var(--pattern-thickness)) var(--pattern-thickness),
       var(--pattern-color) 90deg,
       0%,
       transparent
     ),
     conic-gradient(
-      from 180deg at var(--pattern-thickness) calc(100% - var(--pattern-spread-half) + var(--pattern-thickness)),
+      from 180deg at var(--pattern-thickness) calc(100% - var(--pattern-size-half) + var(--pattern-thickness)),
       var(--pattern-color) 90deg,
       0%,
       transparent

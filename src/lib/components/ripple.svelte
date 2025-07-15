@@ -82,8 +82,8 @@
             this.#destroy();
           }
         },
-        [createAttachmentKey()]: (node) => {
-          () => {
+        [createAttachmentKey()]: () => {
+          return () => {
             this.#cleanup();
           };
         },

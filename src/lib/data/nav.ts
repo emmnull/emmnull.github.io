@@ -5,14 +5,14 @@ export const nav = {
     label: 'emmanuel',
   },
   cv: {
-    label: 'CV',
+    label: 'cv',
     icon: FileUser,
   },
   // works: {
   //   label: 'Works',
   // },
   posts: {
-    label: 'Posts',
+    label: 'posts',
   },
 } as const satisfies Record<
   string,

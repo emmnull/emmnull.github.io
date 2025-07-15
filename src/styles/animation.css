@@ -1,3 +1,10 @@
+/*
+to do:
+- rename `intro-` and `outro-` utils to `in-` and `out-`
+- refactor to allow specifying each animatable props' own duration, delay, etc.
+- make sure to take into account relevant `--tw-*` values
+*/
+
 @layer base {
   @keyframes intro {
     from {
@@ -18,23 +25,23 @@
 }
 
 @utility intro-duration-* {
-  animation-duration: --value(--transition-duration- *, [time]);
+  animation-duration: --value(--transition-duration-*, [time]);
   animation-duration: calc(1ms * --value(integer));
 }
 
 @utility intro-delay-* {
-  --intro-delay: --value(--transition-delay- *, [time]);
+  --intro-delay: --value(--transition-delay-*, [time]);
   --intro-delay: calc(1ms * --value(integer));
   animation-delay: var(--intro-delay);
-  animation-delay: calc(var(--intro-delay) * --modifier(integer, [ *]));
+  animation-delay: calc(var(--intro-delay) * --modifier(integer, [*]));
 }
 
 @utility intro-ease {
-  animation-timing-function: --value(--ease- *, [ *]);
+  animation-timing-function: --value(--ease-*, [*]);
 }
 
 @utility intro-opacity-* {
-  --intro-opacity: --value(--opacity- *, number, percentage);
+  --intro-opacity: --value(--opacity-*, number, percentage);
   --intro-opacity: calc(1% * --value(integer));
 }
 

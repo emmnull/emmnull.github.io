@@ -1,5 +1,5 @@
 ---
-title: 'Plateforme de caractérisation d’images'
+title: 'Plateforme de caractérisation dimages'
 ---
 
 test
