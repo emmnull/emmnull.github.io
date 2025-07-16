@@ -36,33 +36,33 @@
   class="has-[:hover,:open,:focus-visible]:from-base z-infinity via-ease-out ease pointer-events-none fixed top-0 flex min-h-1/2 w-full items-start justify-center bg-none to-transparent text-sm transition lg:bg-linear-to-b"
 >
   <div
-    class="max-w-body gap-gap px-padding py-gap flex w-full flex-row justify-between [--inset:5px] [--radius:calc(var(--radius-io)+var(--inset))]"
+    class="max-w-body gap-gap p-padding lg:py-gap flex w-full flex-row justify-between [--inset:5px] [--radius:calc(var(--radius-io)+var(--inset))]"
   >
-    <nav
-      class="bg-base pointer-events-auto flex gap-(--inset) rounded-(--radius) p-(--inset) transition duration-100"
+    <button
+      class="button-nav pointer-events-auto aspect-square backdrop-blur-[16px] lg:hidden"
+      style:--i="0"
+      onclick={() => {
+        mobileDialog.showModal();
+      }}
     >
-      <button
-        class="button-nav aspect-square lg:hidden"
-        style:--i="0"
-        onclick={() => {
-          mobileDialog.showModal();
-        }}
-      >
-        <Ripple />
-        <Menu />
-      </button>
-      <dialog
-        class="dialog w-full origin-bottom self-end shadow-lg not-open:scale-96 starting:translate-y-1/4"
-        closedby="any"
-        bind:this={mobileDialog}
-      >
-        {@render langMenu()}
-        {@render themeMenu()}
-        <nav>Other sections</nav>
-      </dialog>
+      <Ripple />
+      <Menu />
+    </button>
+    <dialog
+      class="dialog w-full origin-bottom self-end shadow-lg not-open:scale-96 starting:translate-y-1/4"
+      closedby="any"
+      bind:this={mobileDialog}
+    >
+      {@render langMenu()}
+      {@render themeMenu()}
+      <nav>Other sections</nav>
+    </dialog>
+    <nav
+      class="bg-base pointer-events-auto flex gap-(--inset) rounded-(--radius) p-(--inset) transition duration-100 not-lg:hidden"
+    >
       {#each Object.entries(nav) as [slug, link] (link)}
         <a
-          class="button-nav not-lg:hidden"
+          class="button-nav"
           {...getLinkAttributes(`/${slug}`, { currentOnSubpath: slug !== '' })}
         >
           <Ripple />
@@ -122,7 +122,9 @@
           >
             <Ripple />
             <Languages />
-            <span class="button-trailing badge font-mono italic">
+            <span
+              class="in-button-open:opacity-100 font-mono opacity-40 transition-opacity"
+            >
               {getLocale()}
             </span>
           </button>

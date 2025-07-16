@@ -24,7 +24,7 @@
       settop();
       on(window, 'resize', () => settop);
     }}
-    class="group/works my-padding px-gap gap-gap grid auto-rows-(--u) grid-cols-[repeat(auto-fit,minmax(var(--u),1fr))] [--scroll-y:max(0,calc(var(--spacing-scroll-y)-var(--top)))] [--top:2000] [--u:50px] transform-3d"
+    class="group/works my-padding px-gap gap-gap flex auto-rows-(--u) grid-cols-[repeat(auto-fit,minmax(var(--u),1fr))] flex-col [--scroll-y:max(0,calc(var(--spacing-scroll-y)-var(--top)))] [--top:2000] [--u:50px] transform-3d lg:grid"
   >
     {#each works as w, i (w)}
       {#if w.metadata.covers}
@@ -32,9 +32,10 @@
           {@const ratio = src.img.w / src.img.h}
           {@const scale = Math.round(random(4, 10))}
           <li
+            data-cover={!ii || undefined}
             style:--i={i}
             style:--ii={ii}
-            class="ease-exp-out bg-surface group relative col-span-(--col) row-span-(--row) translate-z-[calc(var(--z)-var(--z)*min(1,.001*(var(--scroll-y)-100*var(--i))))] rounded-(--radius) shadow-sm transition duration-250 will-change-transform [--radius:var(--radius-sm)] transform-3d"
+            class="ease-exp-out bg-surface group relative col-span-(--col) row-span-(--row) translate-z-[calc(var(--z)-var(--z)*min(1,.001*(var(--scroll-y)-100*var(--i))))] rounded-(--radius) transition duration-350 will-change-transform [--radius:var(--radius-sm)] transform-3d not-lg:not-data-cover:hidden"
             style:--col={scale}
             style:--row={Math.round(scale / ratio)}
             style:--z="{Math.round(random(10, 100))}px"

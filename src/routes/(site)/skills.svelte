@@ -19,10 +19,10 @@
 </script>
 
 <section
-  class="mx-gap bg-surface rounded-section flex flex-col items-center justify-center self-stretch"
+  class="mx-gap bg-surface rounded-section lg:py-padding flex flex-col items-center justify-center self-stretch"
 >
   <div
-    class="px-padding gap-padding max-w-body flex w-full flex-col items-start py-[max(var(--spacing-padding),.5*(100vw-var(--spacing-body)))]"
+    class="p-padding gap-padding max-w-body flex w-full flex-col items-start"
   >
     <h2
       {@attach (node) => {

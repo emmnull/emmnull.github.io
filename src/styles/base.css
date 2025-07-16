@@ -1,71 +1,52 @@
-@media (prefers-reduced-motion: no-preference) {
-  @view-transition {
-    navigation: auto;
+@layer base {
+  @media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+      navigation: auto;
+    }
   }
-}
 
-:root {
-  --root-center: calc(1px * var(--spacing-scroll-x) + 50dvw) calc(1px * var(--spacing-scroll-y) + 50dvh);
-  scroll-padding-top: var(--spacing-navbar-height);
-  background: var(--background-color-base);
-  position: relative;
-  color: var(--text-color-base);
-  accent-color: var(--color-primary);
-  transform-origin: var(--root-center);
-  perspective-origin: var(--root-center);
-  scroll-snap-type: proximity;
-  scroll-behavior: smooth;
-
-  &:has(:modal:open, [aria-modal='true']:open) {
-    overflow: hidden;
-    background: light-dark(white, black);
+  :root {
+    scroll-padding-top: var(--spacing-navbar-height);
+    background: var(--background-color-base);
+    color: var(--text-color-base);
+    accent-color: var(--color-primary);
+    scroll-snap-type: proximity;
+    scroll-behavior: smooth;
+    &:has(:modal:open, [aria-modal='true']:open) {
+      overflow: hidden;
+      background: light-dark(white, black);
+    }
   }
-}
 
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100svh;
-  transform-origin: var(--root-center);
-  perspective-origin: var(--root-center);
-}
-
-body > div > main {
-  background: var(--background-color-base);
-  display: flex;
-  flex-direction: column;
-  perspective: 16vw;
-  transform-origin: var(--root-center);
-  perspective-origin: var(--root-center);
-
-  :has(:modal:open, [aria-modal='true']:open) & {
-    border-radius: var(--radius-xl);
-    scale: 0.9;
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
   }
-}
 
-::backdrop {
-  background-color: transparent;
-}
+  ::backdrop {
+    background-color: transparent;
+  }
 
-::-moz-selection {
-  color: var(--color-primary);
-  background: currentColor;
-  text-shadow:
-    0 -1px light-dark(black, white),
-    1.5px 0 light-dark(black, white),
-    2px 2px light-dark(black, white),
-    0 1.5px light-dark(black, white),
-    -1px 0 light-dark(black, white);
-}
+  ::-moz-selection {
+    color: var(--color-primary);
+    background: currentColor;
+    text-shadow:
+      0 -1px light-dark(black, white),
+      1.5px 0 light-dark(black, white),
+      2px 2px light-dark(black, white),
+      0 1.5px light-dark(black, white),
+      -1px 0 light-dark(black, white);
+  }
 
-::selection {
-  color: var(--color-primary);
-  background: currentColor;
-  text-shadow:
-    0 -1px light-dark(black, white),
-    1.5px 0 light-dark(black, white),
-    2px 2px light-dark(black, white),
-    0 1.5px light-dark(black, white),
-    -1px 0 light-dark(black, white);
+  ::selection {
+    color: var(--color-primary);
+    background: currentColor;
+    text-shadow:
+      0 -1px light-dark(black, white),
+      1.5px 0 light-dark(black, white),
+      2px 2px light-dark(black, white),
+      0 1.5px light-dark(black, white),
+      -1px 0 light-dark(black, white);
+  }
 }

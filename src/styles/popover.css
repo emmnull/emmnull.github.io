@@ -7,9 +7,9 @@
 
 @utility popover {
   @layer components {
-    padding: calc(0.5 * var(--spacing-io));
+    padding: --spacing(4);
     background: var(--background-color-surface);
-    border-radius: calc(var(--radius-io) + 0.125 * var(--spacing-io));
+    border-radius: var(--radius-card);
     transition-duration: var(--default-transition-duration), 0s, 0s;
     transition-timing-function: var(--default-transition-timing-function);
     transition-behavior: allow-discrete;

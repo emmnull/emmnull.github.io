@@ -4,7 +4,7 @@
 @import 'tailwindcss/utilities.css' layer(utilities);
 
 @import './styles/theme.css';
-@import './styles/base.css' layer(base);
+@import './styles/base.css';
 @import './styles/pattern.css';
 @import './styles/animation.css';
 @import './styles/appose.css';

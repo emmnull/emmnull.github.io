@@ -111,6 +111,8 @@
   --pixelate-4: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><filter id="pixelate" patternUnits="userSpaceOnUse"><feFlood x="2" y="2" height="0.1" width="0.1" /><feComposite width="4" height="4" /><feTile result="a" /><feComposite in="SourceGraphic" operator="in" /><feMorphology operator="dilate" radius="2" /></filter></svg>#pixelate');
   --pixelate: var(--pixelate-2);
 
+  --root-center: calc(1px * var(--spacing-scroll-x) + 50dvw) calc(1px * var(--spacing-scroll-y) + 50dvh);
+
   @keyframes spin-y {
     from {
       transform: rotateY(0turn);
