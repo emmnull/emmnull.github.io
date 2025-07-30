@@ -2,7 +2,7 @@ import { readFile } from 'fs/promises';
 import { basename, dirname, extname } from 'path';
 import type { Processor, Transformer } from 'unified';
 import { VFile } from 'vfile';
-import { baseLocale, isLocale } from '../../src/lib/i18n/generated/runtime';
+import i18n from '../../project.inlang/settings.json' with { type: 'json' };
 import './vfile.d.ts';
 
 export const FLAG_SKIP = Symbol('skip-remark-metadata-default');
@@ -25,10 +25,10 @@ export default function remarkMetadataDefault(
       return;
     }
     const name = basename(options.id, extname(options.id));
-    if (!isLocale(name) || name === baseLocale) {
+    if (!i18n.locales.includes(name) || name === i18n.baseLocale) {
       return;
     }
-    const filepath = `${dirname(options.id)}/${baseLocale}${extname(options.id)}`;
+    const filepath = `${dirname(options.id)}/${i18n.baseLocale}${extname(options.id)}`;
     try {
       const value = await readFile(filepath, 'utf-8');
       if (value) {
