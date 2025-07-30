@@ -1,7 +1,13 @@
 import { cwd } from 'process';
 
 export const PATH_PATTERN =
-  /\s*(\$\w+|\.{1,2})[/\\].*?\.\w+\s*(\?([^=&]+=[^=&]+)(&[^=&]+=[^=&]+)*)?/;
+  /\s*(\$\w+|\.{1,2})[/\\].*?\.(\w+)\s*(\?([^=&]+=[^=&]+)(&[^=&]+=[^=&]+)*)?/;
+
+export const IMAGE_PATH_PATTERN =
+  /\s*(\$\w+|\.{1,2})[/\\].*?\.(jpe?g|png|gif|heif|tiff|avif|bmp|webp|svg)\s*(\?([^=&]+=[^=&]+)(&[^=&]+=[^=&]+)*)?/i;
+
+export const VIDEO_PATH_PATTERN =
+  /\s*(\$\w+|\.{1,2})[/\\].*?\.(mp4|webm|mkv|avi|mov|flv|wmv|mpeg)\s*(\?([^=&]+=[^=&]+)(&[^=&]+=[^=&]+)*)?/i;
 
 export const SCRIPT_START_PATTERN =
   /<script(?:\s+?[a-zA-z]+(=(?:["']){0,1}[a-zA-Z0-9]+(?:["']){0,1}){0,1})*\s*?>/;
