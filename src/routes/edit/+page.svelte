@@ -1,22 +1,10 @@
-<script lang="ts">
-  import Footer from '$lib/components/footer.svelte';
-  import Navbar from '$lib/components/navbar.svelte';
-
-  let { children } = $props();
+<script>
+  import SvgEditor from '$lib/components/svg-editor.svelte';
 </script>
 
-<Navbar />
-<main
-  class="
-    flex origin-(--root-center) flex-col bg-base transition ease-exp-out
-    perspective-[16vw] perspective-origin-(--root-center)
-    [:has(:modal:open,[aria-modal='true']:open)_&]:scale-90
-    [:has(:modal:open,[aria-modal='true']:open)_&]:rounded-xl
-  "
->
-  {@render children()}
-  <!-- <SvgEditor
-    src={`<svg
+<SvgEditor
+  class="h-dvh w-dvw"
+  src={`<svg
   width="1000"
   height="1000"
   viewBox="0 0 1000 1000"
@@ -27,7 +15,4 @@
   <path stroke-linecap="square" fill="none" stroke-linejoin="round" stroke="green" stroke-width="150" d="M318.92 585.654C321.265 587.466 325.954 587.466 329.249 586.001C332.544 584.535 334.303 581.604 335.208 578.629C336.949 572.913 335.528 567.945 332.882 563.816C331.187 561.171 327.304 558.513 323.734 557.297C320.164 556.08 302 557.297 302 572C302 582.5 306.133 586.613 313 591"/>
   <path stroke-linecap="square" fill="none" stroke-linejoin="round" stroke="green" stroke-width="150" d="M547 135C572.5 156.5 610.983 200 626.744 228.82C653.568 277.873 684.759 330.468 689.392 387.154C694.61 451.005 687.892 543 670 608.5C644.819 700.688 598.5 783 557.5 845"/>
 </svg>`}
-    class="sticky bottom-0 -z-1 h-dvh w-dvw"
-  /> -->
-  <Footer />
-</main>
+/>

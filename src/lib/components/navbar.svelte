@@ -33,13 +33,25 @@
 </script>
 
 <header
-  class="has-[:hover,:open,:focus-visible]:from-base z-infinity via-ease-out ease pointer-events-none fixed top-0 flex min-h-1/2 w-full items-start justify-center bg-none to-transparent text-sm transition lg:bg-linear-to-b"
+  class="
+    pointer-events-none fixed top-0 z-infinity flex min-h-1/2 w-full items-start
+    justify-center bg-none via-ease-out to-transparent text-sm transition ease
+    has-[:hover,:open,:focus-visible]:from-base
+    lg:bg-linear-to-b
+  "
 >
   <div
-    class="max-w-body gap-gap p-padding lg:py-gap flex w-full flex-row justify-between [--inset:5px] [--radius:calc(var(--radius-io)+var(--inset))]"
+    class="
+      flex w-full max-w-body flex-row justify-between gap-gap p-gap
+      [--inset:5px]
+      [--radius:calc(var(--radius-io)+var(--inset))]
+    "
   >
     <button
-      class="button-nav pointer-events-auto aspect-square backdrop-blur-[16px] lg:hidden"
+      class="
+        button-nav pointer-events-auto aspect-square backdrop-blur-[16px]
+        lg:hidden
+      "
       style:--i="0"
       onclick={() => {
         mobileDialog.showModal();
@@ -49,7 +61,11 @@
       <Menu />
     </button>
     <dialog
-      class="dialog w-full origin-bottom self-end shadow-lg not-open:scale-96 starting:translate-y-1/4"
+      class="
+        w-full origin-bottom self-end popover shadow-lg
+        not-open:scale-96
+        starting:translate-y-1/4
+      "
       closedby="any"
       bind:this={mobileDialog}
     >
@@ -58,7 +74,11 @@
       <nav>Other sections</nav>
     </dialog>
     <nav
-      class="bg-base pointer-events-auto flex gap-(--inset) rounded-(--radius) p-(--inset) transition duration-100 not-lg:hidden"
+      class="
+        pointer-events-auto flex gap-(--inset) rounded-(--radius) bg-base
+        p-(--inset) transition duration-100
+        not-lg:hidden
+      "
     >
       {#each Object.entries(nav) as [slug, link] (link)}
         <a
@@ -71,7 +91,11 @@
       {/each}
     </nav>
     <menu
-      class="bg-base pointer-events-auto flex gap-(--inset) rounded-(--radius) p-(--inset) transition duration-100 not-lg:hidden"
+      class="
+        pointer-events-auto flex gap-(--inset) rounded-(--radius) bg-base
+        p-(--inset) transition duration-100
+        not-lg:hidden
+      "
     >
       <Popover
         placement="bottom-end"
@@ -93,7 +117,10 @@
             {#if browser}
               {#key current.name}
                 <current.icon
-                  class="transition-all starting:scale-90 starting:-rotate-45"
+                  class="
+                    transition-all
+                    starting:scale-90 starting:-rotate-45
+                  "
                 />
               {/key}
             {/if}
@@ -102,7 +129,11 @@
             bind:this={themePopover}
             {...popover.getTargetAttributes()}
             closedby="any"
-            class="popover not-open:scale-95 starting:-translate-y-1/4 starting:scale-95"
+            class="
+              popover
+              not-open:scale-95
+              starting:-translate-y-1/4 starting:scale-95
+            "
           >
             <!-- <Arrow {...popover.getArrowAttributes()} /> -->
             {@render themeMenu()}
@@ -123,7 +154,10 @@
             <Ripple />
             <Languages />
             <span
-              class="in-button-open:opacity-100 font-mono opacity-40 transition-opacity"
+              class="
+                font-mono opacity-40 transition-opacity
+                in-button-open:opacity-100
+              "
             >
               {getLocale()}
             </span>
@@ -132,7 +166,11 @@
             bind:this={langPopover}
             {...popover.getTargetAttributes()}
             closedby="any"
-            class="popover not-open:scale-95 starting:-translate-y-1/4 starting:scale-95"
+            class="
+              popover
+              not-open:scale-95
+              starting:-translate-y-1/4 starting:scale-95
+            "
           >
             <!-- <Arrow {...popover.getArrowAttributes()} /> -->
             {@render langMenu()}

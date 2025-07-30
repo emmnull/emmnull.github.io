@@ -1,5 +1,6 @@
 import type { SvelteComponent } from 'svelte';
 import type { SvelteHTMLElements } from 'svelte/elements';
+import { URLSearchParams } from 'url';
 import {
   NEVER,
   z,
@@ -10,7 +11,6 @@ import {
   type ZodString,
   type ZodType,
 } from 'zod/v4';
-import { PATH_PATTERN } from '../../../plugins/markdown/utils';
 
 export function uniqueItemsSchema<
   T extends ZodString | ZodNumber | ZodEnum<Record<string, string>>,
@@ -31,20 +31,38 @@ export function uniqueItemsSchema<
     });
 }
 
-export function imagePathSchema<T extends ZodString>(
-  schema: T,
-  query?: Record<string, string | number | boolean>,
+export function queryParamsTransform<I extends string | URL, O = I>(
+  query: Record<string, string | number | boolean>,
 ) {
-  return schema.regex(PATH_PATTERN).transform((v) => {
-    const q = query
-      ? `?${new URLSearchParams(query as Record<string, string>).toString()}`
-      : '';
-    return (v + q) as unknown as Exclude<
-      SvelteHTMLElements['enhanced:img']['src'],
-      string
-    >;
+  return z.transform<I, O>((v) => {
+    if (v instanceof URL) {
+      for (const k in query) {
+        if (Object.hasOwn(query, k)) {
+          v.searchParams.append(k, String(v));
+        }
+      }
+      return v as unknown as O;
+    }
+    const qindex = v.indexOf('?');
+    const path = qindex > -1 ? v.substring(0, qindex) : v;
+    const params = new URLSearchParams(
+      qindex > -1 ? v.substring(qindex + 1) : '',
+    );
+    for (const k in query) {
+      if (Object.hasOwn(query, k)) {
+        params.append(k, String(v));
+      }
+    }
+    return `${path}?${params.toString()}` as O;
   });
 }
+
+export const enhancedImgPathTransform = queryParamsTransform<
+  string,
+  Exclude<SvelteHTMLElements['enhanced:img']['src'], string>
+>({
+  enhanced: true,
+});
 
 export function markdownSchema<T extends ZodObject>(metadata: T) {
   return z.object({ default: z.custom<SvelteComponent>(), metadata });

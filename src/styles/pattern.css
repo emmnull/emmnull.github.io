@@ -56,7 +56,7 @@ to do:
 }
 
 @utility pattern-spacing-* {
-  --pattern-spacing: --value(--spacing-*, [length]);
+  --pattern-spacing: --value(--spacing-*, [length], [*]);
 }
 
 @utility pattern-size-* {

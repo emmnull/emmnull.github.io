@@ -5,15 +5,22 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vitest/config';
 import { z } from 'zod/v4';
 import markdown, { defineCollections } from './plugins/markdown';
-import { imagePathSchema, uniqueItemsSchema } from './src/lib/common/schema';
+import {
+  IMAGE_PATH_PATTERN,
+  VIDEO_PATH_PATTERN,
+} from './plugins/markdown/utils';
+import i18n from './project.inlang/settings.json' with { type: 'json' };
+import {
+  enhancedImgPathTransform,
+  uniqueItemsSchema,
+} from './src/lib/common/schema';
 import { disciplines, tags } from './src/lib/data/meta';
-import { locales } from './src/lib/i18n/generated/runtime';
 import { extensions } from './svelte.config';
 
 const collections = defineCollections({
   works: {
     directory: 'content/works/',
-    pattern: `*/{${locales.join(',')},}{${extensions.join(',')},}`,
+    pattern: `*/{${i18n.locales.join(',')},}{${extensions.join(',')},}`,
     schema: z.object({
       year: z.number(),
       title: z.string(),
@@ -21,38 +28,26 @@ const collections = defineCollections({
       disciplines: uniqueItemsSchema(z.enum(disciplines).array()).optional(),
       tags: uniqueItemsSchema(z.enum(tags).array()).optional(),
       summary: z.string().optional(),
-      covers: imagePathSchema(z.string(), { enhanced: true })
+      images: z
+        .union([
+          z.string().regex(IMAGE_PATH_PATTERN).pipe(enhancedImgPathTransform),
+          z.string().regex(VIDEO_PATH_PATTERN),
+        ])
         .array()
         .optional(),
-      banner: imagePathSchema(z.string(), { enhanced: true }).optional(),
-      link: z.url({ protocol: /^https?$/, hostname: z.regexes.domain }),
-      code: z.url({ protocol: /^https?$/, hostname: z.regexes.domain }),
+      banner: z
+        .string()
+        .regex(IMAGE_PATH_PATTERN)
+        .pipe(enhancedImgPathTransform)
+        .optional(),
+      link: z
+        .url({ protocol: /^https?$/, hostname: z.regexes.domain })
+        .optional(),
+      repo: z
+        .url({ protocol: /^https?$/, hostname: z.regexes.domain })
+        .optional(),
     }),
   },
-  // 	posts: {
-  // 		directory: 'content/posts',
-  // 		pattern: `*/{${locales.join(',')},}{${extensions.join(',')},}`,
-  // 		schema:z.object({
-  //   createdAt: z.iso.date(),
-  //   updatedAt: z.iso.date(),
-  //   tags: uniqueItemsSchema(z.enum(tags).array()),
-  //   title: z.string(),
-  //   shortTitle: z.string().optional(),
-  //   summary: z.string().optional(),
-  //   cover: z.string().optional(),
-  //   banner: z.string().optional(),
-  //   links: z
-  //     .object({
-  //       url: z.url({
-  //         protocol: /^https?$/,
-  //         hostname: z.regexes.domain,
-  //       }),
-  //       label: z.string(),
-  //       description: z.string().optional(),
-  //     })
-  //     .array()
-  //     .optional(),
-  // })}
 });
 
 type C = typeof collections;

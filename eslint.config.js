@@ -1,11 +1,12 @@
 import { includeIgnoreFile } from '@eslint/compat';
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier';
-import eslintPluginBetterTailwindcss from 'eslint-plugin-better-tailwindcss';
+import betterTailwindcss from 'eslint-plugin-better-tailwindcss';
 import importPlugin from 'eslint-plugin-import';
 import svelte from 'eslint-plugin-svelte';
 import globals from 'globals';
 import { fileURLToPath } from 'node:url';
+import svelteEslintParser from 'svelte-eslint-parser';
 import ts from 'typescript-eslint';
 import svelteConfig from './svelte.config.js';
 
@@ -28,16 +29,16 @@ export default ts.config(
     },
     plugins: {
       import: importPlugin,
-      tailwindcss: eslintPluginBetterTailwindcss,
+      'better-tailwindcss': betterTailwindcss,
     },
     settings: {
-      tailwindcss: {
+      'better-tailwindcss': {
         entryPoint: 'src/app.css',
       },
     },
     rules: {
-      ...eslintPluginBetterTailwindcss.configs['recommended-warn'].rules,
-      ...eslintPluginBetterTailwindcss.configs['recommended-error'].rules,
+      ...betterTailwindcss.configs['recommended-warn'].rules,
+      ...betterTailwindcss.configs['recommended-error'].rules,
       curly: ['error', 'all'],
       '@typescript-eslint/no-empty-object-type': [
         'error',
@@ -68,6 +69,7 @@ export default ts.config(
     files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
     ignores: ['eslint.config.js', 'svelte.config.js'],
     languageOptions: {
+      parser: svelteEslintParser,
       parserOptions: {
         projectService: true,
         extraFileExtensions: ['.svelte'],

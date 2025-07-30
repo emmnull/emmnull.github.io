@@ -34,6 +34,6 @@ export default {
     'prettier-plugin-jsdoc',
     'prettier-plugin-packagejson',
     'prettier-plugin-svelte',
-    'prettier-plugin-tailwindcss',
+    // 'prettier-plugin-tailwindcss',
   ],
 };

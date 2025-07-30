@@ -7,10 +7,17 @@
   let { works }: { works: PageData['works'] } = $props();
 </script>
 
-<section class="mt-gap rounded-section mx-gap flex flex-col transform-3d">
-  <hgroup class="max-w-body px-padding w-full self-center">
-    <h2 class="py-padding text-lg lg:text-2xl">some works</h2>
-  </hgroup>
+<section
+  class="mt-padding flex flex-col gap-padding rounded-section py-padding"
+>
+  <h2
+    class="
+      w-full max-w-body self-center px-padding text-xl font-medium
+      lg:text-2xl
+    "
+  >
+    previous works
+  </h2>
   <ul
     {@attach (node) => {
       function settop() {
@@ -24,42 +31,88 @@
       settop();
       on(window, 'resize', () => settop);
     }}
-    class="group/works my-padding px-gap gap-gap flex auto-rows-(--u) grid-cols-[repeat(auto-fit,minmax(var(--u),1fr))] flex-col [--scroll-y:max(0,calc(var(--spacing-scroll-y)-var(--top)))] [--top:2000] [--u:50px] transform-3d lg:grid"
+    class="
+      group/works flex grid-flow-dense auto-rows-(--u)
+      grid-cols-[repeat(auto-fit,minmax(var(--u),1fr))] flex-col gap-gap
+      pattern-crosses bg-center p-padding
+      [--scroll-y:max(0,calc(var(--spacing-scroll-y)-var(--top)))]
+      [--top:3000]
+      [--u:200px]
+      pattern-color-surface pattern-size-[25%] pattern-spacing-[25px]
+      lg:grid
+    "
   >
-    {#each works as w, i (w)}
-      {#if w.metadata.covers}
-        {#each w.metadata.covers as src, ii (src)}
-          {@const ratio = src.img.w / src.img.h}
-          {@const scale = Math.round(random(4, 10))}
-          <li
-            data-cover={!ii || undefined}
-            style:--i={i}
-            style:--ii={ii}
-            class="ease-exp-out bg-surface group relative col-span-(--col) row-span-(--row) translate-z-[calc(var(--z)-var(--z)*min(1,.001*(var(--scroll-y)-100*var(--i))))] rounded-(--radius) transition duration-350 will-change-transform [--radius:var(--radius-sm)] transform-3d not-lg:not-data-cover:hidden"
-            style:--col={scale}
-            style:--row={Math.round(scale / ratio)}
-            style:--z="{Math.round(random(10, 100))}px"
-          >
-            <enhanced:img
-              alt="Cover image for {w.metadata.title}"
-              {src}
-              class="block size-full overflow-hidden rounded-(--radius) object-cover opacity-[min(100%,0.1%*(var(--scroll-y)+100*var(--ii)))] will-change-[opacity]"
-            />
-            <div
-              class="p-gap absolute inset-0 flex items-center justify-center text-xs"
+    {#each works.flatMap(({ metadata, slug }) => {
+      const { images, ...restMetadata } = metadata;
+      return images ? images.map((src, i) => {
+            return { src, ...restMetadata, slug, isBanner: !i };
+          }) : [];
+    }) as image, i (image)}
+      {@const ratio =
+        typeof image.src === 'string' ? 1.6 : image.src.img.w / image.src.img.h}
+      <li
+        style:--i={i}
+        style:--ratio={ratio}
+        style:--col={Math.round(random(1, 3))}
+        class="
+          group relative col-span-(--col)
+          row-span-[round(calc(var(--col)/var(--ratio)))] rounded-(--radius)
+          bg-surface transition duration-350 ease-exp-out will-change-transform
+          [--radius:var(--radius-md)]
+          transform-3d
+          not-lg:not-data-cover:hidden
+        "
+      >
+        <div
+          class="
+            absolute size-full overflow-hidden rounded-(--radius)
+            opacity-[min(100%,0.1%*(var(--scroll-y)+100*var(--ii)))]
+            transition-opacity
+            group-hover:opacity-50
+          "
+        >
+          {#if typeof image.src === 'string'}
+            <video
+              autoplay
+              loop
+              muted
+              width="1600"
+              height="1000"
+              class="absolute size-full object-cover"
             >
-              <a
-                {...getLinkAttributes(`/works/${w.slug}`)}
-                class="bg-overlay badge-base scale-105 opacity-0 shadow-md backdrop-blur-[6px] transition-all duration-150 group-hover:scale-100 group-hover:opacity-100"
-              >
-                <span class="overflow-hidden text-ellipsis">
-                  {w.metadata.title}
-                </span>
-              </a>
-            </div>
-          </li>
-        {/each}
-      {/if}
+              <source src={image.src} type="video/mp4" />
+              <track kind="captions" label="No captions" srcLang="en" />
+            </video>
+          {:else}
+            <enhanced:img
+              alt="Cover image for {image.title}"
+              src={image.src}
+              class="absolute size-full object-cover"
+            />
+          {/if}
+        </div>
+        <div
+          data-theme="dark"
+          class="
+            absolute inset-0 flex items-center justify-center p-[1rem] text-xs
+          "
+        >
+          <a
+            {...getLinkAttributes(`/works/${image.slug}`)}
+            class="
+              flex translate-y-[.5em] gap-[1em] overflow-x-hidden rounded-full
+              border-[1px] border-current/10 bg-overlay px-[1.25em] py-[.5em]
+              whitespace-nowrap text-base opacity-0 shadow-md transition-all
+              duration-100
+              group-hover:translate-y-0 group-hover:opacity-100
+            "
+          >
+            <span class="overflow-hidden text-ellipsis">
+              {image.title}
+            </span>
+          </a>
+        </div>
+      </li>
     {/each}
   </ul>
 </section>

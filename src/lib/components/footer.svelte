@@ -10,12 +10,24 @@
 </script>
 
 <footer
-  class="gap-padding py-padding mx-gap flex min-h-dvh flex-col items-center justify-end self-stretch text-sm"
+  class="
+    relative flex w-full max-w-body flex-col items-center justify-end gap-gap
+    self-center p-gap text-sm
+  "
 >
   <div
-    class="max-w-body gap-padding p-padding rounded-section bg-surface flex w-full grid-cols-3 flex-col lg:grid"
+    class="
+      flex w-full grid-cols-3 flex-col gap-padding rounded-section bg-surface
+      p-padding
+      lg:grid
+    "
   >
-    <nav class="flex flex-col gap-(--outline-width-io) lg:items-start">
+    <nav
+      class="
+        flex flex-col gap-(--outline-width-io)
+        lg:items-start
+      "
+    >
       {#each Object.entries(nav) as [slug, link] (link)}
         <a {...getLinkAttributes(`/${slug}`)} class="button-nav">
           <Ripple />
@@ -43,10 +55,16 @@
       >
         <Ripple />
         <Mail
-          class="transition duration-150 in-aria-pressed:scale-50 in-aria-pressed:opacity-0"
+          class="
+            transition duration-150
+            in-aria-pressed:scale-50 in-aria-pressed:opacity-0
+          "
         />
         <CopyCheck
-          class="absolute transition duration-150 not-in-aria-pressed:scale-150 not-in-aria-pressed:opacity-0"
+          class="
+            absolute transition duration-150
+            not-in-aria-pressed:scale-150 not-in-aria-pressed:opacity-0
+          "
         />
       </button>
     </nav>
@@ -62,7 +80,7 @@
       </button>
     </nav>
   </div>
-  <p class="text-soft text-center font-mono">
+  <p class="text-center font-mono text-soft">
     © 2025 emmanuel beaudry marchand
   </p>
 </footer>

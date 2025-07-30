@@ -3,18 +3,20 @@
   --font-misc: 'Instrument Serif', serif;
   --font-mono: 'DM Mono', monospace;
 
-  --color-primary: light-dark(oklch(0.5 0.5 258), oklch(0.74 0.12 72));
+  --color-primary: light-dark(oklch(0.64 0.42 262), oklch(0.74 0.12 72));
   --color-on-primary: light-dark(white, white);
-  --color-secondary: light-dark(oklch(0.62 0.42 98), oklch(0.7 0.22 148));
+  --color-secondary: light-dark(oklch(0.72 0.18 300), oklch(0.7 0.22 148));
   --color-on-secondary: light-dark(black, white);
+  --color-success: light-dark(oklch(0.62 0.22 146), oklch(0.68 0.22 148));
+  --color-on-success: light-dark(white, white);
   --color-io: light-dark(oklch(0.6 0.01 90 / 10%), oklch(0.7 0.02 290 / 15%));
   --color-on-io: light-dark(oklch(0.28 0.01 300), oklch(0.75 0.01 90));
   --color-io-cta: var(--color-primary);
   --color-on-io-cta: var(--color-on-primary);
 
-  --background-color-base: light-dark(oklch(0.94 0.008 72), oklch(0.17 0.004 70));
-  --background-color-surface: light-dark(oklch(0.96 0.005 74), oklch(0.21 0.002 80));
-  --background-color-overlay: light-dark(oklch(0.98 0.002 76 / 90%), oklch(0.19 0.003 70 / 96%));
+  --background-color-base: light-dark(oklch(0.97 0.003 72), oklch(0.17 0.004 70));
+  --background-color-surface: light-dark(oklch(0.98 0.005 74), oklch(0.21 0.002 80));
+  --background-color-overlay: light-dark(oklch(0.94 0.007 76 / 90%), oklch(0.19 0.003 70 / 96%));
 
   --text-color-base: light-dark(oklch(0.21 0.0059 64.02), oklch(0.78 0.01 82));
   --text-color-soft: light-dark(oklch(0.21 0.0059 64.02), oklch(0.42 0.01 84));
@@ -47,7 +49,7 @@
   --text-sm: 0.825rem;
   --text-md: 1rem;
   --text-lg: 1.25rem;
-  --text-xl: 1.625rem;
+  --text-xl: 1.75rem;
   --text-2xl: 2.5rem;
   --text-3xl: 3rem;
 
@@ -153,24 +155,14 @@
   }
 }
 
-@variant dark {
-  color-scheme: dark;
-}
-
-@variant light {
-  color-scheme: light;
-}
-
 @custom-variant dark {
-  &[data-theme='dark'],
-  [data-theme='dark'] &:not([data-theme]):not([data-theme]:not([data-theme='dark']) *) {
+  &:where([data-theme='dark'], [data-theme='dark'] *) {
     @slot;
   }
 }
 
 @custom-variant light {
-  &[data-theme='light'],
-  [data-theme='light'] &:not([data-theme]):not([data-theme]:not([data-theme='light']) *) {
+  &:where([data-theme='light'], [data-theme='light'] *) {
     @slot;
   }
 }
@@ -180,4 +172,12 @@
   &:is(svg).lucide {
     @slot;
   }
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
 }

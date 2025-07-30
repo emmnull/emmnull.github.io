@@ -1,5 +1,5 @@
 import adapter from '@sveltejs/adapter-static';
-import { locales } from './src/lib/i18n/generated/runtime.js';
+import i18n from './project.inlang/settings.json' with { type: 'json' };
 
 export const extensions = ['.md'];
 
@@ -10,7 +10,9 @@ const config = {
     prerender: {
       entries: [
         '*',
-        ...locales.map((locale) => /** @type {`/${string}`} */ (`/${locale}`)),
+        ...i18n.locales.map(
+          (locale) => /** @type {`/${string}`} */ (`/${locale}`),
+        ),
       ],
     },
     adapter: adapter({ fallback: '404.html' }),

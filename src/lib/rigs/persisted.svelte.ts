@@ -30,15 +30,16 @@ export class Persisted<T> {
       deserialize,
     }: {
       storage?: Storage;
-    } & (T extends string
-      ? {
+    } & (
+      | {
           serialize: (input: T) => string;
           deserialize: (stored: string) => T;
         }
-      : {
+      | {
           serialize?: never;
           deserialize?: never;
-        }) = {} as never,
+        }
+    ) = {} as never,
   ) {
     this.#key = key;
     this.#fallback = fallback;
