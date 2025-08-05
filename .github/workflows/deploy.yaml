@@ -2,7 +2,8 @@ name: Deploy static build
 
 on:
   push:
-    branches: 'main'
+    branches:
+      - 'main'
 
 jobs:
   build_site:
@@ -26,6 +27,7 @@ jobs:
       - name: build
         env:
           BASE_PATH: '/${{ github.event.repository.name }}'
+          PUBLIC_GITHUB_USERNAME: '${{github.actor}}'
         run: |
           pnpm build
 
