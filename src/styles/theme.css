@@ -16,7 +16,7 @@
 
   --background-color-base: light-dark(oklch(0.97 0.003 72), oklch(0.17 0.004 70));
   --background-color-surface: light-dark(oklch(0.98 0.005 74), oklch(0.21 0.002 80));
-  --background-color-overlay: light-dark(oklch(0.94 0.007 76 / 90%), oklch(0.19 0.003 70 / 96%));
+  --background-color-overlay: light-dark(oklch(0.94 0.007 76 / 90%), oklch(0.14 0.003 70 / 90%));
 
   --text-color-base: light-dark(oklch(0.21 0.0059 64.02), oklch(0.78 0.01 82));
   --text-color-soft: light-dark(oklch(0.21 0.0059 64.02), oklch(0.42 0.01 84));
@@ -24,14 +24,14 @@
 
   --spacing: 0.25rem;
   --spacing-body: 76rem;
-  --spacing-prose-body: 52rem;
+  --spacing-prose-body: 48rem;
   --spacing-padding: --spacing(8);
   --spacing-gap: --spacing(2);
   --spacing-io: 3em;
   --spacing-io-nesting: 5px;
   --spacing-scroll-x: 0;
   --spacing-scroll-y: 0;
-  --spacing-navbar-height: calc(var(--spacing-gap) + var(--spacing-io) + var(--spacing-padding));
+  --spacing-navbar-height: calc(2 * var(--spacing-gap) + 0.825 * var(--spacing-io));
   --spacing-main-height: calc(100dvh - var(--spacing-navbar-height));
 
   --radius-xs: --spacing(1);
@@ -39,11 +39,10 @@
   --radius-md: --spacing(3);
   --radius-lg: --spacing(5.25);
   --radius-xl: --spacing(8.25);
-  --radius-section: var(--radius-xl);
-  --radius-card: var(--radius-lg);
+  --radius-box: var(--radius-lg);
   --radius-io: 0.75em;
 
-  --breakpoint-lg: 48rem;
+  --breakpoint-lg: 56rem;
 
   --text-xs: 0.75rem;
   --text-sm: 0.825rem;
@@ -105,8 +104,8 @@
   --default-mono-font-family: var(--font-mono);
   --default-border-width: var(--border-width-md);
   --default-outline-width: var(--outline-width-lg);
-  --default-transition-duration: 150ms;
-  --default-transition-timing-function: var(--ease-out);
+  --default-transition-duration: 200ms;
+  --default-transition-timing-function: var(--ease-exp-out);
 
   --pixelate-2: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><filter id="pixelate" patternUnits="userSpaceOnUse"><feFlood x="1" y="1" height="0.1" width="0.1" /><feComposite width="2" height="2" /><feTile result="a" /><feComposite in="SourceGraphic" operator="in" /><feMorphology operator="dilate" radius="1" /></filter></svg>#pixelate');
   --pixelate-3: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><filter id="pixelate" patternUnits="userSpaceOnUse"><feFlood x="1.5" y="1.5" height="0.1" width="0.1" /><feComposite width="3" height="3" /><feTile result="a" /><feComposite in="SourceGraphic" operator="in" /><feMorphology operator="dilate" radius="1.5" /></filter></svg>#pixelate');
@@ -144,7 +143,7 @@
 @variant lg {
   :root {
     --spacing-padding: --spacing(12);
-    --spacing-navbar-height: calc(var(--spacing-gap) + 0.825 * var(--spacing-io) + var(--spacing-padding));
+    --spacing-navbar-height: calc(2 * var(--spacing-gap) + 0.825 * var(--spacing-io) + 2 * var(--spacing-io-nesting));
 
     --text-lg: 1.5rem;
     --text-xl: 2.5rem;

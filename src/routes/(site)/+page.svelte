@@ -16,6 +16,6 @@
 </script>
 
 <Hero />
+<Works {...data} />
 <Skills />
-<Works works={data.works} />
 <!-- <SvgEditor src={bgraw} class="fixed inset-0 h-full w-full" /> -->

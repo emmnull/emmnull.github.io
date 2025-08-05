@@ -1,12 +1,8 @@
 <script lang="ts">
   import { links } from '$lib/data/profile';
+  import * as m from '$messages';
 
-  const phrases = [
-    'love cooking up succulent interfaces,', // <enhanced:img src={Chefkiss} />
-    'enjoy crafting simple and robust interactions,',
-    'take better care of my code than my plants,',
-    'live for tasteful design and tasty homemade pizza.',
-  ];
+  const phrases = m.hero_phrases().split(/(?<=,)/);
 
   const longest = phrases.reduce((a, b, i, arr) => {
     return arr[a].length < b.length ? i : a;
@@ -34,22 +30,22 @@
         👋
       </span>
       allô allô.<br />
-      i'm
+      {m.hero_iam()}
       <a
         href={links.github.href}
         class="
           group relative -mx-(--padding) inline-flex items-center gap-[.2em]
-          rounded-md px-(--padding) text-primary transition-colors duration-200
+          rounded-lg px-(--padding) text-primary transition-colors duration-200
           [--padding:.2em]
           hover:bg-secondary/10 hover:text-secondary
         "
       >
-        emmanuel
-        <span class="filter-(--pixelate)">
+        <span class="group-hover:filter-(--pixelate)">emmanuel</span>
+        <span class="relative filter-(--pixelate)">
           <div
             class="
               relative inline-block size-[.85em] animate-coin rounded-full
-              [--material:#d4d2ba]
+              [--diffuse:#d4d2ba]
               [--thickness:.1em]
               transform-3d
               group-hover:[animation-play-state:paused,running]
@@ -64,20 +60,19 @@
             />
             <div
               class="
-                absolute inset-0 -z-1 rounded-[inherit] bg-(--material)
+                absolute inset-0 -z-1 rounded-[inherit] bg-(--diffuse)
                 transform-3d
                 before:absolute before:top-0 before:left-1/2 before:h-full
                 before:w-(--thickness) before:origin-left before:rotate-y-90
-                before:bg-(--material)
+                before:bg-(--diffuse)
                 after:absolute after:inset-0 after:-translate-z-(--thickness)
-                after:rounded-[inherit] after:bg-(--material)
-                after:backface-hidden
+                after:rounded-[inherit] after:bg-(--diffuse)
               "
             ></div>
             <img
               class="
-                absolute inset-0 -z-2 -translate-z-(--thickness) rotate-y-180
-                rounded-[inherit]
+                absolute inset-0 -z-1 -translate-z-(--thickness) rotate-y-180
+                rounded-[inherit] backface-hidden
               "
               src="{links.github.href}.png?size=248"
               alt="Avatar of Emmanuel's GitHub profile"
@@ -87,8 +82,9 @@
           </div>
           <div
             class="
-              absolute top-[.8em] left-1/2 aspect-square w-2/3 -translate-x-1/2
-              rotate-x-75 rounded-full bg-[black] opacity-25 blur-[6px]
+              absolute -bottom-[.2em] left-1/2 -z-1 aspect-square w-2/3
+              -translate-x-1/2 rotate-x-75 rounded-full bg-[black] opacity-20
+              blur-[9px]
             "
           ></div>
         </span>
@@ -99,7 +95,7 @@
           [--scroll:max(-1px*var(--spacing-scroll-y),-1em*(var(--n)-1)*var(--leading))]
           before:[content:var(--before)]
         "
-        style:--before="'and i '"
+        style:--before="'{m.hero_and_i()} '"
       >
         {#each phrases as phrase, i (i)}
           <span

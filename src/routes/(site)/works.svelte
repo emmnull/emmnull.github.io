@@ -1,23 +1,20 @@
 <script lang="ts">
-  import { random } from '$lib/common/number';
   import { getLinkAttributes } from '$lib/rigs/link.svelte';
   import { on } from 'svelte/events';
   import type { PageData } from './$types';
 
-  let { works }: { works: PageData['works'] } = $props();
+  let { images }: Pick<PageData, 'images'> = $props();
 </script>
 
-<section
-  class="mt-padding flex flex-col gap-padding rounded-section py-padding"
->
-  <h2
+<section class="mt-padding flex flex-col gap-padding">
+  <!-- <h2
     class="
       w-full max-w-body self-center px-padding text-xl font-medium
       lg:text-2xl
     "
   >
-    previous works
-  </h2>
+    {m.works_phrase()}
+  </h2> -->
   <ul
     {@attach (node) => {
       function settop() {
@@ -29,68 +26,66 @@
         );
       }
       settop();
-      on(window, 'resize', () => settop);
+      on(window, 'resize', settop);
     }}
     class="
-      group/works flex grid-flow-dense auto-rows-(--u)
-      grid-cols-[repeat(auto-fit,minmax(var(--u),1fr))] flex-col gap-gap
+      @container flex grid-flow-dense auto-rows-[calc(1cqw*var(--row))]
+      grid-cols-[repeat(var(--cols),minmax(0,1fr))] flex-col gap-gap
       pattern-crosses bg-center p-padding
+      [--cols:5]
+      [--row:5]
       [--scroll-y:max(0,calc(var(--spacing-scroll-y)-var(--top)))]
       [--top:3000]
-      [--u:200px]
-      pattern-color-surface pattern-size-[25%] pattern-spacing-[25px]
-      lg:grid
+      pattern-color-surface pattern-size-[33%] pattern-spacing-[1.5rem]
+      pattern-thickness-[1px]
+      lg:grid lg:gap-0 lg:px-[calc(var(--spacing-gap)/2)]
     "
   >
-    {#each works.flatMap(({ metadata, slug }) => {
-      const { images, ...restMetadata } = metadata;
-      return images ? images.map((src, i) => {
-            return { src, ...restMetadata, slug, isBanner: !i };
-          }) : [];
-    }) as image, i (image)}
-      {@const ratio =
-        typeof image.src === 'string' ? 1.6 : image.src.img.w / image.src.img.h}
+    {#each images as datum, i ('img' in datum.image ? datum.image.img.src : datum.image.video.src)}
+      {@const w =
+        'img' in datum.image ? datum.image.img.w : datum.image.video.w}
+      {@const h =
+        'img' in datum.image ? datum.image.img.h : datum.image.video.h}
       <li
         style:--i={i}
-        style:--ratio={ratio}
-        style:--col={Math.round(random(1, 3))}
+        style:--w={w}
+        style:--h={h}
+        style:--factor={w > h ? Math.round(1 + Math.random() * 2) : 1}
         class="
-          group relative col-span-(--col)
-          row-span-[round(calc(var(--col)/var(--ratio)))] rounded-(--radius)
-          bg-surface transition duration-350 ease-exp-out will-change-transform
-          [--radius:var(--radius-md)]
+          group relative col-span-(--factor)
+          row-span-[round((var(--h)/var(--w))*(100/var(--cols))/var(--row)*var(--factor))]
+          rounded-(--radius) bg-surface transition duration-350 ease-exp-out
+          will-change-transform
+          [--radius:var(--radius-sm)]
           transform-3d
-          not-lg:not-data-cover:hidden
+          lg:m-[calc(var(--spacing-gap)/2)]
         "
       >
-        <div
-          class="
-            absolute size-full overflow-hidden rounded-(--radius)
-            opacity-[min(100%,0.1%*(var(--scroll-y)+100*var(--ii)))]
-            transition-opacity
-            group-hover:opacity-50
-          "
-        >
-          {#if typeof image.src === 'string'}
-            <video
-              autoplay
-              loop
-              muted
-              width="1600"
-              height="1000"
-              class="absolute size-full object-cover"
-            >
-              <source src={image.src} type="video/mp4" />
-              <track kind="captions" label="No captions" srcLang="en" />
-            </video>
-          {:else}
-            <enhanced:img
-              alt="Cover image for {image.title}"
-              src={image.src}
-              class="absolute size-full object-cover"
-            />
-          {/if}
-        </div>
+        {#if 'img' in datum.image}
+          <enhanced:img
+            alt="Cover image for {datum.meta.title}"
+            src={datum.image}
+            class="
+              relative size-full rounded-(--radius) object-cover
+              lg:absolute
+            "
+          />
+        {:else}
+          <video
+            autoplay
+            loop
+            muted
+            width={datum.image.video.w}
+            height={datum.image.video.h}
+            class="
+              relative size-full rounded-(--radius) object-cover
+              lg:absolute
+            "
+          >
+            <source src={datum.image.video.src} type="video/mp4" />
+            <track kind="captions" label="No captions" srcLang="en" />
+          </video>
+        {/if}
         <div
           data-theme="dark"
           class="
@@ -98,7 +93,7 @@
           "
         >
           <a
-            {...getLinkAttributes(`/works/${image.slug}`)}
+            {...getLinkAttributes(`/works/${datum.slug}`)}
             class="
               flex translate-y-[.5em] gap-[1em] overflow-x-hidden rounded-full
               border-[1px] border-current/10 bg-overlay px-[1.25em] py-[.5em]
@@ -108,7 +103,7 @@
             "
           >
             <span class="overflow-hidden text-ellipsis">
-              {image.title}
+              {datum.meta.title}
             </span>
           </a>
         </div>

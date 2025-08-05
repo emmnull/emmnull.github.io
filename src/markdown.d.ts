@@ -26,7 +26,7 @@ declare module '*.md' {
 
 declare module 'virtual:works' {
 	import type { Collections } from 'virtual:markdown';
-	import type { z } from 'zod/v4';
+	import type * as z from 'zod';
 
 	interface Collection {}
 
@@ -36,7 +36,7 @@ declare module 'virtual:works' {
 			? z.infer<Collection['schema']>
 			: Markdown['metadata'];
 
-	export const slugs: readonly ["ai-edi","labdi","covid-19","saint-constant"];
+	export const slugs: readonly ["ai-edi","covid-19","labdi","saint-constant"];
 	
 	export type Slug = (typeof slugs)[number];
 	

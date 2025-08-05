@@ -1,20 +1,12 @@
 import type { SvelteComponent } from 'svelte';
 import type { SvelteHTMLElements } from 'svelte/elements';
 import { URLSearchParams } from 'url';
-import {
-  NEVER,
-  z,
-  type ZodArray,
-  type ZodEnum,
-  type ZodNumber,
-  type ZodObject,
-  type ZodString,
-  type ZodType,
-} from 'zod/v4';
+import * as z from 'zod';
+import type { Video } from '../../../plugins/video-metadata';
 
 export function uniqueItemsSchema<
-  T extends ZodString | ZodNumber | ZodEnum<Record<string, string>>,
->(schema: ZodArray<T>) {
+  T extends z.ZodString | z.ZodNumber | z.ZodEnum<Record<string, string>>,
+>(schema: z.ZodArray<T>) {
   return schema
     .check((ctx) => {
       if (new Set(ctx.value).size !== ctx.value.length) {
@@ -23,7 +15,7 @@ export function uniqueItemsSchema<
           code: 'custom',
           message: 'Array items must be unique.',
         });
-        return NEVER;
+        return z.NEVER;
       }
     })
     .meta({
@@ -38,7 +30,7 @@ export function queryParamsTransform<I extends string | URL, O = I>(
     if (v instanceof URL) {
       for (const k in query) {
         if (Object.hasOwn(query, k)) {
-          v.searchParams.append(k, String(v));
+          v.searchParams.append(k, String(query[k]));
         }
       }
       return v as unknown as O;
@@ -50,7 +42,7 @@ export function queryParamsTransform<I extends string | URL, O = I>(
     );
     for (const k in query) {
       if (Object.hasOwn(query, k)) {
-        params.append(k, String(v));
+        params.append(k, String(query[k]));
       }
     }
     return `${path}?${params.toString()}` as O;
@@ -64,14 +56,22 @@ export const enhancedImgPathTransform = queryParamsTransform<
   enhanced: true,
 });
 
-export function markdownSchema<T extends ZodObject>(metadata: T) {
+export const videoMetadataPathTransform = queryParamsTransform<string, Video>({
+  meta: true,
+});
+
+export const videoMetadataTypecastTransform = z.transform(
+  (v) => v as unknown as Video,
+);
+
+export function markdownSchema<T extends z.ZodObject>(metadata: T) {
   return z.object({ default: z.custom<SvelteComponent>(), metadata });
 }
 
-export function lightDarkSchema<T extends ZodType>(schema: T) {
+export function lightDarkSchema<T extends z.ZodType>(schema: T) {
   return z.record(z.enum(['light', 'dark']), schema);
 }
 
-export function maybeLightDarkSchema<T extends ZodType>(schema: T) {
+export function maybeLightDarkSchema<T extends z.ZodType>(schema: T) {
   return z.union([schema, lightDarkSchema(schema)]);
 }

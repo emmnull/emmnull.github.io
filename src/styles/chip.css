@@ -50,7 +50,7 @@
   height: var(--spacing-io);
   gap: calc(var(--spacing-io) / 3);
   padding-block: var(--spacing-io-nesting);
-  border-radius: var(--radius-io);
+  border-radius: calc(infinity* 1px);
   /* border-radius: calc(infinity* 1px); */
   border-width: var(--border-width-io);
   outline-color: oklch(from var(--color-io-cta) calc(l* 1.25) c h);

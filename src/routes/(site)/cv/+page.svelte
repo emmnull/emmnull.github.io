@@ -1,1 +1,1 @@
-CV
+<article class="min-h-dvh"></article>

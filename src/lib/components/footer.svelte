@@ -11,13 +11,13 @@
 
 <footer
   class="
-    relative flex w-full max-w-body flex-col items-center justify-end gap-gap
-    self-center p-gap text-sm
+    relative flex min-h-dvh w-full max-w-body flex-col items-center
+    justify-center gap-gap self-center px-padding pt-padding pb-gap text-sm
   "
 >
   <div
     class="
-      flex w-full grid-cols-3 flex-col gap-padding rounded-section bg-surface
+      flex w-full grid-cols-3 flex-col gap-padding rounded-box bg-surface
       p-padding
       lg:grid
     "

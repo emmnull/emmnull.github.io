@@ -214,7 +214,7 @@
         [Floating.attributes.arrow]: '',
         [createAttachmentKey()]: (node) => {
           this.#arrowElement = node;
-          this.#computed?.middlewareData.arrow;
+          // this.#computed?.middlewareData.arrow;
           // 			Object.assign(node.style, {
           //   left: x != null ? `${x}px` : '',
           //   top: y != null ? `${y}px` : '',

@@ -35,18 +35,19 @@
 <header
   class="
     pointer-events-none fixed top-0 z-infinity flex min-h-1/2 w-full items-start
-    justify-center bg-none via-ease-out to-transparent text-sm transition ease
+    justify-center bg-none via-ease-out text-sm transition ease
     has-[:hover,:open,:focus-visible]:from-base
     lg:bg-linear-to-b
   "
 >
   <div
     class="
-      flex w-full max-w-body flex-row justify-between gap-gap p-gap
-      [--inset:5px]
-      [--radius:calc(var(--radius-io)+var(--inset))]
+      flex w-full max-w-body flex-row justify-between gap-gap px-padding py-gap
+      [--radius:calc(var(--radius-io)+var(--spacing-io-nesting))]
+      not-lg:pt-padding
     "
   >
+    <!-- mobile -->
     <button
       class="
         button-nav pointer-events-auto aspect-square backdrop-blur-[16px]
@@ -62,27 +63,77 @@
     </button>
     <dialog
       class="
-        w-full origin-bottom self-end popover shadow-lg
-        not-open:scale-96
-        starting:translate-y-1/4
+        pointer-events-auto h-[100vh] max-h-none w-full max-w-none flex-row
+        flex-wrap place-items-end content-end gap-gap overflow-visible
+        bg-transparent p-padding text-md
+        backdrop:bg-linear-to-t backdrop:from-overlay backdrop:from-66%
+        open:flex
       "
-      closedby="any"
+      onclick={(e) => {
+        if (e.target === e.currentTarget) {
+          e.currentTarget.requestClose();
+          e.stopImmediatePropagation();
+        }
+      }}
       bind:this={mobileDialog}
     >
-      {@render langMenu()}
-      {@render themeMenu()}
-      <nav>Other sections</nav>
+      <menu
+        class="
+          flex flex-col rounded-box bg-base p-[1em] shadow-lg duration-300
+          ease-exp-out
+          starting:translate-y-1/3 starting:opacity-0
+        "
+      >
+        {@render langMenu()}
+      </menu>
+      <menu
+        class="
+          flex flex-col rounded-box bg-base p-[1em] shadow-lg delay-50
+          duration-300 ease-exp-out
+          starting:translate-y-1/3 starting:opacity-0
+        "
+      >
+        {@render themeMenu()}
+      </menu>
+      <nav
+        class="
+          flex flex-col items-start gap-(--outline-width-io) rounded-box
+          bg-surface p-[1em] shadow-lg delay-100 duration-300 ease-exp-out
+          starting:translate-y-1/3 starting:opacity-0
+        "
+      >
+        {#each Object.entries(nav) as [slug, link] (link)}
+          <a
+            class="
+              button-nav
+              aria-disabled:pointer-events-none
+            "
+            aria-disabled={link.disabled}
+            {...getLinkAttributes(`/${slug}`, {
+              currentOnSubpath: slug !== '',
+            })}
+          >
+            <Ripple />
+            {link.label}
+          </a>
+        {/each}
+      </nav>
     </dialog>
+    <!-- desktop -->
     <nav
       class="
-        pointer-events-auto flex gap-(--inset) rounded-(--radius) bg-base
-        p-(--inset) transition duration-100
+        pointer-events-auto flex gap-io-nesting rounded-(--radius) bg-base
+        p-io-nesting transition duration-100
         not-lg:hidden
       "
     >
       {#each Object.entries(nav) as [slug, link] (link)}
         <a
-          class="button-nav"
+          class="
+            button-nav
+            aria-disabled:pointer-events-none
+          "
+          aria-disabled={link.disabled}
           {...getLinkAttributes(`/${slug}`, { currentOnSubpath: slug !== '' })}
         >
           <Ripple />
@@ -92,8 +143,8 @@
     </nav>
     <menu
       class="
-        pointer-events-auto flex gap-(--inset) rounded-(--radius) bg-base
-        p-(--inset) transition duration-100
+        pointer-events-auto flex gap-io-nesting rounded-(--radius) bg-base
+        p-io-nesting transition duration-100
         not-lg:hidden
       "
     >
@@ -130,9 +181,10 @@
             {...popover.getTargetAttributes()}
             closedby="any"
             class="
-              popover
-              not-open:scale-95
-              starting:-translate-y-1/4 starting:scale-95
+              rounded-box bg-surface p-[1em] transition-[translate,opacity]
+              transition-discrete duration-300 ease-exp-out
+              not-open:scale-95 not-open:opacity-0
+              starting:-translate-y-1/4 starting:scale-95 starting:opacity-0
             "
           >
             <!-- <Arrow {...popover.getArrowAttributes()} /> -->
@@ -167,9 +219,10 @@
             {...popover.getTargetAttributes()}
             closedby="any"
             class="
-              popover
-              not-open:scale-95
-              starting:-translate-y-1/4 starting:scale-95
+              rounded-box bg-surface p-[1em] transition-[translate,opacity]
+              transition-discrete duration-300 ease-exp-out
+              not-open:scale-95 not-open:opacity-0
+              starting:-translate-y-1/4 starting:scale-95 starting:opacity-0
             "
           >
             <!-- <Arrow {...popover.getArrowAttributes()} /> -->
@@ -214,6 +267,7 @@
         href={localizeHref(deLocalizeHref(page.url.pathname), { locale })}
         hreflang={locale}
         data-sveltekit-reload
+        data-sveltekit-replacestate
         aria-current={current || undefined}
       >
         <SwitchItemThumb {key} {current} />

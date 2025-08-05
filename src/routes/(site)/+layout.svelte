@@ -15,6 +15,7 @@
   "
 >
   {@render children()}
+  <Footer />
   <!-- <SvgEditor
     src={`<svg
   width="1000"
@@ -29,5 +30,4 @@
 </svg>`}
     class="sticky bottom-0 -z-1 h-dvh w-dvw"
   /> -->
-  <Footer />
 </main>

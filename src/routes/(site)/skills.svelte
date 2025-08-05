@@ -2,15 +2,11 @@
   import { PUBLIC_EMAIL } from '$env/static/public';
   import { tags_details } from '$lib/data/meta';
   import { skills } from '$lib/data/profile';
-  import { CornerRightDown, Send } from 'lucide-svelte';
+  import * as m from '$messages';
+  import { AtSign, CornerRightDown, Send } from 'lucide-svelte';
   import { on } from 'svelte/events';
 
-  const phrases = [
-    'push your projects forward,',
-    'get happy clients,',
-    'ship sweet experiences,',
-    'give me a nice smile,',
-  ];
+  const phrases = m.skills_phrases().split(/(?<=,)/);
 
   const longest = phrases.reduce((a, b, i, arr) => {
     return arr[a].length < b.length ? i : a;
@@ -22,7 +18,7 @@
 <section
   class="
     pointer-events-auto flex w-full max-w-body flex-col items-start
-    justify-center gap-padding self-center rounded-section p-padding pb-0
+    justify-center gap-padding self-center p-padding
   "
 >
   <h2
@@ -36,14 +32,14 @@
         );
       }
       settop();
-      on(window, 'resize', () => settop);
+      on(window, 'resize', settop);
     }}
     style:--n={phrases.length}
     class="
       text-xl leading-(--lead) font-medium
       [--d-y:calc(1em*var(--lead))]
       [--lead:1.25]
-      [--scroll-y:max(0,var(--spacing-scroll-y)-var(--offset-y))]
+      [--scroll-y:max(0,var(--spacing-scroll-y)-var(--offset-y,0))]
       [--seg:calc(100vh/var(--n))]
       lg:text-2xl
     "
@@ -85,9 +81,9 @@
       {/each}
     </p>
     <p>
-      hire me to work with
+      {m.skills_hire_me()}
       <CornerRightDown
-        class="inline size-[.65em] stroke-3"
+        class="inline size-[.65em] stroke-3 whitespace-nowrap"
         stroke-linecap="butt"
       />
     </p>
@@ -113,15 +109,16 @@
       "
       style:--i={skills.length + 1}
     >
-      * your stack *
+      * {m.skills_your_stack()} *
       <span class="opacity-40">
-        i learn fast <span class="inline-block rotate-90">;)</span>
+        {m.skills_your_stack_after()}
+        <span class="inline-block rotate-90">;)</span>
       </span>
     </li>
   </ul>
   <button
     aria-pressed={copied != null || undefined}
-    class="button-cta text-sm"
+    class="group flex cursor-pointer items-center gap-[1em] self-end"
     onpointerdown={() => {
       navigator.clipboard.writeText(PUBLIC_EMAIL);
       clearTimeout(copied);
@@ -130,6 +127,60 @@
       }, 1500);
     }}
   >
-    <Send /> Get in touch
+    <div class="button-cta">
+      <span
+        class="
+          duration-200 ease-exp-out
+          group-hover:hidden
+          starting:-translate-y-[1em] starting:opacity-0
+        "
+      >
+        {m.skills_contact()}
+      </span>
+      <span
+        class="
+          hidden duration-200 ease-exp-out
+          group-hover:inline-block
+          starting:translate-y-[1em] starting:opacity-0
+        ">{m.skills_copy_email()}</span
+      >
+    </div>
+    <span class="relative filter-(--pixelate)">
+      <div
+        class="
+          relative flex size-[4.5em] animate-coin items-center justify-center
+          rounded-full
+          [--diffuse:var(--background-color-surface)]
+          [--thickness:.5rem]
+          transform-3d
+          group-hover:text-primary
+        "
+      >
+        <Send class="absolute size-[2em] backface-hidden" />
+        <div
+          class="
+            absolute inset-0 -z-1 rounded-[inherit] bg-(--diffuse) transform-3d
+            before:absolute before:top-0 before:left-1/2 before:h-full
+            before:w-(--thickness) before:origin-left before:rotate-y-90
+            before:bg-(--diffuse)
+            after:absolute after:inset-0 after:-translate-z-(--thickness)
+            after:rounded-[inherit] after:bg-(--diffuse)
+          "
+        ></div>
+        <AtSign
+          class="
+            absolute -z-1 size-[2em] -translate-z-(--thickness) rotate-y-180
+            backface-hidden
+          "
+        />
+      </div>
+      <div
+        class="
+          absolute -bottom-[2em] left-1/2 -z-1 aspect-square w-2/3
+          -translate-x-1/2 rotate-x-75 rounded-full bg-[black] opacity-20
+          blur-[9px]
+        "
+      ></div>
+    </span>
   </button>
 </section>

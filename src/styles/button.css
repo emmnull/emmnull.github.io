@@ -281,6 +281,9 @@
     --button-background: transparent;
     --button-color: var(--color-on-io);
     --button-icon-opacity: 100%;
+    @variant button-disabled {
+      --button-color: color-mix(in oklch, currentcolor 30%, var(--background-color-base));
+    }
     @variant button-hover {
       --button-color: oklch(from var(--color-io-cta) l c h);
       --button-background: oklch(from var(--color-io-cta) l calc(c * 0.8) h / 10%);

@@ -94,7 +94,9 @@
 
   .tail {
     opacity: var(--opacity-softest);
-    animation-delay: calc(var(--total-duration) * 0.04); /* manually tweaked factor */
+    animation-delay: calc(
+      var(--total-duration) * 0.04
+    ); /* manually tweaked factor */
   }
 
   @keyframes trace {
