@@ -12,11 +12,12 @@
 <section
   style:--n={phrases.length}
   class="
-    w-full max-w-body self-center text-3xl leading-(--leading) font-medium
-    transition-[opacity,translate] duration-750
+    w-full max-w-body origin-bottom self-center text-3xl leading-(--leading)
+    font-medium transition duration-750 ease-exp-out
     [--leading:1.2]
+    perspective-[100px]
     after:block after:h-[calc(1em*var(--leading)*(var(--n)-1))]
-    starting:translate-y-[.1em] starting:opacity-0
+    starting:rotate-x-1 starting:opacity-0
   "
 >
   <h1
