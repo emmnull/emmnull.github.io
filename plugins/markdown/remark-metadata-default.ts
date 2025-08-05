@@ -44,7 +44,7 @@ export default function remarkMetadataDefault(
       }
     } catch {
       console.log(
-        `no base locale content found for "${options.id}" at "${filepath}"`,
+        `No base locale content found for "${options.id}" at "${filepath}"`,
       );
     }
   };

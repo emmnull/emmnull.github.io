@@ -5,7 +5,7 @@ import { dirname } from 'path';
 import { cwd } from 'process';
 import { glob } from 'tinyglobby';
 import type { Plugin } from 'vite';
-import type { ZodObject } from 'zod/v4';
+import type { ZodObject } from 'zod';
 import remarkMetadataDefault from './remark-metadata-default';
 import remarkMetadataValidate from './remark-metadata-validate';
 import remarkPathToImport from './remark-path-to-import';
@@ -29,6 +29,9 @@ type MarkdownOptions = {
 /**
  * Support svelte markdown in vite for more control on timing with other
  * svelte-relevant vite plugins.
+ *
+ * @todo Move config to separate file to enable automatic type import in
+ *   generated declaration.
  */
 export default function markdown({
   extensions = ['.md'],
@@ -51,12 +54,6 @@ export default function markdown({
     name: 'vite-plugin-markdown-svelte',
     enforce: 'pre',
     async buildStart() {
-      // try {
-      //   const config = await import(join(cwd(), configPath));
-      //   console.log(config);
-      // } catch (err) {
-      //   console.error(err);
-      // }
       contents.clear();
       vmods.clear();
       let dts = dedent`
@@ -114,7 +111,7 @@ export default function markdown({
           dts += dedent`
 						declare module '${vname}' {
 							import type { Collections } from '${name}';
-							import type { z } from 'zod/v4';
+							import type * as z from 'zod';
 
 							interface Collection {}
 

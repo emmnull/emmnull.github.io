@@ -1,5 +1,5 @@
 import type { Processor, Transformer } from 'unified';
-import type { ZodObject } from 'zod/v4';
+import type { ZodObject } from 'zod';
 import { FLAG_SKIP } from './remark-metadata-default';
 import './vfile.d.ts';
 
