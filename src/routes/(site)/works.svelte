@@ -95,10 +95,10 @@
           <a
             {...getLinkAttributes(`/works/${datum.slug}`)}
             class="
-              flex translate-y-[.5em] gap-[1em] overflow-x-hidden rounded-full
-              border-[1px] border-current/10 bg-overlay px-[1.25em] py-[.5em]
-              whitespace-nowrap text-base opacity-0 shadow-md transition-all
-              duration-100
+              pointer-events-none flex translate-y-[.5em] gap-[1em]
+              overflow-x-hidden rounded-full border-[1px] border-current/10
+              bg-overlay px-[1.25em] py-[.5em] whitespace-nowrap text-base
+              opacity-0 shadow-md transition-all duration-100
               group-hover:translate-y-0 group-hover:opacity-100
             "
           >
