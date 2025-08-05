@@ -28,6 +28,7 @@ jobs:
         env:
           BASE_PATH: '/${{ github.event.repository.name }}'
           PUBLIC_GITHUB_USERNAME: '${{github.actor}}'
+          PUBLIC_EMAIL: '${{vars.PUBLIC_EMAIL}}'
         run: |
           pnpm build
 
