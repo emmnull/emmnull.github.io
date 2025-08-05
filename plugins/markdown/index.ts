@@ -121,7 +121,7 @@ export default function markdown({
 									? z.infer<Collection['schema']>
 									: Markdown['metadata'];
 
-							export const slugs: readonly ${JSON.stringify([...slugs])};
+							export const slugs: readonly ${JSON.stringify([...slugs].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' })))};
 							
 							export type Slug = (typeof slugs)[number];
 							
