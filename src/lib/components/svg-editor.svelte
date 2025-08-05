@@ -52,7 +52,7 @@
 
   let ast = $derived.by(() => {
     const tree = parse(src);
-    visit(tree, function (node, index, parent) {
+    visit(tree, function (node, _index, _parent) {
       if (isSvg(node)) {
         node.properties.id ??= `x${randomId()}`;
       }
@@ -116,9 +116,9 @@
   {#each ast.children[0].children as node (node)}
     {@render shape(node)}
   {/each}
-  <!-- <g data-controls>
+  <g data-controls>
     {#each ast.children[0].children as node (node)}
       {@render controls(node)}
     {/each}
-  </g> -->
+  </g>
 </svg>
