@@ -83,5 +83,15 @@
       }
     }
   ],
-  "locale_name": "English"
+  "locale_name": "English",
+  "hero_phrases": "love cooking up succulent interfaces,enjoy crafting simple and robust interactions,take better care of my code than my plants,live for tasteful design and tasty homemade pizza.",
+  "hero_iam": "i'm",
+  "hero_and_i": "and i ",
+  "skills_phrases": "push your projects forward,make happy clients,ship sweet experiences,gift you and i a nice smile,",
+  "skills_your_stack": "your stack",
+  "skills_your_stack_after": "i learn fast",
+  "skills_hire_me": "hire me to work with",
+  "skills_contact": "get in touch !",
+  "works_phrase": "some of my work",
+  "skills_copy_email": "copy email address"
 }
