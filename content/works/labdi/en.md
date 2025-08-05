@@ -1,6 +1,10 @@
 ---
 year: 2015
-link: 'https://cpeum.github.io/saint-constant'
-code: 'https://github.com/CPEUM/saint-constant'
 title: 'LABDI'
+images:
+  - './03.webm'
+  - './01.jpg'
+  - './02.jpg'
 ---
+
+Laboratoire de design et interaction
