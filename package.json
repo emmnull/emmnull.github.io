@@ -44,7 +44,7 @@
     "@sveltejs/adapter-auto": "^6.0.1",
     "@sveltejs/adapter-static": "^3.0.8",
     "@sveltejs/enhanced-img": "^0.6.1",
-    "@sveltejs/kit": "^2.27.0",
+    "@sveltejs/kit": "^2.27.1",
     "@sveltejs/vite-plugin-svelte": "^6.1.0",
     "@tailwindcss/vite": "^4.1.11",
     "@types/hast": "^3.0.4",
@@ -78,7 +78,7 @@
     "vfile": "^6.0.3",
     "vite": "^7.0.6",
     "vitest": "^3.2.4",
-    "zod": "^4.0.14"
+    "zod": "^4.0.15"
   },
   "packageManager": "pnpm@10.6.5+sha512.cdf928fca20832cd59ec53826492b7dc25dc524d4370b6b4adbf65803d32efaa6c1c88147c0ae4e8d579a6c9eec715757b50d4fa35eea179d868eada4ed043af"
 }
