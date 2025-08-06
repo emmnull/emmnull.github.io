@@ -5,7 +5,7 @@ on:
     branches: ['main']
 
 jobs:
-  install-and-cache:
+  install-and-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,10 +26,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-  build:
-    needs: install-and-cache
-    runs-on: ubuntu-latest
-    steps:
       - name: build
         env:
           BASE_PATH: '/${{ github.event.repository.name }}'
@@ -43,7 +39,7 @@ jobs:
           path: 'build/'
 
   deploy:
-    needs: build
+    needs: install-and-build
     runs-on: ubuntu-latest
 
     permissions:
