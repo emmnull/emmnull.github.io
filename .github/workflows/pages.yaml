@@ -2,7 +2,7 @@ name: Build & deploy static site to github pages
 
 on:
   push:
-    branches: ['main']
+    branches: [main]
 
 jobs:
   install-and-build:
@@ -28,15 +28,15 @@ jobs:
 
       - name: build
         env:
-          BASE_PATH: '/${{ github.event.repository.name }}'
-          PUBLIC_GITHUB_USERNAME: '${{github.actor}}'
-          PUBLIC_EMAIL: '${{vars.PUBLIC_EMAIL}}'
+          # BASE_PATH: /${{ github.event.repository.name }}
+          PUBLIC_GITHUB_USERNAME: ${{ github.actor }}
+          PUBLIC_EMAIL: ${{ vars.PUBLIC_EMAIL }}
         run: pnpm build
 
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'build/'
+          path: build/
 
   deploy:
     needs: install-and-build
