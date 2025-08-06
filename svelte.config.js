@@ -1,4 +1,5 @@
 import adapter from '@sveltejs/adapter-static';
+import i18n from './project.inlang/settings.json' with { type: 'json' };
 
 export const extensions = ['.md'];
 
@@ -6,15 +7,20 @@ export const extensions = ['.md'];
 const config = {
   extensions: ['.svelte', ...extensions],
   kit: {
-    // prerender: {
-    //   entries: [
-    //     '*',
-    //     ...i18n.locales.map(
-    //       (locale) => /** @type {`/${string}`} */ (`/${locale}`),
-    //     ),
-    //   ],
-    // },
-    adapter: adapter({ fallback: '404.html' }),
+    prerender: {
+      entries: [
+        '*',
+        ...i18n.locales.map(
+          (locale) => /** @type {`/${string}`} */ (`/${locale}`),
+        ),
+      ],
+    },
+    adapter: adapter({
+      pages: 'build',
+      fallback: 'index.html',
+      assets: 'build',
+      strict: true,
+    }),
     alias: {
       $messages: 'src/lib/i18n/generated/messages.js',
     },
