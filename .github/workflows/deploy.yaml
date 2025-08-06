@@ -14,11 +14,13 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v3
+        with:
+          version: latest
 
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: latest
           cache: pnpm
 
       - name: Install dependencies
@@ -29,8 +31,7 @@ jobs:
           BASE_PATH: '/${{ github.event.repository.name }}'
           PUBLIC_GITHUB_USERNAME: '${{github.actor}}'
           PUBLIC_EMAIL: '${{vars.PUBLIC_EMAIL}}'
-        run: |
-          pnpm build
+        run: pnpm build
 
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
