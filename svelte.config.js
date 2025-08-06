@@ -19,11 +19,11 @@ const config = {
     alias: {
       $messages: 'src/lib/i18n/generated/messages.js',
     },
-    paths: {
-      base: process.env.BASE_PATH
-        ? `/${process.env.BASE_PATH.replace(/^\/|\/$/g, '')}`
-        : undefined,
-    },
+    // paths: {
+    //   base: process.env.BASE_PATH
+    //     ? `/${process.env.BASE_PATH.replace(/^\/|\/$/g, '')}`
+    //     : undefined,
+    // },
   },
 };
 
