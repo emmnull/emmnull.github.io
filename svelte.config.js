@@ -7,6 +7,11 @@ export const extensions = ['.md'];
 const config = {
   extensions: ['.svelte', ...extensions],
   kit: {
+    paths: {
+      base: process.env.BASE_PATH
+        ? `/${process.env.BASE_PATH.replace(/^\/|\/$/g, '')}`
+        : undefined,
+    },
     prerender: {
       entries: [
         '*',
