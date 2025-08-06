@@ -1,21 +1,21 @@
-name: Deploy static build
+name: Build & deploy static site to github pages
 
 on:
   push:
-    branches:
-      - 'main'
+    branches: ['main']
 
 jobs:
-  build_site:
+  install-and-cache:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v4
         with:
           version: latest
+          run_install: false
 
       - name: Install Node.js
         uses: actions/setup-node@v4
@@ -26,6 +26,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+  build:
+    needs: install-and-cache
+    runs-on: ubuntu-latest
+    steps:
       - name: build
         env:
           BASE_PATH: '/${{ github.event.repository.name }}'
@@ -40,7 +44,7 @@ jobs:
           path: 'build/'
 
   deploy:
-    needs: build_site
+    needs: build
     runs-on: ubuntu-latest
 
     permissions:
