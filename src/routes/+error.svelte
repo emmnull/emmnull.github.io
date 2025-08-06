@@ -3,9 +3,9 @@
 </script>
 
 <div class="flex h-dvh w-full flex-col items-center justify-center p-padding">
-  <div class="flex w-full max-w-prose-body flex-col items-start gap-gap">
-    <span class="text-2xl filter-(--pixelate)">🫢</span>
-    <h1>
+  <div class="flex max-w-prose-body flex-col items-start gap-gap">
+    <h1 class="text-2xl font-semibold">
+      <span class="filter-(--pixelate)">🫢</span>
       {page.status}
     </h1>
     <p class="text-sm opacity-60">
