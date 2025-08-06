@@ -31,7 +31,7 @@
     "@fontsource/instrument-serif": "^5.2.6",
     "@inlang/paraglide-js": "^2.2.0",
     "hast-util-to-html": "^9.0.5",
-    "lucide-svelte": "^0.525.0",
+    "lucide-svelte": "^0.536.0",
     "svg-parser": "^2.0.4",
     "unist-util-find": "^3.0.0"
   },
@@ -43,7 +43,7 @@
     "@playwright/test": "^1.54.2",
     "@sveltejs/adapter-auto": "^6.0.1",
     "@sveltejs/adapter-static": "^3.0.8",
-    "@sveltejs/enhanced-img": "^0.6.1",
+    "@sveltejs/enhanced-img": "^0.7.0",
     "@sveltejs/kit": "^2.27.1",
     "@sveltejs/vite-plugin-svelte": "^6.1.0",
     "@tailwindcss/vite": "^4.1.11",
