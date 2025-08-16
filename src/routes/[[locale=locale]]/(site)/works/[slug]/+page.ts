@@ -3,7 +3,6 @@ import { one } from 'virtual:works';
 
 export async function load(e) {
   const work = await one({ locale: getLocale(), slug: e.params.slug });
-  console.log(work);
   return {
     work,
   };
