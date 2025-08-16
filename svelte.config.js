@@ -18,6 +18,7 @@ const config = {
           (locale) => /** @type {`/${string}`} */ (`/${locale}`),
         ),
       ],
+      handleHttpError: 'warn',
     },
     adapter: adapter({
       fallback: '404.html',
