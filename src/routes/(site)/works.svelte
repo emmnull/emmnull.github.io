@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { resolve } from '$app/paths';
   import { getLinkAttributes } from '$lib/rigs/link.svelte';
   import { on } from 'svelte/events';
   import type { PageData } from './$types';
@@ -63,7 +64,7 @@
       >
         {#if 'img' in datum.image}
           <enhanced:img
-            alt="Cover image for {datum.meta.title}"
+            alt="Cover image for {datum.metadata.title}"
             src={datum.image}
             class="
               relative size-full rounded-(--radius) object-cover
@@ -93,7 +94,9 @@
           "
         >
           <a
-            {...getLinkAttributes(`/works/${datum.slug}`)}
+            {...getLinkAttributes(
+              resolve('/(site)/works/[slug]', { slug: datum.params.slug }),
+            )}
             class="
               pointer-events-none flex translate-y-[.5em] gap-[1em]
               overflow-x-hidden rounded-full border-[1px] border-current/10
@@ -103,7 +106,7 @@
             "
           >
             <span class="overflow-hidden text-ellipsis">
-              {datum.meta.title}
+              {datum.metadata.title}
             </span>
           </a>
         </div>

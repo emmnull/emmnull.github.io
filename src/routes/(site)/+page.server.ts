@@ -1,18 +1,19 @@
 import { shuffle } from '$lib/common/array';
+import { getLocale } from '$lib/i18n/generated/runtime';
 import { all } from 'virtual:works';
 
 export async function load() {
-  const works = all().map(({ metadata, slug }) => ({ metadata, slug }));
+  const works = all()
+    .filter((p) => p.params.locale === getLocale())
+    .map(({ metadata, params }) => ({ metadata, params }));
   return {
     // works,
     images: shuffle(
-      works.flatMap(({ metadata, slug }) => {
-        const { images, ...meta } = metadata;
-        return images.map((image, i) => {
+      works.flatMap((w) => {
+        return w.metadata.images.map((image, i) => {
           return {
-            meta,
+            ...w,
             image,
-            slug,
             isBanner: !i,
           };
         });

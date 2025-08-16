@@ -14,7 +14,6 @@ const config = {
     },
     prerender: {
       entries: [
-        '*',
         ...i18n.locales.map(
           (locale) => /** @type {`/${string}`} */ (`/${locale}`),
         ),

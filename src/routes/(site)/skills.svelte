@@ -159,12 +159,16 @@
         <Send class="absolute size-[2em] backface-hidden" />
         <div
           class="
-            absolute inset-0 -z-1 rounded-[inherit] bg-(--diffuse) transform-3d
+            absolute inset-0 -z-1 rounded-[inherit] bg-(--diffuse) bg-linear-0
+            transform-3d
+            group-hover:to-current/5
             before:absolute before:top-0 before:left-1/2 before:h-full
             before:w-(--thickness) before:origin-left before:rotate-y-90
-            before:bg-(--diffuse)
+            before:bg-(--diffuse) before:bg-linear-0
+            group-hover:before:to-current/7
             after:absolute after:inset-0 after:-translate-z-(--thickness)
-            after:rounded-[inherit] after:bg-(--diffuse)
+            after:rounded-[inherit] after:bg-(--diffuse) after:bg-linear-0
+            group-hover:after:to-current/5
           "
         ></div>
         <AtSign

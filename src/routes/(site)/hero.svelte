@@ -12,18 +12,19 @@
 <section
   style:--n={phrases.length}
   class="
-    w-full max-w-body origin-bottom self-center text-3xl leading-(--leading)
-    font-medium transition duration-750 ease-exp-out
+    w-full max-w-body self-center text-3xl leading-(--leading) font-medium
+    transition duration-750 ease-exp-out
     [--leading:1.2]
     perspective-[100px]
     after:block after:h-[calc(1em*var(--leading)*(var(--n)-1))]
-    starting:rotate-x-1 starting:opacity-0
+    starting:opacity-0
   "
 >
   <h1
     class="
-      pointer-events-auto sticky top-0 flex min-h-dvh flex-col justify-center
-      p-padding
+      pointer-events-auto sticky top-0 flex min-h-dvh origin-top flex-col
+      justify-center p-padding duration-500 ease-exp-out
+      starting:-rotate-x-1
     "
   >
     <span>
