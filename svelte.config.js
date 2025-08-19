@@ -18,6 +18,7 @@ const config = {
           (locale) => /** @type {`/${string}`} */ (`/${locale}`),
         ),
       ],
+      handleUnseenRoutes: 'warn',
       handleHttpError: 'warn',
     },
     adapter: adapter({
