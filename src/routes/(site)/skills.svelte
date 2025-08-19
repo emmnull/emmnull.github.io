@@ -3,7 +3,7 @@
   import { tags_details } from '$lib/data/meta';
   import { skills } from '$lib/data/profile';
   import * as m from '$messages';
-  import { AtSign, CornerRightDown, Send } from 'lucide-svelte';
+  import { AtSign, CopyCheck, CornerRightDown, Send } from 'lucide-svelte';
   import { on } from 'svelte/events';
 
   const phrases = m.skills_phrases().split(/(?<=,)/);
@@ -118,7 +118,7 @@
   </ul>
   <button
     aria-pressed={copied != null || undefined}
-    class="group flex cursor-pointer items-center gap-[1em] self-end"
+    class="group flex cursor-copy items-center gap-[1em] self-end"
     onpointerdown={() => {
       navigator.clipboard.writeText(PUBLIC_EMAIL);
       clearTimeout(copied);
@@ -132,6 +132,7 @@
         class="
           duration-200 ease-exp-out
           group-hover:hidden
+          group-aria-pressed:scale-90 group-aria-pressed:opacity-10
           starting:-translate-y-[1em] starting:opacity-0
         "
       >
@@ -141,9 +142,20 @@
         class="
           hidden duration-200 ease-exp-out
           group-hover:inline-block
+          group-aria-pressed:scale-90 group-aria-pressed:opacity-20
           starting:translate-y-[1em] starting:opacity-0
-        ">{m.skills_copy_email()}</span
+        "
       >
+        {m.skills_copy_email()}
+      </span>
+      <CopyCheck
+        class="
+          absolute hidden transition-discrete duration-300 ease-exp-out
+          not-group-aria-pressed:scale-110 not-group-aria-pressed:opacity-0
+          group-aria-pressed:inline-block
+          starting:scale-80 starting:opacity-0
+        "
+      />
     </div>
     <span class="relative filter-(--pixelate)">
       <div

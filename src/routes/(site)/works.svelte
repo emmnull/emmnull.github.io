@@ -37,8 +37,8 @@
       [--row:5]
       [--scroll-y:max(0,calc(var(--spacing-scroll-y)-var(--top)))]
       [--top:3000]
-      pattern-color-surface pattern-size-[33%] pattern-spacing-[1.5rem]
-      pattern-thickness-[1px]
+      pattern-color-[color-mix(in_oklch,var(--background-color-base),currentcolor_10%)]
+      pattern-size-[33%] pattern-spacing-[1.5rem] pattern-thickness-[1px]
       lg:grid lg:gap-0 lg:px-[calc(var(--spacing-gap)/2)]
     "
   >

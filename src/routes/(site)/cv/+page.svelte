@@ -1,3 +1,6 @@
+<script lang="ts">
+</script>
+
 <article
   class="
     flex min-h-dvh origin-bottom flex-col items-center justify-center text-2xl
