@@ -11,7 +11,8 @@ export default defineConfig({
     paraglide({
       project: './project.inlang',
       outdir: './src/lib/i18n/generated',
-      strategy: ['url', 'cookie', 'baseLocale'],
+      strategy: ['url', 'cookie', 'preferredLanguage', 'baseLocale'],
+      cookieName: 'locale',
     }),
     markdown(),
     tailwindcss(),
