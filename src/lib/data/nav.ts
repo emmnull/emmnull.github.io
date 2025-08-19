@@ -1,4 +1,4 @@
-import { FileUser, type Icon } from 'lucide-svelte';
+import { Blocks, CircleUser, NotebookText, type Icon } from 'lucide-svelte';
 
 export const nav = {
   '': {
@@ -7,13 +7,16 @@ export const nav = {
   },
   cv: {
     label: 'cv',
-    icon: FileUser,
-    disabled: undefined,
+    icon: CircleUser,
+    disabled: true,
   },
-  // works: {
-  //   label: 'Works',
-  // },
+  works: {
+    icon: Blocks,
+    label: 'works',
+    disabled: true,
+  },
   posts: {
+    icon: NotebookText,
     label: 'posts',
     disabled: true,
   },
