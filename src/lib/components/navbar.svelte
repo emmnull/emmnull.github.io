@@ -102,21 +102,7 @@
           starting:translate-y-1/3 starting:opacity-0
         "
       >
-        {#each Object.entries(nav) as [slug, link] (link)}
-          <a
-            class="
-              button-nav
-              aria-disabled:pointer-events-none
-            "
-            aria-disabled={link.disabled}
-            {...getLinkAttributes(`/${slug}`, {
-              currentOnSubpath: slug !== '',
-            })}
-          >
-            <Ripple />
-            {link.label}
-          </a>
-        {/each}
+        {@render pagesMenu()}
       </nav>
     </dialog>
     <!-- desktop -->
@@ -127,19 +113,7 @@
         not-lg:hidden
       "
     >
-      {#each Object.entries(nav) as [slug, link] (link)}
-        <a
-          class="
-            button-nav
-            aria-disabled:pointer-events-none
-          "
-          aria-disabled={link.disabled}
-          {...getLinkAttributes(`/${slug}`, { currentOnSubpath: slug !== '' })}
-        >
-          <Ripple />
-          {link.label}
-        </a>
-      {/each}
+      {@render pagesMenu()}
     </nav>
     <menu
       class="
@@ -276,4 +250,25 @@
       </a>
     {/each}
   </menu>
+{/snippet}
+
+{#snippet pagesMenu()}
+  {#each Object.entries(nav) as [slug, link] (link)}
+    <a
+      class="
+        button-nav
+        aria-disabled:pointer-events-none
+      "
+      aria-disabled={link.disabled}
+      {...getLinkAttributes(`/${slug}`, {
+        currentOnSubpath: slug !== '',
+      })}
+    >
+      {#if 'icon' in link}
+        <link.icon />
+      {/if}
+      <Ripple />
+      {link.label}
+    </a>
+  {/each}
 {/snippet}

@@ -29,7 +29,14 @@
       "
     >
       {#each Object.entries(nav) as [slug, link] (link)}
-        <a {...getLinkAttributes(`/${slug}`)} class="button-nav">
+        <a
+          {...getLinkAttributes(`/${slug}`)}
+          class="
+            button-nav
+            aria-disabled:pointer-events-none
+          "
+          aria-disabled={link.disabled}
+        >
           <Ripple />
           {link.label}
         </a>
