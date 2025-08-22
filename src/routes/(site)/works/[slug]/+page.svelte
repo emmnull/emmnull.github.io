@@ -31,7 +31,7 @@
 </article>
 <ul
   class="
-    sticky bottom-0 left-0 -z-1 no-scrollbar flex h-dvh w-full flex-nowrap
+    sticky bottom-0 left-0 -z-1 no-scrollbar flex h-lvh w-full flex-nowrap
     gap-gap overflow-x-scroll py-navbar-height
     pr-[max(0px,(100vw-var(--spacing-body))/2+var(--spacing-padding))] pl-[50vw]
   "

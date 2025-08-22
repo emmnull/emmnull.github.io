@@ -32,7 +32,7 @@
   --spacing-scroll-x: 0;
   --spacing-scroll-y: 0;
   --spacing-navbar-height: calc(2 * var(--spacing-gap) + 0.825 * var(--spacing-io));
-  --spacing-main-height: calc(100dvh - var(--spacing-navbar-height));
+  --spacing-main-height: calc(100svh - var(--spacing-navbar-height));
 
   --radius-xs: --spacing(1);
   --radius-sm: --spacing(1.75);

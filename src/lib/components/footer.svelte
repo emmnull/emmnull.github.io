@@ -11,7 +11,7 @@
 
 <footer
   class="
-    relative flex min-h-dvh w-full max-w-body flex-col items-center
+    relative flex min-h-lvh w-full max-w-body flex-col items-center
     justify-center gap-gap self-center px-padding pt-padding pb-gap text-sm
   "
 >

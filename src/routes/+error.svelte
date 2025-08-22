@@ -2,7 +2,7 @@
   import { page } from '$app/state';
 </script>
 
-<div class="flex h-dvh w-full flex-col items-center justify-center p-padding">
+<div class="flex h-svh w-full flex-col items-center justify-center p-padding">
   <div class="flex max-w-prose-body items-start gap-[2rem]">
     <span class="text-2xl filter-(--pixelate)">🫢</span>
     <hr

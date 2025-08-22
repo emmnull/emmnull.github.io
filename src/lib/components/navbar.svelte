@@ -63,7 +63,7 @@
     </button>
     <dialog
       class="
-        pointer-events-auto h-[100vh] max-h-none w-full max-w-none flex-row
+        pointer-events-auto h-dvh max-h-none w-full max-w-none flex-row
         flex-wrap place-items-end content-end gap-gap overflow-visible
         bg-transparent p-padding text-md
         backdrop:bg-linear-to-t backdrop:from-overlay backdrop:from-66%

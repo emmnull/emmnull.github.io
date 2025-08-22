@@ -22,7 +22,7 @@
 >
   <h1
     class="
-      pointer-events-auto sticky top-0 flex min-h-dvh origin-top flex-col
+      pointer-events-auto sticky top-0 flex min-h-lvh origin-top flex-col
       justify-center p-padding duration-500 ease-exp-out
       starting:-rotate-x-1
     "
