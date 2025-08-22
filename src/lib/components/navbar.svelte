@@ -35,7 +35,7 @@
 <header
   class="
     pointer-events-none fixed top-0 z-infinity flex min-h-1/2 w-full items-start
-    justify-center bg-none via-ease-out text-sm transition ease
+    justify-center bg-none via-ease-out from-transparent text-sm transition ease
     has-[:hover,:open,:focus-visible]:from-base
     lg:bg-linear-to-b
   "
@@ -108,8 +108,9 @@
     <!-- desktop -->
     <nav
       class="
-        pointer-events-auto flex gap-io-nesting rounded-(--radius) bg-base
-        p-io-nesting transition duration-100
+        pointer-events-auto flex gap-io-nesting rounded-(--radius)
+        bg-surface/[min(100%,0.5%*var(--spacing-scroll-y))] p-io-nesting
+        transition duration-100
         not-lg:hidden
       "
     >
@@ -117,8 +118,9 @@
     </nav>
     <menu
       class="
-        pointer-events-auto flex gap-io-nesting rounded-(--radius) bg-base
-        p-io-nesting transition duration-100
+        pointer-events-auto flex gap-io-nesting rounded-(--radius)
+        bg-surface/[min(100%,0.5%*var(--spacing-scroll-y))] p-io-nesting
+        transition duration-100
         not-lg:hidden
       "
     >
