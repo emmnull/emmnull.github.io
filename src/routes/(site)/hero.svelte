@@ -15,7 +15,7 @@
     w-full max-w-body self-center text-3xl leading-(--leading) font-medium
     transition duration-750 ease-exp-out
     [--leading:1.2]
-    perspective-[100px]
+    perspective-[200px]
     after:block after:h-[calc(1em*var(--leading)*(var(--n)-1))]
     starting:opacity-0
   "
