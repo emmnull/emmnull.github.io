@@ -3,14 +3,10 @@
   import { tags_details } from '$lib/data/meta';
   import { skills } from '$lib/data/profile';
   import * as m from '$messages';
-  import { AtSign, CopyCheck, CornerRightDown, Send } from 'lucide-svelte';
+  import { AtSign, CopyCheck, Send } from 'lucide-svelte';
   import { on } from 'svelte/events';
 
   const phrases = m.skills_phrases().split(/(?<=,)/);
-
-  const longest = phrases.reduce((a, b, i, arr) => {
-    return arr[a].length < b.length ? i : a;
-  }, 0);
 
   let copied = $state<ReturnType<typeof setTimeout>>();
 </script>
@@ -36,26 +32,30 @@
     }}
     style:--n={phrases.length}
     class="
-      text-xl leading-(--lead) font-medium
-      [--d-y:calc(1em*var(--lead))]
-      [--lead:1.25]
-      [--scroll-y:max(0,var(--spacing-scroll-y)-var(--offset-y,0))]
-      [--seg:calc(100vh/var(--n))]
-      lg:text-2xl
+      text-2xl leading-(--lead) font-medium
+      [--lead:1.2]
     "
   >
-    <p class="relative">
+    <p
+      class="
+        relative grid text-balance
+        [--d-y:calc(1em*var(--lead))]
+        [--scroll:max(0,var(--spacing-scroll-y)-var(--offset-y,0))]
+        [--seg:calc(100vh/var(--n))]
+        before:col-start-1 before:row-start-1 before:content-(--prefix)
+      "
+      style:--prefix="'{m.skills_phrases_prefix()}'"
+    >
       {#each phrases as phrase, i (i)}
         <span
           style:--i={i}
-          data-longest={i === longest || undefined}
           class="
-            absolute top-0 left-0 whitespace-nowrap
-            [--translate-y:clamp(-1*var(--d-y),-1px*var(--scroll-y)+var(--seg)*(var(--i)+1),clamp(0px,var(--d-y)-1px*var(--scroll-y)+var(--seg)*var(--i),var(--d-y)))]
-            data-longest:relative
+            col-start-1 row-start-1
+            [--translate-y:clamp(-1*var(--d-y),-1px*var(--scroll)+var(--seg)*(var(--i)+1),clamp(0px,var(--d-y)-1px*var(--scroll)+var(--seg)*var(--i),var(--d-y)))]
+            before:invisible before:content-(--prefix)
           "
         >
-          {#each phrase.split(/(\W)/) as w, ii (ii)}
+          {#each phrase.split(/([^\w']+)/) as w, ii (ii)}
             <span
               class="
                 relative
@@ -64,7 +64,7 @@
             >
               <span
                 style:--ii={ii}
-                data-inline={w === ' ' || undefined}
+                data-inline={/\s/.test(w) || undefined}
                 class="
                   inline-block translate-y-(--translate-y)
                   transition-[translate] duration-[calc(500ms+100ms*var(--ii))]
@@ -81,11 +81,7 @@
       {/each}
     </p>
     <p>
-      {m.skills_hire_me()}
-      <CornerRightDown
-        class="inline size-[.65em] stroke-3 whitespace-nowrap"
-        stroke-linecap="butt"
-      />
+      {m.skills_hire_me()}&thinsp;:
     </p>
   </h2>
   <ul

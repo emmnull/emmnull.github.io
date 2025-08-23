@@ -86,12 +86,13 @@
   "locale_name": "Français",
   "hero_phrases": "j'adore mijoter des interfaces savoureuses,je bricole avec passion des interactions simples et robustes,je prends meilleur soin de mon code que de mes plantes,j'ai un faible pour la pizza maison et le design de bon goût.",
   "hero_iam": "moi c'est",
-  "hero_and_i": "et",
-  "skills_phrases": "poussez vos projets,faites des clients heureux,déployez des expériences top,donnons-nous un beau sourire,",
+  "hero_and_i": "et ",
+  "skills_phrases": "réalisons des projets qui font briller des yeux,déployons des expériences bien relevées,donnons-nous une raison de plus de sourire,",
   "skills_your_stack_after": "j'apprends vite",
   "skills_your_stack": "votre stack",
   "skills_hire_me": "engagez-moi pour travailler avec",
   "skills_contact": "contactez-moi !",
   "works_phrase": "quelques échantillons de projets",
-  "skills_copy_email": "copier mon courriel"
+  "skills_copy_email": "copier mon courriel",
+  "skills_phrases_prefix": "ensemble, "
 }

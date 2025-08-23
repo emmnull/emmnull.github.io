@@ -3,10 +3,6 @@
   import * as m from '$messages';
 
   const phrases = m.hero_phrases().split(/(?<=,)/);
-
-  const longest = phrases.reduce((a, b, i, arr) => {
-    return arr[a].length < b.length ? i : a;
-  }, 0);
 </script>
 
 <section
@@ -23,7 +19,7 @@
   <h1
     class="
       pointer-events-auto sticky top-0 flex min-h-lvh origin-top flex-col
-      justify-center p-padding duration-500 ease-exp-out
+      justify-center p-padding text-balance duration-500 ease-exp-out
       starting:-rotate-x-1
     "
   >
@@ -93,25 +89,22 @@
       </a>
       <p
         class="
-          relative
+          relative grid
           [--scroll:max(-1px*var(--spacing-scroll-y),-1em*(var(--n)-1)*var(--leading))]
-          before:[content:var(--before)]
+          before:col-start-1 before:row-start-1 before:content-(--prefix)
         "
-        style:--before="'{m.hero_and_i()} '"
+        style:--prefix="'{m.hero_and_i()}'"
       >
         {#each phrases as phrase, i (i)}
           <span
             style:--i={i}
-            data-longest={i === longest || undefined}
             class="
-              absolute top-0 left-0
+              col-start-1 row-start-1
               [--translate-y:calc(var(--scroll)+1em*var(--leading)*var(--i))]
-              before:invisible
-              not-data-longest:before:[content:var(--before)]
-              data-longest:relative
+              before:invisible before:content-(--prefix)
             "
           >
-            {#each phrase.split(/(\s+)/) as w, ii (ii)}
+            {#each phrase.split(/([^\w']+)/) as w, ii (ii)}
               <span
                 class="
                   relative

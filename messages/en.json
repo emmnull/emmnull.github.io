@@ -15,13 +15,8 @@
   "home_catchphrase": "Hi, I'm Emmanuel and I enjoy designing interfaces :)",
   "language": [
     {
-      "declarations": [
-        "input count",
-        "local countPlural = count: plural"
-      ],
-      "selectors": [
-        "countPlural"
-      ],
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
       "match": {
         "countPlural=one": "Language",
         "countPlural=other": "Languages"
@@ -31,13 +26,8 @@
   "not_defined": "Not defined",
   "post": [
     {
-      "declarations": [
-        "input count",
-        "local countPlural = count: plural"
-      ],
-      "selectors": [
-        "countPlural"
-      ],
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
       "match": {
         "countPlural=one": "Post",
         "countPlural=other": "Posts"
@@ -53,13 +43,8 @@
   "theme_system": "System",
   "tool": [
     {
-      "declarations": [
-        "input count",
-        "local countPlural = count: plural"
-      ],
-      "selectors": [
-        "countPlural"
-      ],
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
       "match": {
         "countPlural=one": "Tool",
         "countPlural=other": "Tools"
@@ -70,13 +55,8 @@
   "workshop": "Workshop",
   "project": [
     {
-      "declarations": [
-        "input count",
-        "local countPlural = count: plural"
-      ],
-      "selectors": [
-        "countPlural"
-      ],
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
       "match": {
         "countPlural=one": "Project",
         "countPlural=other": "Projects"
@@ -87,11 +67,12 @@
   "hero_phrases": "love cooking up succulent interfaces,enjoy crafting simple and robust interactions,take better care of my code than my plants,live for tasteful design and tasty homemade pizza.",
   "hero_iam": "i'm",
   "hero_and_i": "and i ",
-  "skills_phrases": "push your projects forward,make happy clients,ship sweet experiences,gift you and i a nice smile,",
+  "skills_phrases": "push designs that make your clients' eyes sparkle,whip up fingerlickin' good experiences,give you and me one more reason to smile,",
   "skills_your_stack": "your stack",
   "skills_your_stack_after": "i learn fast",
   "skills_hire_me": "hire me to work with",
   "skills_contact": "get in touch !",
   "works_phrase": "some of my work",
-  "skills_copy_email": "copy email address"
+  "skills_copy_email": "copy email address",
+  "skills_phrases_prefix": "let\\0027s "
 }
