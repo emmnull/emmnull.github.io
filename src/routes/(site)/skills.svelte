@@ -1,14 +1,12 @@
 <script lang="ts">
-  import { PUBLIC_EMAIL } from '$env/static/public';
   import { tags_details } from '$lib/data/meta';
   import { skills } from '$lib/data/profile';
+  import { email } from '$lib/rigs/email.svelte';
   import * as m from '$messages';
   import { AtSign, CopyCheck, Send } from 'lucide-svelte';
   import { on } from 'svelte/events';
 
   const phrases = m.skills_phrases().split(/(?<=,)/);
-
-  let copied = $state<ReturnType<typeof setTimeout>>();
 </script>
 
 <section
@@ -113,15 +111,9 @@
     </li>
   </ul>
   <button
-    aria-pressed={copied != null || undefined}
+    aria-pressed={email.copied != null || undefined}
     class="group flex cursor-copy items-center gap-[1em] self-end"
-    onpointerdown={() => {
-      navigator.clipboard.writeText(PUBLIC_EMAIL);
-      clearTimeout(copied);
-      copied = setTimeout(() => {
-        copied = undefined;
-      }, 1500);
-    }}
+    onpointerdown={email.copy}
   >
     <div class="button-cta">
       <span

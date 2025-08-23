@@ -1,12 +1,10 @@
 <script lang="ts">
-  import { PUBLIC_EMAIL } from '$env/static/public';
   import { nav } from '$lib/data/nav';
   import { links } from '$lib/data/profile';
+  import { email } from '$lib/rigs/email.svelte';
   import { getLinkAttributes } from '$lib/rigs/link.svelte';
   import { ArrowUp, CopyCheck, Mail } from 'lucide-svelte';
   import Ripple from './ripple.svelte';
-
-  let copied = $state<ReturnType<typeof setTimeout>>();
 </script>
 
 <footer
@@ -51,14 +49,8 @@
       {/each}
       <button
         class="button-ghost aspect-square cursor-copy"
-        aria-pressed={copied != null || undefined}
-        onpointerdown={() => {
-          navigator.clipboard.writeText(PUBLIC_EMAIL);
-          clearTimeout(copied);
-          copied = setTimeout(() => {
-            copied = undefined;
-          }, 1500);
-        }}
+        aria-pressed={email.copied != null || undefined}
+        onpointerdown={email.copy}
       >
         <Ripple />
         <Mail
